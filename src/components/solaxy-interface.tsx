@@ -87,10 +87,10 @@ const SolaxyInterface = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full max-w-md mx-auto p-6 rounded-xl bg-gray-50 dark:bg-[#1A1B1B] shadow-lg">
+    <div className="flex flex-col items-center w-full max-w-md mx-auto p-6 rounded-xl bg-gray-50 dark:bg-zinc-900 shadow-lg dark:shadow-zinc-800/30">
       {/* Logo */}
       <div className="mb-6 flex items-center justify-center">
-        <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
+        <div className="w-12 h-12 bg-yellow-400 dark:bg-yellow-500 rounded-full flex items-center justify-center">
           <svg
             viewBox="0 0 24 24"
             className="w-8 h-8 text-white"
@@ -115,18 +115,22 @@ const SolaxyInterface = () => {
       </div>
 
       {/* Tab Selector */}
-      <div className="flex w-full mb-6 bg-gray-200 rounded-lg p-1">
+      <div className="flex w-full mb-6 bg-gray-200 dark:bg-zinc-800 rounded-lg p-1">
         <button
-          className={`flex-1 py-2 rounded-md ${
-            activeTab === "buy" ? "bg-white dark:bg-neutral-800 shadow-sm" : ""
+          className={`flex-1 py-2 rounded-md text-gray-700 dark:text-gray-200 transition-colors ${
+            activeTab === "buy"
+              ? "bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-white"
+              : "hover:bg-gray-100 dark:hover:bg-zinc-750"
           }`}
           onClick={() => setActiveTab("buy")}
         >
           Buy SLX
         </button>
         <button
-          className={`flex-1 py-2 rounded-md ${
-            activeTab === "sell" ? "bg-white dark:bg-neutral-800 shadow-sm" : ""
+          className={`flex-1 py-2 rounded-md text-gray-700 dark:text-gray-200 transition-colors ${
+            activeTab === "sell"
+              ? "bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-white"
+              : "hover:bg-gray-100 dark:hover:bg-zinc-750"
           }`}
           onClick={() => setActiveTab("sell")}
         >
@@ -136,24 +140,24 @@ const SolaxyInterface = () => {
 
       {/* Input/Output Panel */}
       <div className="w-full space-y-4">
-        <div className="p-4 bg-white rounded-lg border border-gray-200">
+        <div className="p-4 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700">
           <div className="flex justify-between mb-2">
-            <span className="text-gray-600">
+            <span className="text-gray-600 dark:text-gray-300">
               {inputMode === "spend" ? "You spend" : "You receive"}
             </span>
-            <span className="text-gray-600">
+            <span className="text-gray-600 dark:text-gray-300">
               Balance: 1000.00 {getInputCurrency()}
             </span>
           </div>
           <div className="flex items-center">
             <input
               type="text"
-              className="w-full text-2xl bg-transparent outline-none"
+              className="w-full text-2xl bg-transparent outline-none text-gray-800 dark:text-gray-100"
               placeholder="0.00"
               value={inputAmount}
               onChange={handleInputChange}
             />
-            <div className="flex-shrink-0 bg-gray-100 px-3 py-1 rounded-md text-gray-700 font-medium">
+            <div className="flex-shrink-0 bg-gray-100 dark:bg-zinc-700 px-3 py-1 rounded-md text-gray-700 dark:text-gray-200 font-medium">
               {getInputCurrency()}
             </div>
           </div>
@@ -163,7 +167,7 @@ const SolaxyInterface = () => {
         <div className="flex justify-center">
           <button
             onClick={toggleInputMode}
-            className="bg-gray-200 p-2 rounded-full hover:bg-gray-300"
+            className="bg-gray-200 dark:bg-zinc-700 p-2 rounded-full hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-700 dark:text-gray-200 transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -185,24 +189,24 @@ const SolaxyInterface = () => {
           </button>
         </div>
 
-        <div className="p-4 bg-white rounded-lg border border-gray-200">
+        <div className="p-4 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700">
           <div className="flex justify-between mb-2">
-            <span className="text-gray-600">
+            <span className="text-gray-600 dark:text-gray-300">
               {inputMode === "spend" ? "You receive" : "You spend"}
             </span>
-            <span className="text-gray-600">
+            <span className="text-gray-600 dark:text-gray-300">
               Balance: 800.00 {getOutputCurrency()}
             </span>
           </div>
           <div className="flex items-center">
             <input
               type="text"
-              className="w-full text-2xl bg-transparent outline-none"
+              className="w-full text-2xl bg-transparent outline-none text-gray-800 dark:text-gray-100"
               placeholder="0.00"
               value={outputAmount}
               disabled
             />
-            <div className="flex-shrink-0 bg-gray-100 px-3 py-1 rounded-md text-gray-700 font-medium">
+            <div className="flex-shrink-0 bg-gray-100 dark:bg-zinc-700 px-3 py-1 rounded-md text-gray-700 dark:text-gray-200 font-medium">
               {getOutputCurrency()}
             </div>
           </div>
@@ -210,11 +214,11 @@ const SolaxyInterface = () => {
       </div>
 
       {/* Bonding Curve Preview */}
-      <div className="w-full mt-6 p-4 bg-white rounded-lg border border-gray-200">
-        <h3 className="text-sm font-medium text-gray-600 mb-2">
+      <div className="w-full mt-6 p-4 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700">
+        <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
           Bonding Curve Preview
         </h3>
-        <div className="h-24 bg-gray-50 rounded-md flex items-center justify-center relative overflow-hidden">
+        <div className="h-24 bg-gray-50 dark:bg-zinc-900 rounded-md flex items-center justify-center relative overflow-hidden">
           {/* Simple curve visualization */}
           <svg viewBox="0 0 100 40" className="w-full h-full">
             <path
@@ -225,7 +229,7 @@ const SolaxyInterface = () => {
             />
           </svg>
           {/* Price indicator */}
-          <div className="absolute top-2 right-2 bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">
+          <div className="absolute top-2 right-2 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-xs">
             1 USDC ≈ {mockExchangeRate} SLX
           </div>
         </div>
@@ -234,15 +238,17 @@ const SolaxyInterface = () => {
       {/* Transaction Settings */}
       <div className="w-full mt-4">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm text-gray-600">Slippage Tolerance</span>
+          <span className="text-sm text-gray-600 dark:text-gray-300">
+            Slippage Tolerance
+          </span>
           <div className="flex space-x-2">
             {[0.1, 0.5, 1.0].map((value) => (
               <button
                 key={value}
-                className={`px-2 py-1 text-xs rounded ${
+                className={`px-2 py-1 text-xs rounded transition-colors ${
                   slippageTolerance === value
-                    ? "bg-yellow-200 text-yellow-800"
-                    : "bg-gray-100"
+                    ? "bg-yellow-200 dark:bg-yellow-600 text-yellow-800 dark:text-yellow-100"
+                    : "bg-gray-100 dark:bg-zinc-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-zinc-600"
                 }`}
                 onClick={() => handleSlippageChange(value)}
               >
@@ -251,13 +257,15 @@ const SolaxyInterface = () => {
             ))}
           </div>
         </div>
-        <div className="flex justify-between items-center text-sm text-gray-600">
+        <div className="flex justify-between items-center text-sm text-gray-600 dark:text-gray-300">
           <span>Min. received:</span>
           <span>
-            {(
-              parseFloat(outputAmount || "") *
-              (1 - slippageTolerance / 100)
-            ).toFixed(6)}{" "}
+            {outputAmount
+              ? (
+                  parseFloat(outputAmount) *
+                  (1 - slippageTolerance / 100)
+                ).toFixed(6)
+              : "0.000000"}{" "}
             {getOutputCurrency()}
           </span>
         </div>
@@ -265,7 +273,7 @@ const SolaxyInterface = () => {
 
       {/* Action Button */}
       <button
-        className="w-full mt-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg"
+        className="w-full mt-6 py-3 bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 text-white font-medium rounded-lg transition-colors"
         onClick={executeTransaction}
         disabled={!inputAmount || parseFloat(inputAmount) === 0}
       >
