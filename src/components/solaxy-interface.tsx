@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { RefreshCw } from "lucide-react";
 
+import TokensDropdown from "./tokens-dropdown";
+
+type BuyMode = "stable" | "slx";
 const SolaxyInterface = () => {
   const [activeTab, setActiveTab] = useState("buy");
-  const [inputMode, setInputMode] = useState("spend"); // 'spend' or 'receive'
+  const [inputMode, setInputMode] = useState<BuyMode>("stable"); // 'spend' or 'receive'
   const [inputAmount, setInputAmount] = useState("");
   const [outputAmount, setOutputAmount] = useState("");
   const [slippageTolerance, setSlippageTolerance] = useState(0.5);
@@ -21,7 +25,7 @@ const SolaxyInterface = () => {
       if (value) {
         const numValue = parseFloat(value);
         if (activeTab === "buy") {
-          if (inputMode === "spend") {
+          if (inputMode === "stable") {
             // Calculate output amount for buying SLX by spending USDC
             setOutputAmount((numValue * mockExchangeRate).toFixed(6));
           } else {
@@ -30,7 +34,7 @@ const SolaxyInterface = () => {
           }
         } else {
           // Active tab is sell
-          if (inputMode === "spend") {
+          if (inputMode === "stable") {
             // Calculate output amount for selling SLX by spending SLX
             setOutputAmount((numValue / mockExchangeRate).toFixed(6));
           } else {
@@ -46,7 +50,7 @@ const SolaxyInterface = () => {
   };
 
   const toggleInputMode = () => {
-    setInputMode(inputMode === "spend" ? "receive" : "spend");
+    setInputMode(inputMode === "stable" ? "slx" : "stable");
     // Swap input and output values
     setInputAmount(outputAmount);
     setOutputAmount(inputAmount);
@@ -56,34 +60,8 @@ const SolaxyInterface = () => {
     setSlippageTolerance(value);
   };
 
-  const getInputCurrency = () => {
-    if (activeTab === "buy") {
-      return inputMode === "spend" ? "USDC" : "SLX";
-    } else {
-      return inputMode === "spend" ? "SLX" : "USDC";
-    }
-  };
-
-  const getOutputCurrency = () => {
-    if (activeTab === "buy") {
-      return inputMode === "spend" ? "SLX" : "USDC";
-    } else {
-      return inputMode === "spend" ? "USDC" : "SLX";
-    }
-  };
-
-  const getActionLabel = () => {
-    if (activeTab === "buy") {
-      return inputMode === "spend" ? "Deposit" : "Mint";
-    } else {
-      return inputMode === "spend" ? "Redeem" : "Withdraw";
-    }
-  };
-
   const executeTransaction = () => {
-    alert(
-      `Executing ${getActionLabel()}: ${inputAmount} ${getInputCurrency()} → ${outputAmount} ${getOutputCurrency()}`
-    );
+    console.log("lol");
   };
 
   return (
@@ -141,26 +119,45 @@ const SolaxyInterface = () => {
       {/* Input/Output Panel */}
       <div className="w-full space-y-4">
         <div className="p-4 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700">
-          <div className="flex justify-between mb-2">
+          <div className="flex justify-between mb-2 w-full">
             <span className="text-gray-600 dark:text-gray-300">
-              {inputMode === "spend" ? "You spend" : "You receive"}
+              {inputMode === "stable" ? "You pay" : "Mint"}
             </span>
-            <span className="text-gray-600 dark:text-gray-300">
-              Balance: 1000.00 {getInputCurrency()}
-            </span>
-          </div>
-          <div className="flex items-center">
             <input
               type="text"
-              className="w-full text-2xl bg-transparent outline-none text-gray-800 dark:text-gray-100"
+              className="w-[20%] placeholder:text-end text-2xl bg-transparent outline-none text-gray-800 dark:text-gray-100"
               placeholder="0.00"
               value={inputAmount}
               onChange={handleInputChange}
             />
-            <div className="flex-shrink-0 bg-gray-100 dark:bg-zinc-700 px-3 py-1 rounded-md text-gray-700 dark:text-gray-200 font-medium">
-              {getInputCurrency()}
-            </div>
           </div>
+
+          {inputMode === "stable" ? (
+            <TokensDropdown />
+          ) : (
+            <div className="flex items-center space-x-2">
+              <div className="bg-green-100 rounded-full p-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="green"
+                >
+                  <circle cx="12" cy="12" r="12" fill="green" />
+                  <path
+                    d="M7 12l3 3 7-7"
+                    stroke="white"
+                    strokeWidth="2"
+                    fill="none"
+                  />
+                </svg>
+              </div>
+              <span className="font-medium">SLX</span>
+            </div>
+          )}
+
+          <div className="flex items-center"></div>
         </div>
 
         {/* Swap Direction Button */}
@@ -169,69 +166,48 @@ const SolaxyInterface = () => {
             onClick={toggleInputMode}
             className="bg-gray-200 dark:bg-zinc-700 p-2 rounded-full hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-700 dark:text-gray-200 transition-colors"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1z"
-                clipRule="evenodd"
-              />
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <RefreshCw className={`w-4 h-4`} />
           </button>
         </div>
 
         <div className="p-4 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700">
-          <div className="flex justify-between mb-2">
+          <div className="flex justify-between mb-2 w-full">
             <span className="text-gray-600 dark:text-gray-300">
-              {inputMode === "spend" ? "You receive" : "You spend"}
+              {inputMode === "stable" ? "You receive" : "You pay"}
             </span>
-            <span className="text-gray-600 dark:text-gray-300">
-              Balance: 800.00 {getOutputCurrency()}
-            </span>
-          </div>
-          <div className="flex items-center">
             <input
               type="text"
-              className="w-full text-2xl bg-transparent outline-none text-gray-800 dark:text-gray-100"
+              className="w-[20%] placeholder:text-end text-2xl bg-transparent outline-none text-gray-800 dark:text-gray-100"
               placeholder="0.00"
-              value={outputAmount}
-              disabled
+              value={inputAmount}
+              onChange={handleInputChange}
             />
-            <div className="flex-shrink-0 bg-gray-100 dark:bg-zinc-700 px-3 py-1 rounded-md text-gray-700 dark:text-gray-200 font-medium">
-              {getOutputCurrency()}
-            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Bonding Curve Preview */}
-      <div className="w-full mt-6 p-4 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700">
-        <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
-          Bonding Curve Preview
-        </h3>
-        <div className="h-24 bg-gray-50 dark:bg-zinc-900 rounded-md flex items-center justify-center relative overflow-hidden">
-          {/* Simple curve visualization */}
-          <svg viewBox="0 0 100 40" className="w-full h-full">
-            <path
-              d="M0,40 Q50,0 100,40"
-              fill="none"
-              stroke="#FBBF24"
-              strokeWidth="2"
-            />
-          </svg>
-          {/* Price indicator */}
-          <div className="absolute top-2 right-2 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-xs">
-            1 USDC ≈ {mockExchangeRate} SLX
-          </div>
+          {inputMode === "stable" ? (
+            <div className="flex items-center space-x-2">
+              <div className="bg-green-100 rounded-full p-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="green"
+                >
+                  <circle cx="12" cy="12" r="12" fill="green" />
+                  <path
+                    d="M7 12l3 3 7-7"
+                    stroke="white"
+                    strokeWidth="2"
+                    fill="none"
+                  />
+                </svg>
+              </div>
+              <span className="font-medium">SLX</span>
+            </div>
+          ) : (
+            <TokensDropdown />
+          )}
         </div>
       </div>
 
@@ -266,7 +242,7 @@ const SolaxyInterface = () => {
                   (1 - slippageTolerance / 100)
                 ).toFixed(6)
               : "0.000000"}{" "}
-            {getOutputCurrency()}
+            SLX
           </span>
         </div>
       </div>
@@ -277,7 +253,7 @@ const SolaxyInterface = () => {
         onClick={executeTransaction}
         disabled={!inputAmount || parseFloat(inputAmount) === 0}
       >
-        {getActionLabel()} {getOutputCurrency()}
+        Buy SLX
       </button>
     </div>
   );
