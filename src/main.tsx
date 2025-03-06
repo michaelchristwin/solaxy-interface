@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App.tsx";
 //import { ThemeProvider } from "@/providers/theme-provider.tsx";
 import Navbar from "@/components/navbar.tsx";
+import { AppContextProvider } from "./providers/app.context-provider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <div className={`p-[50px]`}>
-      <Navbar />
-      <App />
-    </div>
+    <AppContextProvider>
+      <div className={`p-[50px]`}>
+        <Navbar />
+        <App />
+      </div>
+    </AppContextProvider>
   </StrictMode>
 );
