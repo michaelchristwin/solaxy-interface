@@ -181,20 +181,13 @@ const App: React.FC = () => {
     <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-900 rounded-xl shadow-xl">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center">
-          <div className="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center mr-2">
-            <svg viewBox="0 0 24 24" className="w-6 h-6 text-white" fill="none">
-              <path
-                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              <path
-                d="M12 22L19 12M12 22L5 12M12 22L12 15M19 12L12 2M19 12L12 15M5 12L12 2M5 12L12 15M12 2L12 15"
-                stroke="currentColor"
-                strokeWidth="1"
-              />
-            </svg>
+        <div className="flex items-center space-x-2">
+          <div className="w-[30px] h-[30px] rounded-full overflow-hidden flex-shrink-0">
+            <img
+              src={SLX}
+              alt={`SLX logo`}
+              className="w-full h-full object-cover"
+            />
           </div>
           <h1 className="text-xl font-bold text-gray-800 dark:text-white">
             SOLAXY
@@ -237,19 +230,12 @@ const App: React.FC = () => {
               Balance: 0.00
             </span>
           </div>
-          <div className="flex justify-between items-center mb-1">
-            <input
-              type="text"
-              className="text-left text-2xl font-medium bg-transparent outline-none w-full text-gray-800 dark:text-gray-100"
-              placeholder="0.00"
-              value={inputAmount}
-              onChange={handleInputChange}
-            />
-            <div className="ml-2">
+          <div className="flex items-center mb-1">
+            <div className="mr-2">
               {inputMode === "stable" ? (
                 <TokensPopup />
               ) : (
-                <div className="py-2 px-3 bg-white dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 w-[150px] rounded-[30px] border">
+                <div className="py-2 px-3 bg-white dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 lg:w-40 md:w-40 w-[120px] rounded-[30px] border">
                   <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
                     <img
                       src={SLX}
@@ -261,6 +247,13 @@ const App: React.FC = () => {
                 </div>
               )}
             </div>
+            <input
+              type="text"
+              className="text-right max-w-[45%] text-2xl font-medium bg-transparent outline-none flex-1 text-gray-800 dark:text-gray-100"
+              placeholder="0.00"
+              value={inputAmount}
+              onChange={handleInputChange}
+            />
           </div>
         </div>
 
@@ -284,17 +277,10 @@ const App: React.FC = () => {
               Balance: 0.00
             </span>
           </div>
-          <div className="flex justify-between items-center mb-1">
-            <input
-              type="text"
-              readOnly
-              value={outputAmount}
-              className="text-left text-2xl font-medium bg-transparent outline-none w-full text-gray-800 dark:text-gray-100"
-              placeholder="0.00"
-            />
-            <div className="ml-2">
+          <div className="flex items-center mb-1">
+            <div className="mr-2">
               {inputMode === "stable" ? (
-                <div className="py-2 px-3 bg-white border dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 w-[150px] rounded-[30px]">
+                <div className="lg:w-40 md:w-40 w-[120px] py-2 bg-white border dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 h-10 rounded-[30px]">
                   <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
                     <img
                       src={SLX}
@@ -308,6 +294,13 @@ const App: React.FC = () => {
                 <TokensPopup />
               )}
             </div>
+            <input
+              type="text"
+              readOnly
+              value={outputAmount}
+              className="text-right max-w-[45%] text-2xl font-medium bg-transparent outline-none flex-1 text-gray-800 dark:text-gray-100"
+              placeholder="0.00"
+            />
           </div>
         </div>
       </div>

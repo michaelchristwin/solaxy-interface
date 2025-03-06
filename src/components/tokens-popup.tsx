@@ -85,14 +85,16 @@ function TokensPopup() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex items-center justify-around w-40 rounded-full"
+          className="flex items-center lg:w-40 md:w-40 w-[120px] rounded-full space-x-2 h-[40px]"
         >
-          <img
-            src={selectedToken.logo}
-            alt={`${selectedToken.symbol} logo`}
-            className="w-6 h-6 rounded-full"
-          />
-          <span>{selectedToken.symbol}</span>
+          <div className={`flex items-center space-x-1 h-full`}>
+            <img
+              src={selectedToken.logo}
+              alt={`${selectedToken.symbol} logo`}
+              className="w-[22px] h-[22px] rounded-full"
+            />
+            <span>{selectedToken.symbol}</span>
+          </div>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DialogTrigger>
