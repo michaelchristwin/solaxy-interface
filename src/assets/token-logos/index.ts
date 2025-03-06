@@ -6,5 +6,6 @@ import WBTC from "./wbtc.png";
 import WETH from "./weth.png";
 import DAI from "./dai.png";
 import USD3 from "./usd3.png";
+import SLX from "./slx.png";
 
-export { USDC, USDT, ETH, FRAX, WBTC, WETH, DAI, USD3 };
+export { USDC, USDT, ETH, FRAX, WBTC, WETH, DAI, USD3, SLX };

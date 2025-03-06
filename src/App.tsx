@@ -9,6 +9,7 @@ import {
   TransactionTab,
   useAppContext,
 } from "@/providers/app.context-provider";
+import { SLX } from "./assets/token-logos";
 
 const App: React.FC = () => {
   const { activeTab, inputMode, setActiveTab, setInputMode, selectedToken } =
@@ -133,7 +134,18 @@ const App: React.FC = () => {
             </div>
           </div>
         );
-      return <p>Mint SLX</p>;
+      return (
+        <div className={`w-full flex items-center justify-center space-x-1.5`}>
+          <p>Mint SLX</p>
+          <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
+            <img
+              src={SLX}
+              alt={`SLX logo`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      );
     } else {
       if (inputMode === "stable")
         return (
@@ -150,7 +162,18 @@ const App: React.FC = () => {
             </div>
           </div>
         );
-      return <p>Redeem SLX</p>;
+      return (
+        <div className={`w-full flex items-center justify-center space-x-1.5`}>
+          <p>Redeem SLX</p>
+          <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
+            <img
+              src={SLX}
+              alt={`SLX logo`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      );
     }
   };
 
@@ -226,7 +249,14 @@ const App: React.FC = () => {
               {inputMode === "stable" ? (
                 <TokensPopup />
               ) : (
-                <div className="py-2 px-3 bg-gray-100 dark:bg-gray-700 font-medium flex items-center justify-center w-[150px] rounded-[30px]">
+                <div className="py-2 px-3 bg-white dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 w-[150px] rounded-[30px] border">
+                  <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
+                    <img
+                      src={SLX}
+                      alt={`SLX logo`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <span>SLX</span>
                 </div>
               )}
@@ -264,7 +294,14 @@ const App: React.FC = () => {
             />
             <div className="ml-2">
               {inputMode === "stable" ? (
-                <div className="py-2 px-3 bg-gray-100 dark:bg-gray-700 font-medium flex items-center justify-center w-[150px] rounded-[30px]">
+                <div className="py-2 px-3 bg-white border dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 w-[150px] rounded-[30px]">
+                  <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
+                    <img
+                      src={SLX}
+                      alt={`SLX logo`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <span>SLX</span>
                 </div>
               ) : (
@@ -339,13 +376,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-{
-  /* <button
-  className="w-full mt-6 space-x-1 py-3.5 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed "
-  onClick={executeTransaction}
-  disabled={!inputAmount || parseFloat(inputAmount) === 0}
->
-  {getActionButtonText(inputMode, activeTab, selectedToken)}
-</button>; */
-}
