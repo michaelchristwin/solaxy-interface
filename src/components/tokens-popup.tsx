@@ -1,5 +1,15 @@
 import { useState } from "react";
-import { USDC, USDT, WETH, DAI, WBTC, ETH, USD3 } from "@/assets/token-logos";
+import {
+  USDC,
+  USDT,
+  WETH,
+  DAI,
+  WBTC,
+  ETH,
+  USD3,
+  USDe,
+  FDUSD,
+} from "@/assets/token-logos";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
@@ -46,6 +56,18 @@ const tokens: TokenStruct[] = [
     symbol: "WBTC",
     address: "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
     logo: WBTC,
+    balance: "0.00",
+  },
+  {
+    symbol: "USDe",
+    address: "0x4c9edd5852cd905f086c759e8383e09bff1e68b3",
+    logo: USDe,
+    balance: "0.00",
+  },
+  {
+    symbol: "FDUSD",
+    address: "0xc5f0f7b66764F6ec8C8Dff7BA683102295E16409",
+    logo: FDUSD,
     balance: "0.00",
   },
 ];

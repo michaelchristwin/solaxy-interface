@@ -226,7 +226,7 @@ const App: React.FC = () => {
       </div>
 
       {/* Transaction Interface */}
-      <div className="space-y-2">
+      <div className="space-y-2 relative">
         {/* Input Panel */}
         <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
           <div className="flex justify-between items-center mb-2">
@@ -265,7 +265,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Mode Toggle Button */}
-        <div className="flex justify-center -my-1 z-10 relative">
+        <div className="flex justify-center -my-1 z-10 absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
           <button
             onClick={toggleInputMode}
             className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-2 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"

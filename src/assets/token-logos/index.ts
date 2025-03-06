@@ -7,5 +7,7 @@ import WETH from "./weth.png";
 import DAI from "./dai.png";
 import USD3 from "./usd3.png";
 import SLX from "./slx.png";
+import USDe from "./usde.png";
+import FDUSD from "./fdusd.png";
 
-export { USDC, USDT, ETH, FRAX, WBTC, WETH, DAI, USD3, SLX };
+export { USDC, USDT, ETH, FRAX, WBTC, WETH, DAI, USD3, SLX, USDe, FDUSD };
