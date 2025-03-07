@@ -9,7 +9,7 @@ import { AppContextProvider } from "./providers/app.context-provider.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AppContextProvider>
-      <div className={`p-[50px]`}>
+      <div className={`lg:p-[50px] md:p-[40px] p-[20px]`}>
         <Navbar />
         <App />
       </div>

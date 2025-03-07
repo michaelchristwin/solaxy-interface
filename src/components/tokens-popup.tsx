@@ -2,13 +2,12 @@ import { useState } from "react";
 import {
   USDC,
   USDT,
-  WETH,
   DAI,
   WBTC,
   ETH,
   USD3,
   USDe,
-  FDUSD,
+  PYUSD,
 } from "@/assets/token-logos";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -28,12 +27,7 @@ const tokens: TokenStruct[] = [
     logo: ETH,
     balance: "0.00",
   },
-  {
-    symbol: "WETH",
-    address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-    logo: WETH,
-    balance: "0.00",
-  },
+
   {
     symbol: "USDC",
     address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
@@ -65,9 +59,9 @@ const tokens: TokenStruct[] = [
     balance: "0.00",
   },
   {
-    symbol: "FDUSD",
-    address: "0xc5f0f7b66764F6ec8C8Dff7BA683102295E16409",
-    logo: FDUSD,
+    symbol: "PYUSD",
+    address: "0x6c3ea9036406852006290770bedfcaba0e23a0e8",
+    logo: PYUSD,
     balance: "0.00",
   },
 ];
@@ -85,7 +79,7 @@ function TokensPopup() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex items-center lg:w-40 md:w-40 w-[120px] rounded-full space-x-2 h-[40px]"
+          className="flex items-center lg:w-40 md:w-40 w-[120px] rounded-full space-x-2"
         >
           <div className={`flex items-center space-x-1 h-full`}>
             <img
@@ -99,7 +93,7 @@ function TokensPopup() {
         </Button>
       </DialogTrigger>
       <DialogContent className="lg:w-96 md:w-96 w-80 h-[500px] overflow-y-auto p-5 gap-y-0 poppins">
-        <p className="text-2xl font-bold block mb-2">Mint using</p>
+        <p className="text-2xl font-bold block mb-3">Select preference</p>
         <div className="space-y-1">
           {tokens.map((token) => (
             <div

@@ -4,12 +4,11 @@ import { RefreshCcw, Settings, Info } from "lucide-react";
 
 import TokensPopup from "@/components/tokens-popup";
 import {
-  InputMode,
-  TokenStruct,
   TransactionTab,
   useAppContext,
 } from "@/providers/app.context-provider";
 import { SLX } from "./assets/token-logos";
+import ActionButtonText from "./components/action-button-text";
 
 const App: React.FC = () => {
   const { activeTab, inputMode, setActiveTab, setInputMode, selectedToken } =
@@ -17,6 +16,7 @@ const App: React.FC = () => {
   const [inputAmount, setInputAmount] = useState("");
   const [slippageTolerance, setSlippageTolerance] = useState(0.5);
   const [showSettings, setShowSettings] = useState(false);
+  const [isReversed, setIsReversed] = useState(false);
 
   // Memoized exchange rate calculation
   const exchangeRates = useMemo(
@@ -57,6 +57,7 @@ const App: React.FC = () => {
   const toggleInputMode = () => {
     setInputMode(inputMode === "stable" ? "slx" : "stable");
     setInputAmount(outputAmount);
+    setIsReversed((p) => !p);
   };
 
   const executeTransaction = () => {
@@ -89,11 +90,10 @@ const App: React.FC = () => {
   const getInputLabel = () => {
     if (activeTab === "buy") {
       // Buy mode
-      if (inputMode === "stable") return "You pay";
-      return "Mint";
+      return "You send";
     } else {
       // Sell mode
-      if (inputMode === "slx") return "Redeem";
+
       return "You receive";
     }
   };
@@ -101,80 +101,25 @@ const App: React.FC = () => {
   const getOutputLabel = () => {
     if (activeTab === "buy") {
       // Buy mode
-      if (inputMode === "stable") return "You receive";
-      return "You pay";
+      return "You receive";
     } else {
       // Sell mode
-      if (inputMode === "slx") return "You receive";
-      return "You pay";
+      return "You send";
+    }
+  };
+
+  const getSlippageLabel = () => {
+    if (activeTab === "buy") {
+      if (inputMode === "stable") return "Min received:";
+      return "Max spend:";
+    } else {
+      if (inputMode === "stable") return "Max burn";
+      return "Min collect";
     }
   };
   const bgColors = {
     sell: "bg-gradient-to-br from-red-500 to-yellow-500 hover:from-red-600 hover:to-yellow-600 dark:from-red-600 dark:to-yellow-500 dark:hover:from-red-700 dark:hover:to-yellow-600",
     buy: "bg-gradient-to-br from-green-500 to-yellow-500 hover:from-green-600 hover:to-yellow-600 dark:from-green-600 dark:to-yellow-500 dark:hover:from-green-700 dark:hover:to-yellow-600",
-  };
-  const getActionButtonText = (
-    inputMode: InputMode,
-    activeTab: TransactionTab,
-    selectedToken: TokenStruct
-  ) => {
-    if (activeTab === "buy") {
-      if (inputMode === "stable")
-        return (
-          <div
-            className={`w-full flex items-center justify-center space-x-1.5`}
-          >
-            <p>Deposit {selectedToken.symbol}</p>
-            <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
-              <img
-                src={selectedToken.logo}
-                alt={`${selectedToken.symbol} logo`}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        );
-      return (
-        <div className={`w-full flex items-center justify-center space-x-1.5`}>
-          <p>Mint SLX</p>
-          <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
-            <img
-              src={SLX}
-              alt={`SLX logo`}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      );
-    } else {
-      if (inputMode === "stable")
-        return (
-          <div
-            className={`w-full flex items-center justify-center space-x-1.5`}
-          >
-            <p>Withdraw {selectedToken.symbol}</p>
-            <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
-              <img
-                src={selectedToken.logo}
-                alt={`${selectedToken.symbol} logo`}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        );
-      return (
-        <div className={`w-full flex items-center justify-center space-x-1.5`}>
-          <p>Redeem SLX</p>
-          <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
-            <img
-              src={SLX}
-              alt={`SLX logo`}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      );
-    }
   };
 
   return (
@@ -219,40 +164,33 @@ const App: React.FC = () => {
       </div>
 
       {/* Transaction Interface */}
-      <div className="space-y-2 relative">
+      <div
+        className={`gap-y-3 relative flex ${
+          isReversed ? "flex-col-reverse" : "flex-col"
+        }`}
+      >
         {/* Input Panel */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 flex w-full items-center">
+          <div className="block space-y-2">
+            <span className="text-sm text-gray-500 dark:text-gray-400 block">
               {getInputLabel()}
             </span>
-            <span className="text-xs text-gray-400 dark:text-gray-500">
-              Balance: 0.00
-            </span>
-          </div>
-          <div className="flex items-center mb-1">
-            <div className="mr-2">
-              {inputMode === "stable" ? (
-                <TokensPopup />
-              ) : (
-                <div className="py-2 px-3 bg-white dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 lg:w-40 md:w-40 w-[120px] rounded-[30px] border">
-                  <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
-                    <img
-                      src={SLX}
-                      alt={`SLX logo`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <span>SLX</span>
-                </div>
-              )}
+            <div className="">
+              <TokensPopup />
             </div>
+          </div>
+          <div className="block space-y-2">
+            <span className="text-xs text-end text-gray-400 dark:text-gray-500 block">
+              {activeTab === "buy" && "Balance: 0.00"}
+            </span>
             <input
               type="text"
-              className="text-right max-w-[45%] text-2xl font-medium bg-transparent outline-none flex-1 text-gray-800 dark:text-gray-100"
+              className="text-right w-full text-2xl font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
               placeholder="0.00"
               value={inputAmount}
-              onChange={handleInputChange}
+              onChange={(e) => {
+                handleInputChange(e);
+              }}
             />
           </div>
         </div>
@@ -268,37 +206,34 @@ const App: React.FC = () => {
         </div>
 
         {/* Output Panel */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
-          <div className="flex justify-between items-center mb-2">
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 flex w-full items-center">
+          <div className="block space-y-2">
             <span className="text-sm text-gray-500 dark:text-gray-400">
               {getOutputLabel()}
             </span>
-            <span className="text-xs text-gray-400 dark:text-gray-500">
-              Balance: 0.00
-            </span>
-          </div>
-          <div className="flex items-center mb-1">
-            <div className="mr-2">
-              {inputMode === "stable" ? (
-                <div className="lg:w-40 md:w-40 w-[120px] py-2 bg-white border dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 h-10 rounded-[30px]">
-                  <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
-                    <img
-                      src={SLX}
-                      alt={`SLX logo`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <span>SLX</span>
+            <div className="">
+              <div className="lg:w-40 md:w-40 w-[120px] h-9 py-2 bg-white border dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 rounded-[30px]">
+                <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
+                  <img
+                    src={SLX}
+                    alt={`SLX logo`}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-              ) : (
-                <TokensPopup />
-              )}
+                <span>SLX</span>
+              </div>
             </div>
+          </div>
+          <div className="block space-y-2">
+            <span className="text-xs text-end text-gray-400 dark:text-gray-500 block">
+              {activeTab === "sell" && "Balance: 0.00"}
+            </span>
+
             <input
               type="text"
               readOnly
               value={outputAmount}
-              className="text-right max-w-[45%] text-2xl font-medium bg-transparent outline-none flex-1 text-gray-800 dark:text-gray-100"
+              className="text-right w-full text-2xl font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
               placeholder="0.00"
             />
           </div>
@@ -337,9 +272,10 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
-            <span>Min. received:</span>
+            <span>{getSlippageLabel()}</span>
             <span>
-              {minReceived} {inputMode === "stable" ? "SLX" : "USDC"}
+              {minReceived}{" "}
+              {inputMode === "stable" ? "SLX" : selectedToken.symbol}
             </span>
           </div>
           <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
@@ -357,7 +293,7 @@ const App: React.FC = () => {
         onClick={executeTransaction}
         disabled={!inputAmount || parseFloat(inputAmount) === 0}
       >
-        {getActionButtonText(inputMode, activeTab, selectedToken)}
+        <ActionButtonText {...{ activeTab, selectedToken }} />
       </button>
 
       {/* Footer */}
