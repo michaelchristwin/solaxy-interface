@@ -117,6 +117,16 @@ const App: React.FC = () => {
       return "Min collect";
     }
   };
+
+  const calculateFontSize = (length: number) => {
+    const maxFontSize = 24; // Default size
+    const minFontSize = 12; // Minimum size
+    const breakpoint = 8; // Characters before scaling starts
+
+    if (length <= breakpoint) return maxFontSize;
+    return Math.max(minFontSize, maxFontSize - (length - breakpoint) * 0.8);
+  };
+
   const bgColors = {
     sell: "bg-gradient-to-br from-red-500 to-yellow-500 hover:from-red-600 hover:to-yellow-600 dark:from-red-600 dark:to-yellow-500 dark:hover:from-red-700 dark:hover:to-yellow-600",
     buy: "bg-gradient-to-br from-green-500 to-yellow-500 hover:from-green-600 hover:to-yellow-600 dark:from-green-600 dark:to-yellow-500 dark:hover:from-green-700 dark:hover:to-yellow-600",
@@ -170,7 +180,7 @@ const App: React.FC = () => {
         }`}
       >
         {/* Input Panel */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 flex w-full items-center">
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 flex w-full items-center space-x-1.5">
           <div className="block space-y-2">
             <span className="text-sm text-gray-500 dark:text-gray-400 block">
               {getInputLabel()}
@@ -185,11 +195,14 @@ const App: React.FC = () => {
             </span>
             <input
               type="text"
-              className="text-right w-full text-2xl font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
+              className="text-right w-full max-w-md overflow-hidden whitespace-nowrap font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
               placeholder="0.00"
-              value={inputAmount}
-              onChange={(e) => {
-                handleInputChange(e);
+              value={isReversed ? outputAmount : inputAmount}
+              readOnly={isReversed}
+              onChange={!isReversed ? handleInputChange : () => {}}
+              style={{
+                fontSize: `${calculateFontSize(inputAmount.length)}px`,
+                transition: "font-size 0.3s ease",
               }}
             />
           </div>
@@ -231,10 +244,15 @@ const App: React.FC = () => {
 
             <input
               type="text"
-              readOnly
-              value={outputAmount}
-              className="text-right w-full text-2xl font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
+              readOnly={!isReversed}
+              value={!isReversed ? outputAmount : inputAmount}
+              onChange={isReversed ? handleInputChange : () => {}}
+              className="text-right w-full max-w-md overflow-hidden whitespace-nowrap font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
               placeholder="0.00"
+              style={{
+                fontSize: `${calculateFontSize(outputAmount.length)}px`,
+                transition: "font-size 0.3s ease",
+              }}
             />
           </div>
         </div>
