@@ -1,18 +1,21 @@
 import "./App.css";
 import React, { useState, useMemo } from "react";
 import { RefreshCcw, Settings, Info } from "lucide-react";
-
-import TokensPopup from "@/components/tokens-popup";
+import { useAccount } from "wagmi";
 import {
   TransactionTab,
   useAppContext,
 } from "@/providers/app.context-provider";
 import { SLX } from "./assets/token-logos";
 import ActionButtonText from "./components/action-button-text";
+import { ConnectKitButton } from "connectkit";
+import OutputPanel from "./components/output-panel";
+import InputPanel from "./components/input-panel";
 
 const App: React.FC = () => {
   const { activeTab, inputMode, setActiveTab, setInputMode, selectedToken } =
     useAppContext();
+  const { isConnected } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
   const [slippageTolerance, setSlippageTolerance] = useState(0.5);
   const [showSettings, setShowSettings] = useState(false);
@@ -30,7 +33,7 @@ const App: React.FC = () => {
         slx: 1.25, // 1 USDC = 1.25 SLX
       },
     }),
-    []
+    [],
   );
 
   // Calculate output amount based on input
@@ -44,7 +47,7 @@ const App: React.FC = () => {
 
   const outputAmount = useMemo(
     () => calculateOutputAmount(inputAmount),
-    [inputAmount, activeTab, inputMode]
+    [inputAmount, activeTab, inputMode],
   );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +78,7 @@ const App: React.FC = () => {
   const minReceived = useMemo(() => {
     if (!outputAmount) return "0.000000";
     return (parseFloat(outputAmount) * (1 - slippageTolerance / 100)).toFixed(
-      6
+      6,
     );
   }, [outputAmount, slippageTolerance]);
 
@@ -116,15 +119,6 @@ const App: React.FC = () => {
       if (inputMode === "stable") return "Max burn";
       return "Min collect";
     }
-  };
-
-  const calculateFontSize = (length: number) => {
-    const maxFontSize = 24; // Default size
-    const minFontSize = 12; // Minimum size
-    const breakpoint = 8; // Characters before scaling starts
-
-    if (length <= breakpoint) return maxFontSize;
-    return Math.max(minFontSize, maxFontSize - (length - breakpoint) * 0.8);
   };
 
   const bgColors = {
@@ -180,34 +174,16 @@ const App: React.FC = () => {
         }`}
       >
         {/* Input Panel */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 flex w-full items-center space-x-1.5">
-          <div className="block space-y-2">
-            <span className="text-sm text-gray-500 dark:text-gray-400 block">
-              {getInputLabel()}
-            </span>
-            <div className="">
-              <TokensPopup />
-            </div>
-          </div>
-          <div className="block space-y-2">
-            <span className="text-xs text-end text-gray-400 dark:text-gray-500 block">
-              {activeTab === "buy" && "Balance: 0.00"}
-            </span>
-            <input
-              type="text"
-              className="text-right w-full max-w-md overflow-hidden whitespace-nowrap font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
-              placeholder="0.00"
-              value={isReversed ? outputAmount : inputAmount}
-              readOnly={isReversed}
-              onChange={!isReversed ? handleInputChange : () => {}}
-              style={{
-                fontSize: `${calculateFontSize(inputAmount.length)}px`,
-                transition: "font-size 0.3s ease",
-              }}
-            />
-          </div>
-        </div>
-
+        <InputPanel
+          {...{
+            handleInputChange,
+            outputAmount,
+            inputAmount,
+            getInputLabel,
+            isReversed,
+            activeTab,
+          }}
+        />
         {/* Mode Toggle Button */}
         <div className="flex justify-center -my-1 z-10 absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
           <button
@@ -219,43 +195,16 @@ const App: React.FC = () => {
         </div>
 
         {/* Output Panel */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 flex w-full items-center">
-          <div className="block space-y-2">
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              {getOutputLabel()}
-            </span>
-            <div className="">
-              <div className="lg:w-40 md:w-40 w-[120px] h-9 py-2 bg-white border dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 rounded-[30px]">
-                <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
-                  <img
-                    src={SLX}
-                    alt={`SLX logo`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span>SLX</span>
-              </div>
-            </div>
-          </div>
-          <div className="block space-y-2">
-            <span className="text-xs text-end text-gray-400 dark:text-gray-500 block">
-              {activeTab === "sell" && "Balance: 0.00"}
-            </span>
-
-            <input
-              type="text"
-              readOnly={!isReversed}
-              value={!isReversed ? outputAmount : inputAmount}
-              onChange={isReversed ? handleInputChange : () => {}}
-              className="text-right w-full max-w-md overflow-hidden whitespace-nowrap font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
-              placeholder="0.00"
-              style={{
-                fontSize: `${calculateFontSize(outputAmount.length)}px`,
-                transition: "font-size 0.3s ease",
-              }}
-            />
-          </div>
-        </div>
+        <OutputPanel
+          {...{
+            handleInputChange,
+            outputAmount,
+            inputAmount,
+            isReversed,
+            getOutputLabel,
+            activeTab,
+          }}
+        />
       </div>
 
       {/* Rate information */}
@@ -306,13 +255,28 @@ const App: React.FC = () => {
       )}
 
       {/* Action Button */}
-      <button
-        className={`w-full mt-6 space-x-1 py-3.5 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${bgColors[activeTab]}`}
-        onClick={executeTransaction}
-        disabled={!inputAmount || parseFloat(inputAmount) === 0}
-      >
-        <ActionButtonText {...{ activeTab, selectedToken }} />
-      </button>
+      {isConnected ? (
+        <button
+          className={`w-full mt-6 space-x-1 py-3.5 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${bgColors[activeTab]}`}
+          onClick={executeTransaction}
+          disabled={!inputAmount || parseFloat(inputAmount) === 0}
+        >
+          <ActionButtonText {...{ activeTab, selectedToken }} />
+        </button>
+      ) : (
+        <ConnectKitButton.Custom>
+          {({ show }) => {
+            return (
+              <button
+                onClick={show}
+                className={`w-full bg-neutral-800 text-white h-[40px] my-2 rounded-lg text-center`}
+              >
+                Connect Wallet
+              </button>
+            );
+          }}
+        </ConnectKitButton.Custom>
+      )}
 
       {/* Footer */}
       <div className="mt-4 text-center text-xs text-gray-400 dark:text-gray-500">
