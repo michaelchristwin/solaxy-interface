@@ -1,7 +1,8 @@
 import "./App.css";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { RefreshCcw, Settings, Info } from "lucide-react";
-import { useAccount, useReadContract } from "wagmi";
+import { useAccount, useReadContracts } from "wagmi";
+//import {readContracts} from "@wagmi/core"
 import {
   TransactionTab,
   useAppContext,
@@ -11,19 +12,19 @@ import ActionButtonText from "./components/action-button-text";
 import { ConnectKitButton } from "connectkit";
 import OutputPanel from "./components/output-panel";
 import InputPanel from "./components/input-panel";
-import { sDAIContract } from "./config/contracts";
-import { formatUnits } from "viem";
+import { sDAIContract, solaxyContract } from "./config/contracts";
+import { formatUnits, parseEther } from "viem";
 
 const App: React.FC = () => {
   const { activeTab, inputMode, setActiveTab, setInputMode, selectedToken } =
     useAppContext();
   const { isConnected, address } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
+
   const [slippageTolerance, setSlippageTolerance] = useState(0.5);
   const [showSettings, setShowSettings] = useState(false);
   const [isReversed, setIsReversed] = useState(false);
 
-  // Memoized exchange rate calculation
   const exchangeRates = useMemo(
     () => ({
       buy: {
@@ -37,26 +38,60 @@ const App: React.FC = () => {
     }),
     []
   );
-  const { data } = useReadContract({
-    ...sDAIContract,
-    functionName: "balanceOf",
-    args: [address],
-  });
-  const balance = data as bigint | undefined;
-  console.log(balance);
+
   // Calculate output amount based on input
+  const { data: assetsContractsData } = useReadContracts({
+    contracts: [
+      {
+        ...sDAIContract,
+        functionName: "balanceOf",
+        args: [address],
+      },
+      {
+        ...solaxyContract,
+        functionName: "balanceOf",
+        args: [address],
+      },
+      {
+        ...solaxyContract,
+        functionName: "previewWithdraw",
+        args: [parseEther("1")],
+      },
+      {
+        ...solaxyContract,
+        functionName: "previewMint",
+        args: [parseEther("1")],
+      },
+    ],
+  });
+  const sDAIBalance = assetsContractsData?.[0].result as bigint | undefined;
+  const solaxyBalance = assetsContractsData?.[1].result as bigint | undefined;
+  const assetSLX = assetsContractsData?.[2].result as bigint | undefined;
+  const assetsDAI = assetsContractsData?.[3].result as bigint | undefined;
+  console.log(assetSLX && formatUnits(assetSLX, 18));
+
   const calculateOutputAmount = (input: string): string => {
     if (!input) return "";
+    if (isReversed) {
+      if (assetsDAI)
+        return (Number(formatUnits(assetsDAI, 18)) * Number(input)).toFixed(2);
 
-    const rate = exchangeRates[activeTab][inputMode];
-    const numValue = parseFloat(input);
-    return (numValue * rate).toFixed(6);
+      return "";
+    } else {
+      if (assetSLX)
+        return (Number(formatUnits(assetSLX, 18)) * Number(input)).toFixed(2);
+      return "";
+    }
   };
-
-  const outputAmount = useMemo(
-    () => calculateOutputAmount(inputAmount),
-    [inputAmount, activeTab, inputMode]
+  const [outputAmount, setOutputAmount] = useState(
+    calculateOutputAmount(inputAmount)
   );
+  useEffect(() => {
+    setOutputAmount(calculateOutputAmount(inputAmount));
+  }, [inputAmount, activeTab, inputMode]);
+  // console.log(balance);
+
+  // Memoized exchange rate calculation
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -75,7 +110,9 @@ const App: React.FC = () => {
   }
   const toggleInputMode = () => {
     setInputMode(inputMode === "stable" ? "slx" : "stable");
+
     setInputAmount(outputAmount);
+    setOutputAmount(inputAmount);
     setIsReversed((p) => !p);
   };
 
@@ -197,7 +234,7 @@ const App: React.FC = () => {
           isReversed={isReversed}
           getInputLabel={getInputLabel}
           activeTab={activeTab}
-          balance={formatTokenAmount(balance as bigint)}
+          balance={formatTokenAmount(sDAIBalance as bigint)}
         />
         {/* Mode Toggle Button */}
         <div className="flex justify-center -my-1 z-10 absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
@@ -217,7 +254,7 @@ const App: React.FC = () => {
           isReversed={isReversed}
           getOutputLabel={getOutputLabel}
           activeTab={activeTab}
-          balance={formatTokenAmount(balance as bigint)}
+          balance={formatTokenAmount(solaxyBalance as bigint)}
         />
       </div>
 
