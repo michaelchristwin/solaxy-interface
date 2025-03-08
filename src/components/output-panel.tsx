@@ -10,6 +10,7 @@ interface OutputPaneProps {
   inputAmount: string;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   balance?: string;
+  isLoading: boolean;
 }
 
 function OutputPanel({
@@ -20,6 +21,7 @@ function OutputPanel({
   balance,
   inputAmount,
   handleInputChange,
+  isLoading,
 }: OutputPaneProps) {
   return (
     <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 flex w-full items-center">
@@ -42,7 +44,8 @@ function OutputPanel({
       </div>
       <div className="block space-y-2">
         <span className="text-xs text-end text-gray-400 dark:text-gray-500 block">
-          {activeTab === "sell" && `Balance: ${balance || "0.00"}`}
+          {activeTab === "sell" &&
+            `Balance: ${!balance || isLoading ? "0.00" : balance}`}
         </span>
 
         <input

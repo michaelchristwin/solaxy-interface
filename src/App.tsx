@@ -2,7 +2,6 @@ import "./App.css";
 import React, { useState, useMemo, useEffect } from "react";
 import { RefreshCcw, Settings, Info } from "lucide-react";
 import { useAccount, useReadContracts } from "wagmi";
-//import {readContracts} from "@wagmi/core"
 import {
   TransactionTab,
   useAppContext,
@@ -40,7 +39,11 @@ const App: React.FC = () => {
   );
 
   // Calculate output amount based on input
-  const { data: assetsContractsData } = useReadContracts({
+  const {
+    data: assetsContractsData,
+    refetch,
+    isLoading,
+  } = useReadContracts({
     contracts: [
       {
         ...sDAIContract,
@@ -55,12 +58,12 @@ const App: React.FC = () => {
       {
         ...solaxyContract,
         functionName: "previewWithdraw",
-        args: [parseEther("1")],
+        args: [parseEther(inputAmount)],
       },
       {
         ...solaxyContract,
         functionName: "previewMint",
-        args: [parseEther("1")],
+        args: [parseEther(inputAmount)],
       },
     ],
   });
@@ -73,13 +76,11 @@ const App: React.FC = () => {
   const calculateOutputAmount = (input: string): string => {
     if (!input) return "";
     if (isReversed) {
-      if (assetsDAI)
-        return (Number(formatUnits(assetsDAI, 18)) * Number(input)).toFixed(2);
+      if (assetsDAI) return Number(formatUnits(assetsDAI, 18)).toFixed(2);
 
       return "";
     } else {
-      if (assetSLX)
-        return (Number(formatUnits(assetSLX, 18)) * Number(input)).toFixed(2);
+      if (assetSLX) return Number(formatUnits(assetSLX, 18)).toFixed(2);
       return "";
     }
   };
@@ -97,6 +98,7 @@ const App: React.FC = () => {
     const value = e.target.value;
     if (value === "" || /^\d*\.?\d*$/.test(value)) {
       setInputAmount(value);
+      refetch();
     }
   };
   function formatTokenAmount(amount?: bigint, decimals = 18) {
@@ -235,6 +237,7 @@ const App: React.FC = () => {
           getInputLabel={getInputLabel}
           activeTab={activeTab}
           balance={formatTokenAmount(sDAIBalance as bigint)}
+          isLoading={isLoading}
         />
         {/* Mode Toggle Button */}
         <div className="flex justify-center -my-1 z-10 absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
@@ -255,6 +258,7 @@ const App: React.FC = () => {
           getOutputLabel={getOutputLabel}
           activeTab={activeTab}
           balance={formatTokenAmount(solaxyBalance as bigint)}
+          isLoading={isLoading}
         />
       </div>
 
