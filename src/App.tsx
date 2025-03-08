@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { useState, useMemo } from "react";
 import { RefreshCcw, Settings, Info } from "lucide-react";
-import { useAccount } from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 import {
   TransactionTab,
   useAppContext,
@@ -11,11 +11,13 @@ import ActionButtonText from "./components/action-button-text";
 import { ConnectKitButton } from "connectkit";
 import OutputPanel from "./components/output-panel";
 import InputPanel from "./components/input-panel";
+import { sDAIContract } from "./config/contracts";
+import { formatUnits } from "viem";
 
 const App: React.FC = () => {
   const { activeTab, inputMode, setActiveTab, setInputMode, selectedToken } =
     useAppContext();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
   const [slippageTolerance, setSlippageTolerance] = useState(0.5);
   const [showSettings, setShowSettings] = useState(false);
@@ -33,9 +35,15 @@ const App: React.FC = () => {
         slx: 1.25, // 1 USDC = 1.25 SLX
       },
     }),
-    [],
+    []
   );
-
+  const { data } = useReadContract({
+    ...sDAIContract,
+    functionName: "balanceOf",
+    args: [address],
+  });
+  const balance = data as bigint | undefined;
+  console.log(balance);
   // Calculate output amount based on input
   const calculateOutputAmount = (input: string): string => {
     if (!input) return "";
@@ -47,7 +55,7 @@ const App: React.FC = () => {
 
   const outputAmount = useMemo(
     () => calculateOutputAmount(inputAmount),
-    [inputAmount, activeTab, inputMode],
+    [inputAmount, activeTab, inputMode]
   );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +64,15 @@ const App: React.FC = () => {
       setInputAmount(value);
     }
   };
-
+  function formatTokenAmount(amount?: bigint, decimals = 18) {
+    if (!amount) {
+      return "0.00";
+    }
+    // Format the token amount with the specified number of decimals
+    const formattedAmount = formatUnits(amount, decimals);
+    // Convert to a number and format to 2 decimal places
+    return Number(formattedAmount).toFixed(2);
+  }
   const toggleInputMode = () => {
     setInputMode(inputMode === "stable" ? "slx" : "stable");
     setInputAmount(outputAmount);
@@ -78,7 +94,7 @@ const App: React.FC = () => {
   const minReceived = useMemo(() => {
     if (!outputAmount) return "0.000000";
     return (parseFloat(outputAmount) * (1 - slippageTolerance / 100)).toFixed(
-      6,
+      6
     );
   }, [outputAmount, slippageTolerance]);
 
@@ -175,14 +191,13 @@ const App: React.FC = () => {
       >
         {/* Input Panel */}
         <InputPanel
-          {...{
-            handleInputChange,
-            outputAmount,
-            inputAmount,
-            getInputLabel,
-            isReversed,
-            activeTab,
-          }}
+          handleInputChange={handleInputChange}
+          inputAmount={inputAmount}
+          outputAmount={outputAmount}
+          isReversed={isReversed}
+          getInputLabel={getInputLabel}
+          activeTab={activeTab}
+          balance={formatTokenAmount(balance as bigint)}
         />
         {/* Mode Toggle Button */}
         <div className="flex justify-center -my-1 z-10 absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
@@ -196,14 +211,13 @@ const App: React.FC = () => {
 
         {/* Output Panel */}
         <OutputPanel
-          {...{
-            handleInputChange,
-            outputAmount,
-            inputAmount,
-            isReversed,
-            getOutputLabel,
-            activeTab,
-          }}
+          handleInputChange={handleInputChange}
+          outputAmount={outputAmount}
+          inputAmount={inputAmount}
+          isReversed={isReversed}
+          getOutputLabel={getOutputLabel}
+          activeTab={activeTab}
+          balance={formatTokenAmount(balance as bigint)}
         />
       </div>
 
@@ -269,7 +283,7 @@ const App: React.FC = () => {
             return (
               <button
                 onClick={show}
-                className={`w-full bg-neutral-800 text-white h-[40px] my-2 rounded-lg text-center`}
+                className={`w-full bg-neutral-800 text-white h-[44px] my-2 rounded-lg text-center`}
               >
                 Connect Wallet
               </button>

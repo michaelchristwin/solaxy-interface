@@ -9,6 +9,7 @@ interface InputPanelProps {
   outputAmount: string;
   inputAmount: string;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  balance?: string;
 }
 
 function InputPanel({
@@ -18,6 +19,7 @@ function InputPanel({
   handleInputChange,
   inputAmount,
   outputAmount,
+  balance,
 }: InputPanelProps) {
   return (
     <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 flex w-full items-center space-x-1.5">
@@ -31,7 +33,7 @@ function InputPanel({
       </div>
       <div className="block space-y-2">
         <span className="text-xs text-end text-gray-400 dark:text-gray-500 block">
-          {activeTab === "buy" && "Balance: 0.00"}
+          {activeTab === "buy" && `Balance: ${balance || "0.00"}`}
         </span>
         <input
           type="text"
