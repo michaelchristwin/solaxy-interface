@@ -186,10 +186,35 @@ const App: React.FC = () => {
     });
   };
 
+  const safeDeposit = () => {
+    writeContract({
+      ...solaxyContract,
+      functionName: "safeDeposit",
+      args: [
+        parseEther(isReversed ? outputAmount : inputAmount),
+        address,
+        assetSLX,
+      ],
+    });
+  };
+
   const safeRedeem = () => {
     writeContract({
       ...solaxyContract,
       functionName: "safeRedeem",
+      args: [
+        parseEther(isReversed ? outputAmount : inputAmount),
+        address,
+        address,
+        assetsDAI,
+      ],
+    });
+  };
+
+  const safeWithdraw = () => {
+    writeContract({
+      ...solaxyContract,
+      functionName: "safeWithdraw",
       args: [
         parseEther(isReversed ? outputAmount : inputAmount),
         address,
@@ -199,6 +224,15 @@ const App: React.FC = () => {
     });
   };
 
+  const sendTransaction = () => {
+    if (activeTab === "buy") {
+      if (isReversed) safeDeposit();
+      safeMint();
+    } else {
+      if (isReversed) safeWithdraw();
+      safeRedeem();
+    }
+  };
   // const { isLoading: isConfirming, isSuccess: isConfirmed } =
   //   useWaitForTransactionReceipt({
   //     hash,
@@ -341,7 +375,7 @@ const App: React.FC = () => {
       {isConnected ? (
         <button
           className={`w-full mt-6 space-x-1 py-3.5 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${bgColors[activeTab]}`}
-          onClick={activeTab === "buy" ? safeMint : safeRedeem}
+          onClick={sendTransaction}
           disabled={!inputAmount || parseFloat(inputAmount) === 0 || isPending}
         >
           <ActionButtonText {...{ activeTab, selectedToken }} />
