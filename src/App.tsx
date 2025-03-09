@@ -24,7 +24,7 @@ const App: React.FC = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [isReversed, setIsReversed] = useState(false);
 
-  const { writeContract } = useWriteContract();
+  const { isPending, writeContract } = useWriteContract();
 
   const exchangeRates = useMemo(
     () => ({
@@ -186,12 +186,13 @@ const App: React.FC = () => {
     });
   };
 
-  const safeWithdraw = () => {
+  const safeRedeem = () => {
     writeContract({
       ...solaxyContract,
-      functionName: "safeWithdraw",
+      functionName: "safeRedeem",
       args: [
         parseEther(isReversed ? outputAmount : inputAmount),
+        address,
         address,
         assetSLX,
       ],
@@ -340,8 +341,8 @@ const App: React.FC = () => {
       {isConnected ? (
         <button
           className={`w-full mt-6 space-x-1 py-3.5 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${bgColors[activeTab]}`}
-          onClick={activeTab === "buy" ? safeMint : safeWithdraw}
-          disabled={!inputAmount || parseFloat(inputAmount) === 0}
+          onClick={activeTab === "buy" ? safeMint : safeRedeem}
+          disabled={!inputAmount || parseFloat(inputAmount) === 0 || isPending}
         >
           <ActionButtonText {...{ activeTab, selectedToken }} />
         </button>
