@@ -2,7 +2,7 @@ import SolaxyABI from "@/ABIs/solaxy-abi.json";
 import sDAI_ABI from "@/ABIs/sdai-abi.json";
 
 export const solaxyContract = {
-  address: "0xF4F3c1666E750E014DE65c50d0e98B1263E678B8",
+  address: "0x6939abe16d783309dec7ff7b7c0631929d7ec1be",
   abi: SolaxyABI,
 } as const;
 
