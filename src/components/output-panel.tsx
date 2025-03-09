@@ -1,6 +1,7 @@
 import { TransactionTab } from "@/providers/app.context-provider";
 import { calculateFontSize } from "@/lib/utils";
 import { SLX } from "@/assets/token-logos";
+import { Skeleton } from "./ui/skeleton";
 
 interface OutputPaneProps {
   getOutputLabel: () => string;
@@ -44,22 +45,25 @@ function OutputPanel({
       </div>
       <div className="block space-y-2">
         <span className="text-xs text-end text-gray-400 dark:text-gray-500 block">
-          {activeTab === "sell" &&
-            `Balance: ${!balance || isLoading ? "0.00" : balance}`}
+          {activeTab === "sell" && `Balance: ${!balance || "0.00"}`}
         </span>
 
-        <input
-          type="text"
-          readOnly={!isReversed}
-          value={!isReversed ? outputAmount : inputAmount}
-          onChange={isReversed ? handleInputChange : () => {}}
-          className="text-right w-full max-w-md overflow-hidden whitespace-nowrap font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
-          placeholder="0.00"
-          style={{
-            fontSize: `${calculateFontSize(outputAmount.length)}px`,
-            transition: "font-size 0.3s ease",
-          }}
-        />
+        {!isReversed && isLoading ? (
+          <Skeleton />
+        ) : (
+          <input
+            type="text"
+            readOnly={!isReversed}
+            value={!isReversed ? outputAmount : inputAmount}
+            onChange={isReversed ? handleInputChange : () => {}}
+            className="text-right w-full max-w-md overflow-hidden whitespace-nowrap font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
+            placeholder="0.00"
+            style={{
+              fontSize: `${calculateFontSize(outputAmount.length)}px`,
+              transition: "font-size 0.3s ease",
+            }}
+          />
+        )}
       </div>
     </div>
   );

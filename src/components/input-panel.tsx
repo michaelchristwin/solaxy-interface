@@ -1,6 +1,7 @@
 import { TransactionTab } from "@/providers/app.context-provider";
 import { calculateFontSize } from "@/lib/utils";
 import TokensPopup from "./tokens-popup";
+import { Skeleton } from "./ui/skeleton";
 
 interface InputPanelProps {
   getInputLabel: () => string;
@@ -35,21 +36,24 @@ function InputPanel({
       </div>
       <div className="block space-y-2">
         <span className="text-xs text-end text-gray-400 dark:text-gray-500 block">
-          {activeTab === "buy" &&
-            `Balance: ${!balance || isLoading ? "0.00" : balance}`}
+          {activeTab === "buy" && `Balance: ${balance || "0.00"}`}
         </span>
-        <input
-          type="text"
-          className="text-right w-full max-w-md overflow-hidden whitespace-nowrap font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
-          placeholder="0.00"
-          value={isReversed ? outputAmount : inputAmount}
-          readOnly={isReversed}
-          onChange={!isReversed ? handleInputChange : () => {}}
-          style={{
-            fontSize: `${calculateFontSize(inputAmount.length)}px`,
-            transition: "font-size 0.3s ease",
-          }}
-        />
+        {isReversed && isLoading ? (
+          <Skeleton className={`text-[14px]`} />
+        ) : (
+          <input
+            type="text"
+            className="text-right w-full max-w-md overflow-hidden whitespace-nowrap font-medium bg-transparent outline-none text-gray-800 dark:text-gray-100"
+            placeholder="0.00"
+            value={isReversed ? outputAmount : inputAmount}
+            readOnly={isReversed}
+            onChange={!isReversed ? handleInputChange : () => {}}
+            style={{
+              fontSize: `${calculateFontSize(inputAmount.length)}px`,
+              transition: "font-size 0.3s ease",
+            }}
+          />
+        )}
       </div>
     </div>
   );

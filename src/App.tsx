@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { useState, useMemo, useEffect } from "react";
 import { RefreshCcw, Settings, Info } from "lucide-react";
-import { useAccount, useReadContracts } from "wagmi";
+import { useAccount, useReadContracts, useWriteContract } from "wagmi";
 import {
   TransactionTab,
   useAppContext,
@@ -23,6 +23,8 @@ const App: React.FC = () => {
   const [slippageTolerance, setSlippageTolerance] = useState(0.5);
   const [showSettings, setShowSettings] = useState(false);
   const [isReversed, setIsReversed] = useState(false);
+
+  const { writeContract } = useWriteContract();
 
   const exchangeRates = useMemo(
     () => ({
@@ -67,11 +69,12 @@ const App: React.FC = () => {
       },
     ],
   });
+
   const sDAIBalance = assetsContractsData?.[0].result as bigint | undefined;
   const solaxyBalance = assetsContractsData?.[1].result as bigint | undefined;
   const assetSLX = assetsContractsData?.[2].result as bigint | undefined;
   const assetsDAI = assetsContractsData?.[3].result as bigint | undefined;
-  console.log(assetSLX && formatUnits(assetSLX, 18));
+  // console.log(assetSLX && formatUnits(assetSLX, 18));
 
   const calculateOutputAmount = (input: string): string => {
     if (!input) return "";
@@ -84,23 +87,28 @@ const App: React.FC = () => {
       return "";
     }
   };
+
   const [outputAmount, setOutputAmount] = useState(
     calculateOutputAmount(inputAmount)
   );
+
+  useEffect(() => {
+    if (inputAmount) {
+      refetch();
+    }
+  }, [inputAmount, refetch]);
+
   useEffect(() => {
     setOutputAmount(calculateOutputAmount(inputAmount));
-  }, [inputAmount, activeTab, inputMode]);
-  // console.log(balance);
-
-  // Memoized exchange rate calculation
+  }, [inputAmount, activeTab, inputMode, assetsContractsData, isReversed]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value === "" || /^\d*\.?\d*$/.test(value)) {
       setInputAmount(value);
-      refetch();
     }
   };
+
   function formatTokenAmount(amount?: bigint, decimals = 18) {
     if (!amount) {
       return "0.00";
@@ -110,23 +118,13 @@ const App: React.FC = () => {
     // Convert to a number and format to 2 decimal places
     return Number(formattedAmount).toFixed(2);
   }
+
   const toggleInputMode = () => {
     setInputMode(inputMode === "stable" ? "slx" : "stable");
 
     setInputAmount(outputAmount);
     setOutputAmount(inputAmount);
     setIsReversed((p) => !p);
-  };
-
-  const executeTransaction = () => {
-    // Placeholder for actual transaction logic
-    console.log("Transaction initiated", {
-      tab: activeTab,
-      inputMode,
-      inputAmount,
-      outputAmount,
-      slippageTolerance,
-    });
   };
 
   // Calculate transaction details
@@ -175,6 +173,35 @@ const App: React.FC = () => {
       return "Min collect";
     }
   };
+
+  const safeMint = () => {
+    writeContract({
+      ...solaxyContract,
+      functionName: "safeMint",
+      args: [
+        parseEther(isReversed ? outputAmount : inputAmount),
+        address,
+        assetsDAI,
+      ],
+    });
+  };
+
+  const safeWithdraw = () => {
+    writeContract({
+      ...solaxyContract,
+      functionName: "safeWithdraw",
+      args: [
+        parseEther(isReversed ? outputAmount : inputAmount),
+        address,
+        assetSLX,
+      ],
+    });
+  };
+
+  // const { isLoading: isConfirming, isSuccess: isConfirmed } =
+  //   useWaitForTransactionReceipt({
+  //     hash,
+  //   });
 
   const bgColors = {
     sell: "bg-gradient-to-br from-red-500 to-yellow-500 hover:from-red-600 hover:to-yellow-600 dark:from-red-600 dark:to-yellow-500 dark:hover:from-red-700 dark:hover:to-yellow-600",
@@ -313,7 +340,7 @@ const App: React.FC = () => {
       {isConnected ? (
         <button
           className={`w-full mt-6 space-x-1 py-3.5 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${bgColors[activeTab]}`}
-          onClick={executeTransaction}
+          onClick={activeTab === "buy" ? safeMint : safeWithdraw}
           disabled={!inputAmount || parseFloat(inputAmount) === 0}
         >
           <ActionButtonText {...{ activeTab, selectedToken }} />
