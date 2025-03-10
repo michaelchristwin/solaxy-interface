@@ -6,7 +6,7 @@ export const solaxyContract = {
   abi: SolaxyABI,
 } as const;
 
-export const ETHContract = {
+export const assetContract = {
   address: "0x44d4a6d9384F494275aE04d7cE13f6d3a666797e",
   abi: MyTokenABI,
 } as const;

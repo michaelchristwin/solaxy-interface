@@ -11,7 +11,7 @@ import ActionButtonText from "./components/action-button-text";
 import { ConnectKitButton } from "connectkit";
 import OutputPanel from "./components/output-panel";
 import InputPanel from "./components/input-panel";
-import { ETHContract, solaxyContract } from "./config/contracts";
+import { assetContract, solaxyContract } from "./config/contracts";
 import { formatUnits, parseEther } from "viem";
 
 const App: React.FC = () => {
@@ -42,13 +42,13 @@ const App: React.FC = () => {
 
   // Calculate output amount based on input
   const {
-    data: assetsContractsData,
+    data: readContractsData,
     refetch,
     isLoading,
   } = useReadContracts({
     contracts: [
       {
-        ...ETHContract,
+        ...assetContract,
         functionName: "balanceOf",
         args: [address],
       },
@@ -70,27 +70,27 @@ const App: React.FC = () => {
     ],
   });
 
-  const sDAIBalance = assetsContractsData?.[0].result as bigint | undefined;
-  const solaxyBalance = assetsContractsData?.[1].result as bigint | undefined;
-  const assetSLX = assetsContractsData?.[2].result as bigint | undefined;
-  const assetsDAI = assetsContractsData?.[3].result as bigint | undefined;
-  console.log(assetSLX && formatUnits(assetSLX, 18));
+  const sDAIBalance = readContractsData?.[0].result as bigint | undefined;
+  const solaxyBalance = readContractsData?.[1].result as bigint | undefined;
+  const assets = readContractsData?.[2].result as bigint | undefined; // previewWithdraw
+  const shares = readContractsData?.[3].result as bigint | undefined; // previewMint
 
   const calculateOutputAmount = (input: string): string => {
-    if (!input) return "";
-    if (isReversed) {
-      if (assetsDAI) return Number(formatUnits(assetsDAI, 18)).toFixed(2);
+    if (!input || input === "0") return "";
 
-      return "";
+    if (isReversed) {
+      if (assets) {
+        return Number(formatUnits(assets, 18)).toFixed(8);
+      }
     } else {
-      if (assetSLX) return Number(formatUnits(assetSLX, 18)).toFixed(2);
-      return "";
+      if (shares) {
+        return Number(formatUnits(shares, 18)).toFixed(8);
+      }
     }
+    return ""; // Default value instead of empty string
   };
 
-  const [outputAmount, setOutputAmount] = useState(
-    calculateOutputAmount(inputAmount)
-  );
+  const [outputAmount, setOutputAmount] = useState("");
 
   useEffect(() => {
     if (inputAmount) {
@@ -100,7 +100,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     setOutputAmount(calculateOutputAmount(inputAmount));
-  }, [inputAmount, activeTab, inputMode, assetsContractsData, isReversed]);
+  }, [inputAmount, activeTab, inputMode, readContractsData, isReversed]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -174,6 +174,8 @@ const App: React.FC = () => {
     }
   };
 
+  console.log(outputAmount);
+
   const safeMint = () => {
     writeContract({
       ...solaxyContract,
@@ -181,7 +183,7 @@ const App: React.FC = () => {
       args: [
         parseEther(isReversed ? outputAmount : inputAmount),
         address,
-        assetsDAI,
+        shares,
       ],
     });
   };
@@ -193,7 +195,7 @@ const App: React.FC = () => {
       args: [
         parseEther(isReversed ? outputAmount : inputAmount),
         address,
-        assetSLX,
+        assets,
       ],
     });
   };
@@ -206,7 +208,7 @@ const App: React.FC = () => {
         parseEther(isReversed ? outputAmount : inputAmount),
         address,
         address,
-        assetsDAI,
+        shares,
       ],
     });
   };
@@ -219,7 +221,7 @@ const App: React.FC = () => {
         parseEther(isReversed ? outputAmount : inputAmount),
         address,
         address,
-        assetSLX,
+        assets,
       ],
     });
   };
