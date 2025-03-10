@@ -13,13 +13,14 @@ import OutputPanel from "./components/output-panel";
 import InputPanel from "./components/input-panel";
 import { assetContract, solaxyContract } from "./config/contracts";
 import { formatUnits, parseEther } from "viem";
+import { Input } from "./components/ui/input";
 
 const App: React.FC = () => {
   const { activeTab, inputMode, setActiveTab, setInputMode, selectedToken } =
     useAppContext();
   const { isConnected, address } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
-
+  const [reciepientAdress, setReciepientAdress] = useState("");
   const [slippageTolerance, setSlippageTolerance] = useState(0.5);
   const [showSettings, setShowSettings] = useState(false);
   const [isReversed, setIsReversed] = useState(false);
@@ -206,7 +207,7 @@ const App: React.FC = () => {
       functionName: "safeRedeem",
       args: [
         parseEther(isReversed ? outputAmount : inputAmount),
-        address,
+        reciepientAdress || address,
         address,
         shares,
       ],
@@ -219,7 +220,7 @@ const App: React.FC = () => {
       functionName: "safeWithdraw",
       args: [
         parseEther(isReversed ? outputAmount : inputAmount),
-        address,
+        reciepientAdress || address,
         address,
         assets,
       ],
@@ -337,6 +338,12 @@ const App: React.FC = () => {
       {/* Transaction Settings - Toggleable */}
       {showSettings && (
         <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl space-y-3">
+          <Input
+            className=""
+            type="text"
+            placeholder="receipient address"
+            onChange={(e) => setReciepientAdress(e.target.value)}
+          />
           <div className="flex justify-between items-center">
             <span className="text-sm text-gray-600 dark:text-gray-300">
               Slippage Tolerance
