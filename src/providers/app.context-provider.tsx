@@ -1,4 +1,4 @@
-import { USDC } from "@/assets/token-logos";
+import { USD3 } from "@/assets/token-logos";
 import { createContext, useState, useContext, ReactNode } from "react";
 
 export type InputMode = "stable" | "slx";
@@ -36,9 +36,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [activeTab, setActiveTab] = useState<TransactionTab>("buy");
   const [inputMode, setInputMode] = useState<InputMode>("stable");
   const [selectedToken, setSelectedToken] = useState<TokenStruct>({
-    symbol: "USDC",
-    address: "0xA0b8...eB48",
-    logo: USDC,
+    symbol: "USD3",
+    address: "0x0d86883FAf4FfD7aEb116390af37746F45b6f378",
+    logo: USD3,
     balance: "0.00",
   });
 

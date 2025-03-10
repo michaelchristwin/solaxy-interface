@@ -11,7 +11,7 @@ import ActionButtonText from "./components/action-button-text";
 import { ConnectKitButton } from "connectkit";
 import OutputPanel from "./components/output-panel";
 import InputPanel from "./components/input-panel";
-import { sDAIContract, solaxyContract } from "./config/contracts";
+import { ETHContract, solaxyContract } from "./config/contracts";
 import { formatUnits, parseEther } from "viem";
 
 const App: React.FC = () => {
@@ -48,7 +48,7 @@ const App: React.FC = () => {
   } = useReadContracts({
     contracts: [
       {
-        ...sDAIContract,
+        ...ETHContract,
         functionName: "balanceOf",
         args: [address],
       },
@@ -74,7 +74,7 @@ const App: React.FC = () => {
   const solaxyBalance = assetsContractsData?.[1].result as bigint | undefined;
   const assetSLX = assetsContractsData?.[2].result as bigint | undefined;
   const assetsDAI = assetsContractsData?.[3].result as bigint | undefined;
-  // console.log(assetSLX && formatUnits(assetSLX, 18));
+  console.log(assetSLX && formatUnits(assetSLX, 18));
 
   const calculateOutputAmount = (input: string): string => {
     if (!input) return "";

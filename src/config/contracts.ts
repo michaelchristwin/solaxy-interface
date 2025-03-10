@@ -1,12 +1,16 @@
 import SolaxyABI from "@/ABIs/solaxy-abi.json";
-import sDAI_ABI from "@/ABIs/sdai-abi.json";
+import MyTokenABI from "@/ABIs/dummy-token.json";
 
 export const solaxyContract = {
-  address: "0x6939abe16d783309dec7ff7b7c0631929d7ec1be",
+  address: "0x65AC402ea05667EF898CbF63EeBFe58A8BAB9A4e",
   abi: SolaxyABI,
 } as const;
 
-export const sDAIContract = {
-  address: "0xaf204776c7245bF4147c2612BF6e5972Ee483701",
-  abi: sDAI_ABI,
+export const ETHContract = {
+  address: "0x44d4a6d9384F494275aE04d7cE13f6d3a666797e",
+  abi: MyTokenABI,
 } as const;
+
+// const usd3Dummy = "0x44d4a6d9384F494275aE04d7cE13f6d3a666797e";
+// const m3terNFT = "0xeabCA3f59d6C7D54Ab2A8d08a674E2EE691eA6C5";
+// const solaxy = "0x65AC402ea05667EF898CbF63EeBFe58A8BAB9A4e";

@@ -1,16 +1,16 @@
 import { createConfig, http } from "wagmi";
-import { gnosis } from "wagmi/chains";
+import { baseSepolia } from "wagmi/chains";
 import { getDefaultConfig } from "connectkit";
 
 export const config = createConfig(
   getDefaultConfig({
-    chains: [gnosis],
+    chains: [baseSepolia],
     transports: {
-      [gnosis.id]: http(),
+      [baseSepolia.id]: http(),
     },
     walletConnectProjectId: import.meta.env.VITE_PROJECT_ID,
     appName: "Solaxy",
     appUrl: "",
     appIcon: "",
-  }),
+  })
 );
