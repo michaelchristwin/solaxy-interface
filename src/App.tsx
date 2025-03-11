@@ -94,9 +94,9 @@ const App: React.FC = () => {
 
   const sDAIBalance = readContractsData?.[0].result as bigint | undefined;
   const solaxyBalance = readContractsData?.[1].result as bigint | undefined;
-  const withdrawAssets = readContractsData?.[2].result as bigint | undefined; // previewWithdraw
   const mintShares = readContractsData?.[3].result as bigint | undefined; // previewMint
   const depositAssets = readContractsData?.[4].result as bigint | undefined; // previewDeposit
+  const withdrawAssets = readContractsData?.[2].result as bigint | undefined; // previewWithdraw
   const redeemShares = readContractsData?.[5].result as bigint | undefined; // previewRedeem
 
   const calculateOutputAmount = (input: string): string => {
@@ -211,32 +211,34 @@ const App: React.FC = () => {
   const sendTransaction = async () => {
     try {
       setIsPending(true);
-      const approveResult = await asyncWriteContract(config, {
-        ...(activeTab === "buy" ? assetContract : solaxyContract),
-        functionName: "approve",
-        args: [
-          activeTab === "buy" ? solaxyContract.address : assetContract.address,
-          parseEther(isReversed ? outputAmount : inputAmount),
-        ],
-      });
-
-      // Step 2: Wait for the transaction to be confirmed
-      // You can use the existing hook or implement it directly
-      const receipt = await waitForTransactionReceipt(config, {
-        hash: approveResult,
-      });
-      if (receipt.status === "reverted") {
-        throw new Error("Transaction reverted");
-      }
       if (activeTab === "buy") {
+        const approveResult = await asyncWriteContract(config, {
+          ...assetContract,
+          functionName: "approve",
+          args: [
+            solaxyContract.address,
+            parseEther(isReversed ? outputAmount : inputAmount),
+          ],
+        });
+        const receipt = await waitForTransactionReceipt(config, {
+          hash: approveResult,
+        });
+        if (receipt.status === "reverted") {
+          throw new Error("Transaction reverted");
+        }
         if (isReversed) {
           await safeDeposit(
             address as Address,
             depositAssets as bigint,
             inputAmount
           );
+        } else {
+          await safeMint(
+            address as Address,
+            mintShares as bigint,
+            outputAmount
+          );
         }
-        await safeMint(address as Address, mintShares as bigint, outputAmount);
       } else {
         if (isReversed) {
           await safeRedeem(
@@ -245,13 +247,14 @@ const App: React.FC = () => {
             (reciepientAdress as `0x${string}`) || (address as Address),
             outputAmount
           );
+        } else {
+          await safeWithdraw(
+            address as Address,
+            withdrawAssets as bigint,
+            inputAmount,
+            (reciepientAdress as `0x${string}`) || (address as Address)
+          );
         }
-        await safeWithdraw(
-          address as Address,
-          withdrawAssets as bigint,
-          inputAmount,
-          (reciepientAdress as `0x${string}`) || (address as Address)
-        );
       }
       setIsPending(false);
     } catch (error) {
