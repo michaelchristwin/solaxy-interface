@@ -1,7 +1,11 @@
 import "./App.css";
 import React, { useState, useMemo, useEffect } from "react";
 import { RefreshCcw, Settings, Info } from "lucide-react";
-import { useAccount, useReadContracts, useWriteContract } from "wagmi";
+import { useAccount, useReadContracts } from "wagmi";
+import {
+  writeContract as asyncWriteContract,
+  waitForTransactionReceipt,
+} from "@wagmi/core";
 import {
   TransactionTab,
   useAppContext,
@@ -11,9 +15,16 @@ import ActionButtonText from "./components/action-button-text";
 import { ConnectKitButton } from "connectkit";
 import OutputPanel from "./components/output-panel";
 import InputPanel from "./components/input-panel";
-import { assetContract, solaxyContract } from "./config/contracts";
-import { formatUnits, parseEther } from "viem";
+import { assetContract, solaxyContract } from "./contracts";
+import { Address, formatUnits, parseEther } from "viem";
 import { Input } from "./components/ui/input";
+import { config } from "./config";
+import {
+  safeDeposit,
+  safeMint,
+  safeRedeem,
+  safeWithdraw,
+} from "./contracts/functions";
 
 const App: React.FC = () => {
   const { activeTab, inputMode, setActiveTab, setInputMode, selectedToken } =
@@ -24,8 +35,7 @@ const App: React.FC = () => {
   const [slippageTolerance, setSlippageTolerance] = useState(0.5);
   const [showSettings, setShowSettings] = useState(false);
   const [isReversed, setIsReversed] = useState(false);
-
-  const { isPending, writeContract } = useWriteContract();
+  const [isPending, setIsPending] = useState(false);
 
   const exchangeRates = useMemo(
     () => ({
@@ -75,7 +85,7 @@ const App: React.FC = () => {
   const solaxyBalance = readContractsData?.[1].result as bigint | undefined;
   const assets = readContractsData?.[2].result as bigint | undefined; // previewWithdraw
   const shares = readContractsData?.[3].result as bigint | undefined; // previewMint
-
+  console.log(solaxyBalance);
   const calculateOutputAmount = (input: string): string => {
     if (!input || input === "0") return "";
 
@@ -177,69 +187,53 @@ const App: React.FC = () => {
 
   console.log(outputAmount);
 
-  const safeMint = () => {
-    writeContract({
-      ...solaxyContract,
-      functionName: "safeMint",
-      args: [
-        parseEther(isReversed ? outputAmount : inputAmount),
-        address,
-        shares,
-      ],
-    });
-  };
+  const sendTransaction = async () => {
+    try {
+      setIsPending(true);
+      const approveResult = await asyncWriteContract(config, {
+        ...(activeTab === "buy" ? assetContract : solaxyContract),
+        functionName: "approve",
+        args: [
+          activeTab === "buy" ? solaxyContract.address : assetContract.address,
+          parseEther(isReversed ? outputAmount : inputAmount),
+        ],
+      });
 
-  const safeDeposit = () => {
-    writeContract({
-      ...solaxyContract,
-      functionName: "safeDeposit",
-      args: [
-        parseEther(isReversed ? outputAmount : inputAmount),
-        address,
-        assets,
-      ],
-    });
-  };
-
-  const safeRedeem = () => {
-    writeContract({
-      ...solaxyContract,
-      functionName: "safeRedeem",
-      args: [
-        parseEther(isReversed ? outputAmount : inputAmount),
-        reciepientAdress || address,
-        address,
-        shares,
-      ],
-    });
-  };
-
-  const safeWithdraw = () => {
-    writeContract({
-      ...solaxyContract,
-      functionName: "safeWithdraw",
-      args: [
-        parseEther(isReversed ? outputAmount : inputAmount),
-        reciepientAdress || address,
-        address,
-        assets,
-      ],
-    });
-  };
-
-  const sendTransaction = () => {
-    if (activeTab === "buy") {
-      if (isReversed) safeDeposit();
-      safeMint();
-    } else {
-      if (isReversed) safeWithdraw();
-      safeRedeem();
+      // Step 2: Wait for the transaction to be confirmed
+      // You can use the existing hook or implement it directly
+      const receipt = await waitForTransactionReceipt(config, {
+        hash: approveResult,
+      });
+      if (receipt.status === "reverted") {
+        throw new Error("Transaction reverted");
+      }
+      if (activeTab === "buy") {
+        if (isReversed) {
+          await safeDeposit(address as Address, assets as bigint, outputAmount);
+        }
+        await safeMint(address as Address, shares as bigint, inputAmount);
+      } else {
+        if (isReversed) {
+          await safeWithdraw(
+            address as Address,
+            assets as bigint,
+            outputAmount,
+            (reciepientAdress as `0x${string}`) || (address as Address)
+          );
+        }
+        await safeRedeem(
+          address as Address,
+          shares as bigint,
+          (reciepientAdress as `0x${string}`) || (address as Address),
+          inputAmount
+        );
+      }
+      setIsPending(false);
+    } catch (error) {
+      console.error("Transaction failed:", error);
+      setIsPending(false);
     }
   };
-  // const { isLoading: isConfirming, isSuccess: isConfirmed } =
-  //   useWaitForTransactionReceipt({
-  //     hash,
-  //   });
 
   const bgColors = {
     sell: "bg-gradient-to-br from-red-500 to-yellow-500 hover:from-red-600 hover:to-yellow-600 dark:from-red-600 dark:to-yellow-500 dark:hover:from-red-700 dark:hover:to-yellow-600",

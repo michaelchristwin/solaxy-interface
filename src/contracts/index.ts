@@ -1,5 +1,5 @@
-import SolaxyABI from "@/ABIs/solaxy-abi.json";
-import MyTokenABI from "@/ABIs/dummy-token.json";
+import SolaxyABI from "@/contracts/ABIs/solaxy-abi.json";
+import MyTokenABI from "@/contracts/ABIs/dummy-token.json";
 
 export const solaxyContract = {
   address: "0x65AC402ea05667EF898CbF63EeBFe58A8BAB9A4e",

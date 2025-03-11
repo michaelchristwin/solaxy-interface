@@ -46,7 +46,7 @@ function OutputPanel({
       </div>
       <div className="block space-y-2">
         <span className="text-xs text-end text-gray-400 dark:text-gray-500 block">
-          {activeTab === "sell" && `Balance: ${!balance || "0.00"}`}
+          {activeTab === "sell" && `Balance: ${balance || "0.00"}`}
         </span>
 
         {!isReversed && isLoading ? (
