@@ -1,6 +1,10 @@
 import { config } from "@/config";
-import { waitForTransactionReceipt, writeContract } from "@wagmi/core";
-import { solaxyContract } from ".";
+import {
+  readContract,
+  waitForTransactionReceipt,
+  writeContract,
+} from "@wagmi/core";
+import { solaxyContract, assetContract } from ".";
 import { Address, parseEther } from "viem";
 
 type Result<T, E = Error> = [E, null] | [null, T];
@@ -57,7 +61,7 @@ export const safeRedeem = async (
   reciepientAdress: Address,
   address: Address,
   amount: string
-) => {
+): Promise<Result<`0x${string}`>> => {
   try {
     const hash = await writeContract(config, {
       ...solaxyContract,
@@ -70,6 +74,7 @@ export const safeRedeem = async (
     if (result.status === "reverted") {
       throw new Error("Transaction reverted");
     }
+    return [null, hash];
   } catch (error) {
     return [error instanceof Error ? error : new Error(String(error)), null];
   }
@@ -80,7 +85,7 @@ export const safeWithdraw = async (
   reciepientAdress: Address,
   address: Address,
   amount: string
-) => {
+): Promise<Result<`0x${string}`>> => {
   try {
     const hash = await writeContract(config, {
       ...solaxyContract,
@@ -93,5 +98,24 @@ export const safeWithdraw = async (
     if (result.status === "reverted") {
       throw new Error("Transaction reverted");
     }
-  } catch (error) {}
+    return [null, hash];
+  } catch (error) {
+    return [error instanceof Error ? error : new Error(String(error)), null];
+  }
+};
+
+export const checkAllowance = async (
+  owner: Address,
+  spender: Address
+): Promise<Result<bigint>> => {
+  try {
+    const data = await readContract(config, {
+      ...assetContract,
+      functionName: "allowance",
+      args: [owner, spender],
+    });
+    return [null, data as bigint];
+  } catch (error) {
+    return [error instanceof Error ? error : new Error(String(error)), null];
+  }
 };

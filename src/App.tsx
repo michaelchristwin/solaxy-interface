@@ -20,6 +20,7 @@ import { Address, formatUnits, parseEther } from "viem";
 import { Input } from "./components/ui/input";
 import { config } from "./config";
 import {
+  checkAllowance,
   safeDeposit,
   safeMint,
   safeRedeem,
@@ -216,24 +217,37 @@ const App: React.FC = () => {
   console.log("outputAmount: ", outputAmount);
   console.log("depositable_assets: ", depositable_assets);
   console.log("mintable_shares: ", mintable_shares);
+
   const sendTransaction = async () => {
     try {
       setIsPending(true);
       if (activeTab === "buy") {
-        const approveResult = await asyncWriteContract(config, {
-          ...assetContract,
-          functionName: "approve",
-          args: [
-            solaxyContract.address,
-            parseEther(isReversed ? outputAmount : inputAmount),
-          ],
-        });
-        const receipt = await waitForTransactionReceipt(config, {
-          hash: approveResult,
-        });
-        if (receipt.status === "reverted") {
-          throw new Error("Transaction reverted");
+        const [error, allowance] = await checkAllowance(
+          address as Address,
+          solaxyContract.address
+        );
+        if (error) {
+          throw error;
         }
+        if (
+          Number(isReversed ? outputAmount : inputAmount) > Number(allowance)
+        ) {
+          const approveResult = await asyncWriteContract(config, {
+            ...assetContract,
+            functionName: "approve",
+            args: [
+              solaxyContract.address,
+              parseEther(isReversed ? outputAmount : inputAmount),
+            ],
+          });
+          const receipt = await waitForTransactionReceipt(config, {
+            hash: approveResult,
+          });
+          if (receipt.status === "reverted") {
+            throw new Error("Transaction reverted");
+          }
+        }
+
         if (isReversed) {
           await safeMint(
             parseEther(inputAmount),
