@@ -94,31 +94,35 @@ const App: React.FC = () => {
 
   const sDAIBalance = readContractsData?.[0].result as bigint | undefined;
   const solaxyBalance = readContractsData?.[1].result as bigint | undefined;
-  const mintShares = readContractsData?.[3].result as bigint | undefined; // previewMint
-  const depositAssets = readContractsData?.[4].result as bigint | undefined; // previewDeposit
-  const withdrawAssets = readContractsData?.[2].result as bigint | undefined; // previewWithdraw
-  const redeemShares = readContractsData?.[5].result as bigint | undefined; // previewRedeem
+  const mintable_shares = readContractsData?.[3].result as bigint | undefined; // previewMint
+  const depositable_assets = readContractsData?.[4].result as
+    | bigint
+    | undefined; // previewDeposit
+  const withdrawable_assets = readContractsData?.[2].result as
+    | bigint
+    | undefined; // previewWithdraw
+  const redeemable_shares = readContractsData?.[5].result as bigint | undefined; // previewRedeem
 
   const calculateOutputAmount = (input: string): string => {
     if (!input || input === "0") return "";
     if (activeTab === "buy") {
       if (isReversed) {
-        if (depositAssets) {
-          return Number(formatUnits(depositAssets, 18)).toFixed(8);
+        if (mintable_shares) {
+          return Number(formatUnits(mintable_shares, 18)).toFixed(8);
         }
       } else {
-        if (mintShares) {
-          return Number(formatUnits(mintShares, 18)).toFixed(8);
+        if (depositable_assets) {
+          return Number(formatUnits(depositable_assets, 18)).toFixed(8);
         }
       }
     } else {
       if (isReversed) {
-        if (redeemShares) {
-          return Number(formatUnits(redeemShares, 18)).toFixed(8);
+        if (withdrawable_assets) {
+          return Number(formatUnits(withdrawable_assets, 18)).toFixed(8);
         }
       } else {
-        if (withdrawAssets) {
-          return Number(formatUnits(withdrawAssets, 18)).toFixed(8);
+        if (redeemable_shares) {
+          return Number(formatUnits(redeemable_shares, 18)).toFixed(8);
         }
       }
     }
@@ -208,6 +212,10 @@ const App: React.FC = () => {
     }
   };
 
+  console.log("inputAmount: ", inputAmount);
+  console.log("outputAmount: ", outputAmount);
+  console.log("depositable_assets: ", depositable_assets);
+  console.log("mintable_shares: ", mintable_shares);
   const sendTransaction = async () => {
     try {
       setIsPending(true);
@@ -227,14 +235,14 @@ const App: React.FC = () => {
           throw new Error("Transaction reverted");
         }
         if (isReversed) {
-          await safeDeposit(
-            depositAssets as bigint,
+          await safeMint(
+            parseEther(inputAmount),
             (reciepientAdress || address) as Address,
-            inputAmount
+            outputAmount
           );
         } else {
-          await safeMint(
-            mintShares as bigint,
+          await safeDeposit(
+            parseEther(inputAmount),
             (reciepientAdress || address) as Address,
             outputAmount
           );
@@ -242,17 +250,17 @@ const App: React.FC = () => {
       } else {
         if (isReversed) {
           await safeRedeem(
-            redeemShares as bigint,
+            parseEther(inputAmount),
             (reciepientAdress || address) as Address,
             address as Address,
             outputAmount
           );
         } else {
           await safeWithdraw(
-            withdrawAssets as bigint,
+            parseEther(inputAmount),
             address as Address,
             (reciepientAdress || address) as Address,
-            inputAmount
+            outputAmount
           );
         }
       }
