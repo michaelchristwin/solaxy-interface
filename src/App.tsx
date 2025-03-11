@@ -31,6 +31,7 @@ const App: React.FC = () => {
     useAppContext();
   const { isConnected, address } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
+  const [outputAmount, setOutputAmount] = useState("");
   const [reciepientAdress, setReciepientAdress] = useState("");
   const [slippageTolerance, setSlippageTolerance] = useState(0.5);
   const [showSettings, setShowSettings] = useState(false);
@@ -78,30 +79,52 @@ const App: React.FC = () => {
         functionName: "previewMint",
         args: [parseEther(inputAmount)],
       },
+      {
+        ...solaxyContract,
+        functionName: "previewDeposit",
+        args: [parseEther(inputAmount)],
+      },
+      {
+        ...solaxyContract,
+        functionName: "previewRedeem",
+        args: [parseEther(inputAmount)],
+      },
     ],
   });
 
   const sDAIBalance = readContractsData?.[0].result as bigint | undefined;
   const solaxyBalance = readContractsData?.[1].result as bigint | undefined;
-  const assets = readContractsData?.[2].result as bigint | undefined; // previewWithdraw
-  const shares = readContractsData?.[3].result as bigint | undefined; // previewMint
-  console.log(solaxyBalance);
+  const withdrawAssets = readContractsData?.[2].result as bigint | undefined; // previewWithdraw
+  const mintShares = readContractsData?.[3].result as bigint | undefined; // previewMint
+  const depositAssets = readContractsData?.[4].result as bigint | undefined; // previewDeposit
+  const redeemShares = readContractsData?.[5].result as bigint | undefined; // previewRedeem
+
   const calculateOutputAmount = (input: string): string => {
     if (!input || input === "0") return "";
-
-    if (isReversed) {
-      if (assets) {
-        return Number(formatUnits(assets, 18)).toFixed(8);
+    if (activeTab === "buy") {
+      if (isReversed) {
+        if (depositAssets) {
+          return Number(formatUnits(depositAssets, 18)).toFixed(8);
+        }
+      } else {
+        if (mintShares) {
+          return Number(formatUnits(mintShares, 18)).toFixed(8);
+        }
       }
     } else {
-      if (shares) {
-        return Number(formatUnits(shares, 18)).toFixed(8);
+      if (isReversed) {
+        if (redeemShares) {
+          return Number(formatUnits(redeemShares, 18)).toFixed(8);
+        }
+      } else {
+        if (withdrawAssets) {
+          return Number(formatUnits(withdrawAssets, 18)).toFixed(8);
+        }
       }
     }
-    return ""; // Default value instead of empty string
-  };
 
-  const [outputAmount, setOutputAmount] = useState("");
+    return "";
+  };
 
   useEffect(() => {
     if (inputAmount) {
@@ -185,8 +208,6 @@ const App: React.FC = () => {
     }
   };
 
-  console.log(outputAmount);
-
   const sendTransaction = async () => {
     try {
       setIsPending(true);
@@ -209,23 +230,27 @@ const App: React.FC = () => {
       }
       if (activeTab === "buy") {
         if (isReversed) {
-          await safeDeposit(address as Address, assets as bigint, outputAmount);
-        }
-        await safeMint(address as Address, shares as bigint, inputAmount);
-      } else {
-        if (isReversed) {
-          await safeWithdraw(
+          await safeDeposit(
             address as Address,
-            assets as bigint,
-            outputAmount,
-            (reciepientAdress as `0x${string}`) || (address as Address)
+            depositAssets as bigint,
+            inputAmount
           );
         }
-        await safeRedeem(
+        await safeMint(address as Address, mintShares as bigint, outputAmount);
+      } else {
+        if (isReversed) {
+          await safeRedeem(
+            address as Address,
+            redeemShares as bigint,
+            (reciepientAdress as `0x${string}`) || (address as Address),
+            outputAmount
+          );
+        }
+        await safeWithdraw(
           address as Address,
-          shares as bigint,
-          (reciepientAdress as `0x${string}`) || (address as Address),
-          inputAmount
+          withdrawAssets as bigint,
+          inputAmount,
+          (reciepientAdress as `0x${string}`) || (address as Address)
         );
       }
       setIsPending(false);

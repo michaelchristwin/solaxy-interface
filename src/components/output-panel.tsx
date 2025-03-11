@@ -24,7 +24,6 @@ function OutputPanel({
   handleInputChange,
   isLoading,
 }: OutputPaneProps) {
-  console.log("outputAmount:", outputAmount);
   return (
     <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 flex w-full items-center">
       <div className="block space-y-2">

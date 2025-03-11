@@ -8,13 +8,13 @@ type Result<T, E = Error> = [E, null] | [null, T];
 export const safeMint = async (
   address: Address,
   shares: bigint,
-  inputAmount: string
+  amount: string
 ): Promise<Result<`0x${string}`>> => {
   try {
     const hash = await writeContract(config, {
       ...solaxyContract,
       functionName: "safeMint",
-      args: [parseEther(inputAmount), address, shares],
+      args: [parseEther(amount), address, shares],
     });
 
     const result = await waitForTransactionReceipt(config, { hash });
@@ -32,13 +32,13 @@ export const safeMint = async (
 export const safeDeposit = async (
   address: Address,
   assets: bigint,
-  outputAmount: string
+  amount: string
 ): Promise<Result<`0x${string}`>> => {
   try {
     const hash = await writeContract(config, {
       ...solaxyContract,
       functionName: "safeDeposit",
-      args: [parseEther(outputAmount), address, assets],
+      args: [parseEther(amount), address, assets],
     });
     const result = await waitForTransactionReceipt(config, { hash });
 
@@ -56,13 +56,13 @@ export const safeRedeem = async (
   address: Address,
   shares: bigint,
   reciepientAdress: Address,
-  inputAmount: string
+  amount: string
 ) => {
   try {
     const hash = await writeContract(config, {
       ...solaxyContract,
       functionName: "safeRedeem",
-      args: [parseEther(inputAmount), reciepientAdress, address, shares],
+      args: [parseEther(amount), reciepientAdress, address, shares],
     });
 
     const result = await waitForTransactionReceipt(config, { hash });
@@ -78,14 +78,14 @@ export const safeRedeem = async (
 export const safeWithdraw = async (
   address: Address,
   assets: bigint,
-  outputAmount: string,
+  amount: string,
   reciepientAdress: Address
 ) => {
   try {
     const hash = await writeContract(config, {
       ...solaxyContract,
       functionName: "safeWithdraw",
-      args: [parseEther(outputAmount), reciepientAdress, address, assets],
+      args: [parseEther(amount), reciepientAdress, address, assets],
     });
 
     const result = await waitForTransactionReceipt(config, { hash });
