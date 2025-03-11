@@ -5,18 +5,17 @@ import { Address, parseEther } from "viem";
 
 type Result<T, E = Error> = [E, null] | [null, T];
 
-export const safeMint = async (
-  address: Address,
-  shares: bigint,
+export const safeDeposit = async (
+  assets: bigint,
+  reciepientAddress: Address,
   amount: string
 ): Promise<Result<`0x${string}`>> => {
   try {
     const hash = await writeContract(config, {
       ...solaxyContract,
-      functionName: "safeMint",
-      args: [parseEther(amount), address, shares],
+      functionName: "safeDeposit",
+      args: [assets, reciepientAddress, parseEther(amount)],
     });
-
     const result = await waitForTransactionReceipt(config, { hash });
 
     if (result.status === "reverted") {
@@ -29,17 +28,18 @@ export const safeMint = async (
   }
 };
 
-export const safeDeposit = async (
-  address: Address,
-  assets: bigint,
+export const safeMint = async (
+  shares: bigint,
+  reciepientAddress: Address,
   amount: string
 ): Promise<Result<`0x${string}`>> => {
   try {
     const hash = await writeContract(config, {
       ...solaxyContract,
-      functionName: "safeDeposit",
-      args: [parseEther(amount), address, assets],
+      functionName: "safeMint",
+      args: [shares, reciepientAddress, parseEther(amount)],
     });
+
     const result = await waitForTransactionReceipt(config, { hash });
 
     if (result.status === "reverted") {
@@ -53,16 +53,16 @@ export const safeDeposit = async (
 };
 
 export const safeRedeem = async (
-  address: Address,
   shares: bigint,
   reciepientAdress: Address,
+  address: Address,
   amount: string
 ) => {
   try {
     const hash = await writeContract(config, {
       ...solaxyContract,
       functionName: "safeRedeem",
-      args: [parseEther(amount), reciepientAdress, address, shares],
+      args: [shares, reciepientAdress, address, parseEther(amount)],
     });
 
     const result = await waitForTransactionReceipt(config, { hash });
@@ -76,16 +76,16 @@ export const safeRedeem = async (
 };
 
 export const safeWithdraw = async (
-  address: Address,
   assets: bigint,
-  amount: string,
-  reciepientAdress: Address
+  reciepientAdress: Address,
+  address: Address,
+  amount: string
 ) => {
   try {
     const hash = await writeContract(config, {
       ...solaxyContract,
       functionName: "safeWithdraw",
-      args: [parseEther(amount), reciepientAdress, address, assets],
+      args: [assets, reciepientAdress, address, parseEther(amount)],
     });
 
     const result = await waitForTransactionReceipt(config, { hash });

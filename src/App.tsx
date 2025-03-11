@@ -228,31 +228,31 @@ const App: React.FC = () => {
         }
         if (isReversed) {
           await safeDeposit(
-            address as Address,
             depositAssets as bigint,
+            (reciepientAdress || address) as Address,
             inputAmount
           );
         } else {
           await safeMint(
-            address as Address,
             mintShares as bigint,
+            (reciepientAdress || address) as Address,
             outputAmount
           );
         }
       } else {
         if (isReversed) {
           await safeRedeem(
-            address as Address,
             redeemShares as bigint,
-            (reciepientAdress as `0x${string}`) || (address as Address),
+            (reciepientAdress || address) as Address,
+            address as Address,
             outputAmount
           );
         } else {
           await safeWithdraw(
-            address as Address,
             withdrawAssets as bigint,
-            inputAmount,
-            (reciepientAdress as `0x${string}`) || (address as Address)
+            address as Address,
+            (reciepientAdress || address) as Address,
+            inputAmount
           );
         }
       }
