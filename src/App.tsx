@@ -118,12 +118,12 @@ const App: React.FC = () => {
       }
     } else {
       if (isReversed) {
-        if (withdrawable_assets) {
-          return Number(formatUnits(withdrawable_assets, 18)).toFixed(8);
-        }
-      } else {
         if (redeemable_shares) {
           return Number(formatUnits(redeemable_shares, 18)).toFixed(8);
+        }
+      } else {
+        if (withdrawable_assets) {
+          return Number(formatUnits(withdrawable_assets, 18)).toFixed(8);
         }
       }
     }
@@ -235,11 +235,13 @@ const App: React.FC = () => {
     }
   };
 
-  // console.log("inputAmount: ", inputAmount);
-  // console.log("outputAmount: ", outputAmount);
-  // console.log("depositable_assets: ", depositable_assets);
-  // console.log("mintable_shares: ", mintable_shares);
-  // console.log("Slippage: ", slippage);
+  console.log("inputAmount: ", inputAmount);
+  console.log("outputAmount: ", outputAmount);
+  console.log("depositable_assets: ", depositable_assets);
+  console.log("mintable_shares: ", mintable_shares);
+  console.log("withdrawable_assets: ", withdrawable_assets);
+  console.log("redeemable_shares: ", redeemable_shares);
+  console.log("Slippage: ", slippage);
   const sendTransaction = async () => {
     try {
       setIsPending(true);
