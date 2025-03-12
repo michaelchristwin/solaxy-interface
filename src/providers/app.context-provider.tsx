@@ -2,7 +2,7 @@ import { USD3 } from "@/assets/token-logos";
 import { createContext, useState, useContext, ReactNode } from "react";
 
 export type InputMode = "stable" | "slx";
-export type TransactionTab = "buy" | "sell";
+export type TransactionTab = "mint" | "melt";
 export type TokenStruct = {
   symbol: string;
   address: string;
@@ -33,7 +33,7 @@ export function useAppContext() {
 
 // Provider component
 export function AppContextProvider({ children }: { children: ReactNode }) {
-  const [activeTab, setActiveTab] = useState<TransactionTab>("buy");
+  const [activeTab, setActiveTab] = useState<TransactionTab>("mint");
   const [inputMode, setInputMode] = useState<InputMode>("stable");
   const [selectedToken, setSelectedToken] = useState<TokenStruct>({
     symbol: "USD3",

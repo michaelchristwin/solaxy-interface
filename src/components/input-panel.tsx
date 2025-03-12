@@ -36,7 +36,7 @@ function InputPanel({
       </div>
       <div className="block space-y-2">
         <span className="text-xs text-end text-gray-400 dark:text-gray-500 block">
-          {activeTab === "buy" && `Balance: ${balance || "0.00"}`}
+          {activeTab === "mint" && `Balance: ${balance || "0.00"}`}
         </span>
         {isReversed && isLoading ? (
           <Skeleton className={`text-[14px]`} />

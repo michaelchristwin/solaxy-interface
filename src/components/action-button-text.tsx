@@ -9,7 +9,7 @@ const ActionButtonText = ({
   activeTab,
   selectedToken,
 }: ActionButtonTextProps) => {
-  if (activeTab === "buy") {
+  if (activeTab === "mint") {
     return (
       <div className={`w-full flex items-center justify-center space-x-1.5`}>
         <p>Mint SLX</p>

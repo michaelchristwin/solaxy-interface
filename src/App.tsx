@@ -41,11 +41,11 @@ const App: React.FC = () => {
 
   const exchangeRates = useMemo(
     () => ({
-      buy: {
+      mint: {
         stable: 1.25, // 1 USDC = 1.25 SLX
         slx: 0.8, // 1 SLX = 0.8 USDC
       },
-      sell: {
+      melt: {
         stable: 0.8, // 1 SLX = 0.8 USDC
         slx: 1.25, // 1 USDC = 1.25 SLX
       },
@@ -106,7 +106,7 @@ const App: React.FC = () => {
 
   const calculateOutputAmount = (input: string): string => {
     if (!input || input === "0") return "";
-    if (activeTab === "buy") {
+    if (activeTab === "mint") {
       if (isReversed) {
         if (mintable_shares) {
           return Number(formatUnits(mintable_shares, 18)).toFixed(8);
@@ -169,7 +169,7 @@ const App: React.FC = () => {
   // Calculate transaction details
   const slippage = useMemo(() => {
     if (!outputAmount) return "0.000000";
-    if (activeTab === "buy") {
+    if (activeTab === "mint") {
       if (isReversed) {
         return (
           parseFloat(outputAmount) +
@@ -205,7 +205,7 @@ const App: React.FC = () => {
 
   // Get input and output labels based on token positions and active tab
   const getInputLabel = () => {
-    if (activeTab === "buy") {
+    if (activeTab === "mint") {
       // Buy mode
       return "You send";
     } else {
@@ -216,7 +216,7 @@ const App: React.FC = () => {
   };
 
   const getOutputLabel = () => {
-    if (activeTab === "buy") {
+    if (activeTab === "mint") {
       // Buy mode
       return "You receive";
     } else {
@@ -226,26 +226,26 @@ const App: React.FC = () => {
   };
 
   const getSlippageLabel = () => {
-    if (activeTab === "buy") {
-      if (inputMode === "stable") return "Min received:";
+    if (activeTab === "mint") {
+      if (inputMode === "stable") return "Min mint:";
       return "Max spend:";
     } else {
-      if (inputMode === "stable") return "Max burn";
+      if (inputMode === "stable") return "Max melt";
       return "Min collect";
     }
   };
 
-  console.log("inputAmount: ", inputAmount);
-  console.log("outputAmount: ", outputAmount);
-  console.log("depositable_assets: ", depositable_assets);
-  console.log("mintable_shares: ", mintable_shares);
-  console.log("withdrawable_assets: ", withdrawable_assets);
-  console.log("redeemable_shares: ", redeemable_shares);
-  console.log("Slippage: ", slippage);
+  // console.log("inputAmount: ", inputAmount);
+  // console.log("outputAmount: ", outputAmount);
+  // console.log("depositable_assets: ", depositable_assets);
+  // console.log("mintable_shares: ", mintable_shares);
+  // console.log("withdrawable_assets: ", withdrawable_assets);
+  // console.log("redeemable_shares: ", redeemable_shares);
+  // console.log("Slippage: ", slippage);
   const sendTransaction = async () => {
     try {
       setIsPending(true);
-      if (activeTab === "buy") {
+      if (activeTab === "mint") {
         const [error, allowance] = await checkAllowance(
           address as Address,
           solaxyContract.address
@@ -309,8 +309,8 @@ const App: React.FC = () => {
   };
 
   const bgColors = {
-    sell: "bg-gradient-to-br from-red-500 to-yellow-500 hover:from-red-600 hover:to-yellow-600 dark:from-red-600 dark:to-yellow-500 dark:hover:from-red-700 dark:hover:to-yellow-600",
-    buy: "bg-gradient-to-br from-green-500 to-yellow-500 hover:from-green-600 hover:to-yellow-600 dark:from-green-600 dark:to-yellow-500 dark:hover:from-green-700 dark:hover:to-yellow-600",
+    melt: "bg-gradient-to-br from-red-500 to-yellow-500 hover:from-red-600 hover:to-yellow-600 dark:from-red-600 dark:to-yellow-500 dark:hover:from-red-700 dark:hover:to-yellow-600",
+    mint: "bg-gradient-to-br from-green-500 to-yellow-500 hover:from-green-600 hover:to-yellow-600 dark:from-green-600 dark:to-yellow-500 dark:hover:from-green-700 dark:hover:to-yellow-600",
   };
 
   return (
@@ -339,7 +339,7 @@ const App: React.FC = () => {
 
       {/* Tab Navigation */}
       <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1 mb-6">
-        {(["buy", "sell"] as TransactionTab[]).map((tab) => (
+        {(["mint", "melt"] as TransactionTab[]).map((tab) => (
           <button
             key={tab}
             className={`flex-1 py-2.5 rounded-md font-medium transition-all ${
