@@ -167,12 +167,34 @@ const App: React.FC = () => {
   };
 
   // Calculate transaction details
-  const minReceived = useMemo(() => {
+  const slippage = useMemo(() => {
     if (!outputAmount) return "0.000000";
-    return (parseFloat(outputAmount) * (1 - slippageTolerance / 100)).toFixed(
-      6
-    );
-  }, [outputAmount, slippageTolerance]);
+    if (activeTab === "buy") {
+      if (isReversed) {
+        return (
+          parseFloat(outputAmount) +
+          parseFloat(outputAmount) * slippageTolerance
+        ).toFixed(6);
+      } else {
+        return (
+          parseFloat(outputAmount) -
+          parseFloat(outputAmount) * slippageTolerance
+        ).toFixed(6);
+      }
+    } else {
+      if (isReversed) {
+        return (
+          parseFloat(outputAmount) -
+          parseFloat(outputAmount) * slippageTolerance
+        ).toFixed(6);
+      } else {
+        return (
+          parseFloat(outputAmount) +
+          parseFloat(outputAmount) * slippageTolerance
+        ).toFixed(6);
+      }
+    }
+  }, [outputAmount, slippageTolerance, activeTab, isReversed]);
 
   const conversionRate = useMemo(() => {
     const rate = exchangeRates[activeTab][inputMode];
@@ -213,11 +235,11 @@ const App: React.FC = () => {
     }
   };
 
-  console.log("inputAmount: ", inputAmount);
-  console.log("outputAmount: ", outputAmount);
-  console.log("depositable_assets: ", depositable_assets);
-  console.log("mintable_shares: ", mintable_shares);
-
+  // console.log("inputAmount: ", inputAmount);
+  // console.log("outputAmount: ", outputAmount);
+  // console.log("depositable_assets: ", depositable_assets);
+  // console.log("mintable_shares: ", mintable_shares);
+  // console.log("Slippage: ", slippage);
   const sendTransaction = async () => {
     try {
       setIsPending(true);
@@ -229,15 +251,14 @@ const App: React.FC = () => {
         if (error) {
           throw error;
         }
-        if (
-          Number(isReversed ? outputAmount : inputAmount) > Number(allowance)
-        ) {
+        // console.log("allowance: ", allowance);
+        if (Number(inputAmount) > Number(formatUnits(allowance, 18))) {
           const approveResult = await asyncWriteContract(config, {
             ...assetContract,
             functionName: "approve",
             args: [
               solaxyContract.address,
-              parseEther(isReversed ? outputAmount : inputAmount),
+              parseEther(isReversed ? slippage : inputAmount),
             ],
           });
           const receipt = await waitForTransactionReceipt(config, {
@@ -252,13 +273,13 @@ const App: React.FC = () => {
           await safeMint(
             parseEther(inputAmount),
             (reciepientAdress || address) as Address,
-            outputAmount
+            slippage
           );
         } else {
           await safeDeposit(
             parseEther(inputAmount),
             (reciepientAdress || address) as Address,
-            outputAmount
+            slippage
           );
         }
       } else {
@@ -267,14 +288,14 @@ const App: React.FC = () => {
             parseEther(inputAmount),
             (reciepientAdress || address) as Address,
             address as Address,
-            outputAmount
+            slippage
           );
         } else {
           await safeWithdraw(
             parseEther(inputAmount),
             address as Address,
             (reciepientAdress || address) as Address,
-            outputAmount
+            slippage
           );
         }
       }
@@ -411,8 +432,7 @@ const App: React.FC = () => {
           <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
             <span>{getSlippageLabel()}</span>
             <span>
-              {minReceived}{" "}
-              {inputMode === "stable" ? "SLX" : selectedToken.symbol}
+              {slippage} {inputMode === "stable" ? "SLX" : selectedToken.symbol}
             </span>
           </div>
           <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
