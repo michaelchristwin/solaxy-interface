@@ -95,13 +95,13 @@ const App: React.FC = () => {
 
   const sDAIBalance = readContractsData?.[0].result as bigint | undefined;
   const solaxyBalance = readContractsData?.[1].result as bigint | undefined;
+  const withdrawable_assets = readContractsData?.[2].result as
+    | bigint
+    | undefined; // previewWithdraw
   const mintable_shares = readContractsData?.[3].result as bigint | undefined; // previewMint
   const depositable_assets = readContractsData?.[4].result as
     | bigint
     | undefined; // previewDeposit
-  const withdrawable_assets = readContractsData?.[2].result as
-    | bigint
-    | undefined; // previewWithdraw
   const redeemable_shares = readContractsData?.[5].result as bigint | undefined; // previewRedeem
 
   const calculateOutputAmount = (input: string): string => {
