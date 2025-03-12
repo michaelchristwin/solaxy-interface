@@ -207,21 +207,21 @@ const App: React.FC = () => {
   const getInputLabel = () => {
     if (activeTab === "mint") {
       // Buy mode
-      return "You send";
+      return "You spend";
     } else {
       // Sell mode
 
-      return "You receive";
+      return "You collect";
     }
   };
 
   const getOutputLabel = () => {
     if (activeTab === "mint") {
       // Buy mode
-      return "You receive";
+      return "You mint";
     } else {
       // Sell mode
-      return "You send";
+      return "You spend";
     }
   };
 
