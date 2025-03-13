@@ -14,9 +14,9 @@ export default function Index() {
     <div className="w-full relative">
       {/* Hero Section */}
       <div className="w-full max-h-[400px] flex justify-between items-start mt-[150px]">
-        <div className="block w-fit space-y-10">
+        <div className="block w-[49%] space-y-10">
           <div className="flex w-full justify-start items-center space-x-4">
-            <p className="font-extrabold text-[50px] sm:text-[60px] md:text-[80px] lg:text-[100px] xl:text-[120px] text-yellow-500">
+            <p className="font-extrabold text-[50px] sm:text-[60px] md:text-[80px] lg:text-[90px] xl:text-[100px] text-yellow-500">
               Asset
             </p>
             <div className="block text-neutral-700 font-bold leading-[1.2]">

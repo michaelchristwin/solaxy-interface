@@ -1,12 +1,7 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Icosahedron, SpotLight } from "@react-three/drei";
+import { Icosahedron } from "@react-three/drei";
 import { Mesh } from "three";
 import { useRef } from "react";
-
-type LightProps = {
-  color: string;
-  position: [number, number, number];
-};
 
 const RotatingWireframe: React.FC = () => {
   const meshRef = useRef<Mesh>(null);
