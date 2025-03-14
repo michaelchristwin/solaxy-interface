@@ -1,6 +1,15 @@
 import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/_index";
 import Swap from "~/components/swap";
+import HeroText from "~/components/hero-text";
+import { SLX } from "~/assets/token-logos";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "~/components/ui/carousel";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -13,31 +22,39 @@ export default function Index() {
   return (
     <div className="w-full relative">
       {/* Hero Section */}
-      <div className="w-full max-h-[400px] flex justify-between items-start mt-[150px]">
-        <div className="block w-[49%] space-y-10">
-          <div className="flex w-full justify-start items-center space-x-4">
-            <p className="font-extrabold text-[50px] sm:text-[60px] md:text-[80px] lg:text-[90px] xl:text-[100px] text-yellow-500">
+      <div className="w-full min-h-[400px] flex justify-between items-start mt-32">
+        <div className="flex flex-col w-1/2 space-y-10">
+          <div className="block jetbrains-mono">
+            <p className="font-extrabold text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-neutral-800">
               Asset
             </p>
-            <div className="block text-neutral-700 font-bold leading-[1.2]">
-              <p className="text-[20px] sm:text-[24px] md:text-[30px] lg:text-[36px] xl:text-[40px]">
-                of the m3ters
-              </p>
-              <p className="text-yellow-500 text-[20px] sm:text-[24px] md:text-[30px] lg:text-[36px] xl:text-[40px]">
-                by the m3ters
-              </p>
-              <p className="text-[20px] sm:text-[24px] md:text-[30px] lg:text-[36px] xl:text-[40px]">
-                for the m3ters
-              </p>
-            </div>
+            <HeroText />
           </div>
 
-          <Button className="w-[250px] text-[20px] rounded-full h-[60px] bg-black hover:bg-gray-900 text-white shadow-lg transition-all duration-300 ease-in-out">
+          <Button className="w-64 text-xl rounded-full h-16 bg-black hover:bg-gray-900 text-white shadow-lg transition-all duration-300 ease-in-out">
             Visit Foundry
+            <img alt="Solaxy logo" src={SLX} className={`w-[20px] h-[20px]`} />
           </Button>
         </div>
-        <Swap />
+        <div className="w-1/2">
+          <Swap />
+        </div>
       </div>
+      {/* <Carousel>
+        <CarouselContent>
+          <CarouselItem className={`md:basis-1/2 lg:basis-1/3`}>
+            1234
+          </CarouselItem>
+          <CarouselItem className={`md:basis-1/2 lg:basis-1/3`}>
+            1234
+          </CarouselItem>
+          <CarouselItem className={`md:basis-1/2 lg:basis-1/3`}>
+            1234
+          </CarouselItem>
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel> */}
     </div>
   );
 }
