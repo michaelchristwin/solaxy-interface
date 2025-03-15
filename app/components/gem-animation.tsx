@@ -62,13 +62,13 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
     scene.add(cubeCamera);
 
     const gemMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x114477,
-      emissive: 0xfcc001,
-      roughness: 0.1,
+      color: 0x555500,
+      emissive: 0xffd700,
+      roughness: 0.4,
       metalness: 0.9,
-      reflectivity: 1.0,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.1,
+      reflectivity: 0.8,
+      clearcoat: 0,
+      clearcoatRoughness: 0.2,
       envMap: cubeRenderTarget.texture,
     });
 
@@ -92,35 +92,35 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
     const wireframe = new THREE.LineSegments(edges, wireframeMaterial);
     scene.add(wireframe);
 
-    // Create lights with better positioning for dramatic effect
-    const createPointLight = (
+    //ライト
+    function makePointLight(
       color: number | string,
       intensity: number,
       distance: number,
-      decay: number,
-      position: [number, number, number],
-      castShadow: boolean = false
-    ) => {
-      const light = new THREE.PointLight(color, intensity, distance, decay);
-      light.position.set(...position);
-      if (castShadow) {
-        light.castShadow = true;
-        light.shadow.bias = -0.005;
-        light.shadow.mapSize.width = 1024;
-        light.shadow.mapSize.height = 1024;
-      }
-      scene.add(light);
-      return light;
-    };
+      decay: number
+    ) {
+      const pointLight = new THREE.PointLight(
+        color,
+        intensity,
+        distance,
+        decay
+      );
+      scene.add(pointLight);
 
-    // Key light
-    createPointLight(0xffffff, 1.5, 10, 2.0, [1, 2, 2], true);
-    // Fill light
-    createPointLight(0xffffff, 0.8, 10, 2.0, [-2, -1, 1]);
-    // Accent lights
-    createPointLight(0xc1b6ff, 1.2, 10, 2.0, [2, -1, 1]);
-    createPointLight(0xffe0a3, 1.0, 10, 2.0, [-1, 1, 2]);
+      return pointLight;
+    }
 
+    const lights = [
+      makePointLight(0xffffff, 1, 100, 1.0),
+      makePointLight(0xffffff, 1, 100, 1.0),
+      makePointLight(0xffffff, 1, 100, 1.0),
+      makePointLight(0xffffff, 1, 100, 1.0),
+    ];
+
+    lights[0].position.set(2, 2, 2);
+    lights[1].position.set(-2, -2, 0);
+    lights[2].position.set(4, 2, 2);
+    lights[3].position.set(-2, 2, 3);
     // Handle resize
     const handleResize = () => {
       if (!canvasRef.current || !renderer || !camera) return;
