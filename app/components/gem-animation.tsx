@@ -18,7 +18,7 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
     scene?: THREE.Scene;
     camera?: THREE.PerspectiveCamera;
     gem?: THREE.Mesh;
-    wireframe?: THREE.Mesh;
+    wireframe?: THREE.LineSegments;
     frameId?: number;
   }>({});
 
@@ -26,17 +26,21 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    // Initialize renderer
+    // Initialize renderer with improved settings
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
       antialias: true,
+      alpha: true,
     });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    // Camera setup
+    // Camera setup - moved back for better perspective
     const fov = 75;
     const aspect = 2;
     const near = 0.1;
-    const far = 5;
+    const far = 7;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.z = 1;
 
@@ -44,51 +48,78 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(backgroundColor);
 
-    // Create gem
+    // Add ambient light for base illumination
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+    scene.add(ambientLight);
+
+    // Create gem with improved material
     const gemRadius = 0.4;
-    const gemGeometry = new THREE.IcosahedronGeometry(gemRadius);
-    const gemMaterial = new THREE.MeshStandardMaterial({
+    const gemGeometry = new THREE.IcosahedronGeometry(gemRadius, 0); // Increased detail level
+
+    // Create environment map for reflections
+    const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256);
+    const cubeCamera = new THREE.CubeCamera(0.1, 10, cubeRenderTarget);
+    scene.add(cubeCamera);
+
+    const gemMaterial = new THREE.MeshPhysicalMaterial({
       color: 0x114477,
       emissive: 0xfcc001,
-      roughness: 0.8,
-      metalness: 1,
+      roughness: 0.1,
+      metalness: 0.9,
+      reflectivity: 1.0,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.1,
+      envMap: cubeRenderTarget.texture,
     });
+
     const gem = new THREE.Mesh(gemGeometry, gemMaterial);
+    gem.castShadow = true;
+    gem.receiveShadow = true;
     scene.add(gem);
 
-    // Create wireframe
+    // Create wireframe with improved visibility
     const wireframeRadius = 1;
     const wireframeDetail = 1;
     const wireframeGeometry = new THREE.IcosahedronGeometry(
       wireframeRadius,
       wireframeDetail
     );
-    const wireframeMaterial = new THREE.MeshBasicMaterial({
+    const edges = new THREE.EdgesGeometry(wireframeGeometry);
+    const wireframeMaterial = new THREE.LineBasicMaterial({
       color: 0xffd800,
-      wireframe: true,
-      wireframeLinewidth: 1,
+      linewidth: 2,
     });
-    const wireframe = new THREE.Mesh(wireframeGeometry, wireframeMaterial);
+    const wireframe = new THREE.LineSegments(edges, wireframeMaterial);
     scene.add(wireframe);
 
-    // Create lights
+    // Create lights with better positioning for dramatic effect
     const createPointLight = (
       color: number | string,
       intensity: number,
       distance: number,
       decay: number,
-      position: [number, number, number]
+      position: [number, number, number],
+      castShadow: boolean = false
     ) => {
       const light = new THREE.PointLight(color, intensity, distance, decay);
       light.position.set(...position);
+      if (castShadow) {
+        light.castShadow = true;
+        light.shadow.bias = -0.005;
+        light.shadow.mapSize.width = 1024;
+        light.shadow.mapSize.height = 1024;
+      }
       scene.add(light);
       return light;
     };
 
-    createPointLight(0xffffff, 1, 100, 1.0, [2, 2, 2]);
-    createPointLight(0xffffff, 1, 100, 1.0, [-2, -2, 0]);
-    createPointLight(0xc1b6ff, 1, 100, 1.0, [4, 2, 2]);
-    createPointLight(0xc1b6ff, 1, 100, 1.0, [-2, 2, 3]);
+    // Key light
+    createPointLight(0xffffff, 1.5, 10, 2.0, [1, 2, 2], true);
+    // Fill light
+    createPointLight(0xffffff, 0.8, 10, 2.0, [-2, -1, 1]);
+    // Accent lights
+    createPointLight(0xc1b6ff, 1.2, 10, 2.0, [2, -1, 1]);
+    createPointLight(0xffe0a3, 1.0, 10, 2.0, [-1, 1, 2]);
 
     // Handle resize
     const handleResize = () => {
@@ -108,22 +139,35 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
       return needResize;
     };
 
-    // Animation function
+    // Animation function with improved movement
     const animate = (time: number) => {
       time *= 0.001; // Convert to seconds
 
       handleResize();
 
+      // Update environment map periodically for reflections
+      if (Math.floor(time) % 2 === 0) {
+        gem.visible = false;
+        cubeCamera.update(renderer, scene);
+        gem.visible = true;
+      }
+
       if (wireframe) {
-        wireframe.rotation.x = time;
-        wireframe.rotation.y = time;
+        wireframe.rotation.x = time * 0.5;
+        wireframe.rotation.y = time * 0.7;
       }
 
       if (gem) {
-        const scale = Math.cos(Math.sin(time / 2));
+        // More interesting pulsing with multiple sine waves
+        const pulseA = Math.sin(time * 1.5) * 0.1;
+        const pulseB = Math.sin(time * 0.8) * 0.05;
+        const scale = 1 + pulseA + pulseB;
         gem.scale.set(scale, scale, scale);
-        gem.rotation.x = time;
-        gem.rotation.y = time * -1;
+
+        // Different rotation speeds for more interesting movement
+        gem.rotation.x = time * 0.8;
+        gem.rotation.y = time * -1.2;
+        gem.rotation.z = time * 0.3;
       }
 
       renderer.render(scene, camera);
@@ -148,6 +192,7 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
       gemMaterial.dispose();
       wireframeGeometry.dispose();
       wireframeMaterial.dispose();
+      edges.dispose();
     };
   }, [backgroundColor]);
 
@@ -174,8 +219,8 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
         height,
         overflow: "hidden",
         zIndex: -1,
-        position: "fixed", // Changed from default to fixed
-        top: 0, // Added to position at the top
+        position: "fixed",
+        top: 0,
         left: 0,
         pointerEvents: "none",
       }}

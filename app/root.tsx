@@ -12,7 +12,6 @@ import "./app.css";
 import { AppContextProvider } from "~/providers/app.context-provider";
 import { Web3Provider } from "~/providers/web3provider";
 import Navbar from "./components/navbar";
-import AnimatedBackground from "~/components/animated-background";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -42,14 +41,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Meta />
             <Links />
           </head>
-          <body>
-            <AnimatedBackground /> {/* Add it here, before any content */}
-            <div
-              className={`lg:px-[120px] md:px-[100px] px-[80px] pt-[20px] w-full min-h-[100vh] z-10`}
-            >
-              <Navbar />
-              {children}
-            </div>
+          <body
+            className={`lg:px-[120px] md:px-[100px] px-[80px] pt-[20px] w-full min-h-[100vh] z-10`}
+          >
+            <Navbar />
+            {children}
             <ScrollRestoration />
             <Scripts />
           </body>

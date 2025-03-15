@@ -1,15 +1,9 @@
 import { Button } from "~/components/ui/button";
-import type { Route } from "./+types/_index";
+import type { Route } from "./+types/route";
 import Swap from "~/components/swap";
 import HeroText from "~/components/hero-text";
 import { SLX } from "~/assets/token-logos";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "~/components/ui/carousel";
+import GemAnimation from "~/components/gem-animation";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -21,6 +15,7 @@ export function meta({}: Route.MetaArgs) {
 export default function Index() {
   return (
     <div className="w-full relative">
+      <GemAnimation />
       {/* Hero Section */}
       <div className="w-full min-h-[400px] flex justify-between items-start mt-32">
         <div className="flex flex-col w-1/2 space-y-10">
@@ -36,14 +31,18 @@ export default function Index() {
             <img alt="Solaxy logo" src={SLX} className={`w-[20px] h-[20px]`} />
           </Button>
         </div>
-        <div className="w-1/2">
-          <Swap />
-        </div>
+        <div className="w-1/2"></div>
       </div>
-      {/* <Carousel>
+      {/* <Carousel className={`bg-white/10 backdrop-blur-lg mt-[200px] h-[400px]`}>
         <CarouselContent>
-          <CarouselItem className={`md:basis-1/2 lg:basis-1/3`}>
-            1234
+          <CarouselItem
+            className={`md:basis-1/2 lg:basis-1/3 flex justify-center items-center`}
+          >
+            <img
+              className={`w-[400px] h-[100px]`}
+              src={Four626}
+              alt="4626 logo"
+            />
           </CarouselItem>
           <CarouselItem className={`md:basis-1/2 lg:basis-1/3`}>
             1234
