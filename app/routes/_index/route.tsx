@@ -1,17 +1,16 @@
-import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/route";
 import TradeInterface from "~/components/swap";
 import HeroText from "~/components/hero-text";
 import { SLX } from "~/assets/token-logos";
 import GemAnimation from "~/components/gem-animation";
-import { Four626, Four626_2, VXD, TEC, BC } from "~/assets/carousel";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from "~/components/ui/carousel";
+  Four626,
+  Four626_2,
+  Solady,
+  BondingCurve,
+  TEC,
+} from "~/assets/sponsors";
+
 import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
@@ -51,37 +50,62 @@ export default function Index() {
         <TradeInterface />
       </div>
       <div
-        className={`bg-white mt-[100px] h-[400px] w-full relative flex items-center`}
+        className={`mt-[100px] w-full relative block py-[40px] px-2 space-y-[80px]`}
       >
-        <Carousel className={`w-[80%] mx-auto`}>
-          <CarouselContent>
-            <CarouselItem className={`md:basis-1/3 lg:basis-1/4`}>
+        <p className={`block mx-auto text-center font-bold text-[23px]`}>
+          Special thanks to
+        </p>
+        <div className="flex justify-center w-full">
+          <div
+            className={`grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-5 place-items-center`}
+          >
+            <div
+              className={`w-[270px] h-[120px] bg-white rounded-[20px] shadow-lg`}
+            >
               <img
-                className={`w-[400px] h-[100px]`}
                 src={Four626}
-                alt="4626 logo"
+                alt="4626 Logo"
+                className={`w-[250px] h-[100px] rounded-[20px] mx-auto my-[10px]`}
               />
-            </CarouselItem>
-            <CarouselItem className={`md:basis-1/3 lg:basis-1/4`}>
+            </div>
+            <div
+              className={`w-[270px] h-[120px] bg-white rounded-[20px] shadow-lg`}
+            >
               <img
-                className={`w-[400px] h-[100px]`}
                 src={Four626_2}
-                alt="4626 logo 2"
+                alt="4626 Logo 2"
+                className={`w-[250px] h-[100px] rounded-[20px] mx-auto my-[10px]`}
               />
-            </CarouselItem>
-            <CarouselItem className={`md:basis-1/3 lg:basis-1/4`}>
-              <img className={`w-[400px] h-[100px]`} src={VXD} alt="VXD logo" />
-            </CarouselItem>
-            <CarouselItem className={`md:basis-1/3 lg:basis-1/4`}>
-              <img className={`w-[400px] h-[100px]`} src={TEC} alt="VXD logo" />
-            </CarouselItem>
-            <CarouselItem className={`md:basis-1/3 lg:basis-1/4`}>
-              <img className={`w-[400px] h-[100px]`} src={BC} alt="VXD logo" />
-            </CarouselItem>
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+            </div>
+            <div
+              className={`w-[270px] h-[120px] bg-white rounded-[20px] shadow-lg`}
+            >
+              <img
+                src={TEC}
+                alt="TEC Logo"
+                className={`w-[250px] h-[100px] rounded-[20px] mx-auto my-[10px]`}
+              />
+            </div>
+            <div
+              className={`w-[270px] h-[120px] bg-white rounded-[20px] shadow-lg`}
+            >
+              <img
+                src={Solady}
+                alt="Solady Logo"
+                className={`w-[250px] h-[100px] rounded-[20px] mx-auto my-[10px]`}
+              />
+            </div>
+            <div
+              className={`w-[270px] h-[120px] bg-white rounded-[20px] shadow-lg`}
+            >
+              <img
+                src={BondingCurve}
+                alt="Bonding Curve Logo"
+                className={`w-[250px] h-[100px] rounded-[20px] mx-auto my-[10px]`}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
