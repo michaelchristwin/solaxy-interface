@@ -1,4 +1,4 @@
-import Swap from "~/components/swap";
+import TradeInterface from "~/components/swap";
 import type { Route } from "./+types/trade";
 
 export function meta({}: Route.MetaArgs) {
@@ -11,7 +11,7 @@ export function meta({}: Route.MetaArgs) {
 function Trade() {
   return (
     <div className={`flex justify-center items-center w-full`}>
-      <Swap />
+      <TradeInterface />
     </div>
   );
 }

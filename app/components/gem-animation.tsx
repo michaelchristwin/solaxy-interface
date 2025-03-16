@@ -75,9 +75,13 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
     const gem = new THREE.Mesh(gemGeometry, gemMaterial);
     gem.castShadow = true;
     gem.receiveShadow = true;
+
+    // Position the gem to the right side instead of center
+    gem.position.x = 0.8; // Move to the right
+
     scene.add(gem);
 
-    // Create wireframe with improved visibility
+    // Create wireframe with improved visibility - keeping it centered
     const wireframeRadius = 1;
     const wireframeDetail = 1;
     const wireframeGeometry = new THREE.IcosahedronGeometry(
@@ -90,6 +94,7 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
       linewidth: 2,
     });
     const wireframe = new THREE.LineSegments(edges, wireframeMaterial);
+    // wireframe position remains at (0,0,0) to cover the entire view
     scene.add(wireframe);
 
     //ライト

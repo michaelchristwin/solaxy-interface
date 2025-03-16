@@ -41,9 +41,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Meta />
             <Links />
           </head>
-          <body
-            className={`lg:px-[120px] md:px-[100px] px-[80px] pt-[20px] w-full min-h-[100vh] z-10`}
-          >
+          <body className={`w-full min-h-[100vh] z-10`}>
             <Navbar />
             {children}
             <ScrollRestoration />

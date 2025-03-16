@@ -27,7 +27,7 @@ import {
   safeWithdraw,
 } from "~/contracts/functions";
 
-const Swap: React.FC = () => {
+const TradeInterface: React.FC = () => {
   const { activeTab, inputMode, setActiveTab, setInputMode, selectedToken } =
     useAppContext();
   const { isConnected, address } = useAccount();
@@ -475,4 +475,4 @@ const Swap: React.FC = () => {
   );
 };
 
-export default Swap;
+export default TradeInterface;

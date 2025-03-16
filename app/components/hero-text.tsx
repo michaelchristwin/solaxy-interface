@@ -18,13 +18,12 @@ const TextRoller: React.FC<TextRollerProps> = ({
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % texts.length);
     }, duration);
-
     return () => clearInterval(interval);
   }, [texts, duration]);
 
   return (
     <div
-      className={`overflow-hidden relative h-24 flex items-center ${className}`}
+      className={`relative h-auto min-h-12 sm:min-h-16 md:min-h-20 lg:min-h-24 flex items-center ${className}`}
     >
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.div
@@ -53,7 +52,7 @@ const HeroText: React.FC = () => {
       <TextRoller
         texts={textsToRoll}
         duration={1500}
-        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-nowrap font-bold text-yellow-500"
+        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-yellow-500"
       />
     </div>
   );
