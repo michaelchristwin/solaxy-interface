@@ -5,6 +5,7 @@
   flex-basis: auto;
   overflow-x: hidden;
   width: 100%;
+  background-color: white; /* Add this */
 }
 
 .marquee {
