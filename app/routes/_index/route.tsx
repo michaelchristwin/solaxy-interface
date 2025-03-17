@@ -3,15 +3,11 @@ import TradeInterface from "~/components/swap";
 import HeroText from "~/components/hero-text";
 import { SLX } from "~/assets/token-logos";
 import GemAnimation from "~/components/gem-animation";
-import {
-  Four626,
-  Four626_2,
-  Solady,
-  BondingCurve,
-  TEC,
-} from "~/assets/sponsors";
+import styles from "./_index.module.css";
+import { Sponsors } from "~/assets/sponsors";
 
 import { Link } from "react-router";
+import SponsorMarquee from "~/components/sponsor-marquee";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -55,57 +51,11 @@ export default function Index() {
         <p className={`block mx-auto text-center font-bold text-[23px]`}>
           Special thanks to
         </p>
-        <div className="flex justify-center w-full">
-          <div
-            className={`grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-5 place-items-center`}
-          >
-            <div
-              className={`w-[270px] h-[120px] bg-white rounded-[20px] shadow-lg`}
-            >
-              <img
-                src={Four626}
-                alt="4626 Logo"
-                className={`w-[250px] h-[100px] rounded-[20px] mx-auto my-[10px]`}
-              />
-            </div>
-            <div
-              className={`w-[270px] h-[120px] bg-white rounded-[20px] shadow-lg`}
-            >
-              <img
-                src={Four626_2}
-                alt="4626 Logo 2"
-                className={`w-[250px] h-[100px] rounded-[20px] mx-auto my-[10px]`}
-              />
-            </div>
-            <div
-              className={`w-[270px] h-[120px] bg-white rounded-[20px] shadow-lg`}
-            >
-              <img
-                src={TEC}
-                alt="TEC Logo"
-                className={`w-[250px] h-[100px] rounded-[20px] mx-auto my-[10px]`}
-              />
-            </div>
-            <div
-              className={`w-[270px] h-[120px] bg-white rounded-[20px] shadow-lg`}
-            >
-              <img
-                src={Solady}
-                alt="Solady Logo"
-                className={`w-[250px] h-[100px] rounded-[20px] mx-auto my-[10px]`}
-              />
-            </div>
-            <div
-              className={`w-[270px] h-[120px] bg-white rounded-[20px] shadow-lg`}
-            >
-              <img
-                src={BondingCurve}
-                alt="Bonding Curve Logo"
-                className={`w-[250px] h-[100px] rounded-[20px] mx-auto my-[10px]`}
-              />
-            </div>
-          </div>
-        </div>
+        <SponsorMarquee>
+          {Sponsors.map((sponsor, i) => (
+            <img key={i} src={sponsor} alt="Logo" className={styles.brand} />
+          ))}
+        </SponsorMarquee>
       </div>
     </div>
   );

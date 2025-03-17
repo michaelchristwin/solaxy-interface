@@ -12,6 +12,7 @@ import "./app.css";
 import { AppContextProvider } from "~/providers/app.context-provider";
 import { Web3Provider } from "~/providers/web3provider";
 import Navbar from "./components/navbar";
+import Footer from "./components/footer";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -46,6 +47,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             {children}
             <ScrollRestoration />
             <Scripts />
+            <Footer />
           </body>
         </AppContextProvider>
       </Web3Provider>

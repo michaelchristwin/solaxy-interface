@@ -1,10 +1,15 @@
+import { NavLink } from "react-router";
+import { SLX } from "~/assets/token-logos";
+import styles from "~/styles/layout.module.css";
+
 function Navbar() {
   return (
-    <nav
-      className={`w-full h-[60px] flex justify-between items-center bg-transparent lg:px-[120px] md:px-[100px] px-[80px] pt-[20px]`}
-    >
-      <p className={`text-yellow-500 font-bold text-[23px]`}>Solaxy</p>
-      <p></p>
+    <nav className={styles.navbar}>
+      <NavLink to={`/`} className={styles.brandLink}>
+        <img src={SLX} alt="Solaxy Logo" className={styles.brandImage} />
+        <span className={styles.brandName}>Solaxy</span>
+      </NavLink>
+      <div></div>
     </nav>
   );
 }

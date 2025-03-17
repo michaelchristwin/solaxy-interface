@@ -7,3 +7,5 @@ import Four626_2 from "./4626-2.svg";
 // Add more imports as needed
 
 export { Four626, Four626_2, Solady, TEC, BondingCurve };
+
+export const Sponsors = [Four626, Solady, TEC, BondingCurve];

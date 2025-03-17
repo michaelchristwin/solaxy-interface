@@ -1,0 +1,54 @@
+/** FOOTER**/
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  background-color: transparent;
+  padding-top: 20px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+@media (min-width: 768px) {
+  /* md breakpoint */
+  .navbar {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* lg breakpoint */
+  .navbar {
+    padding-left: 120px;
+    padding-right: 120px;
+  }
+}
+
+.brandLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brandImage {
+  width: 25px;
+  height: 25px;
+}
+.brandName {
+  font-weight: 600;
+  color: #eab308;
+  font-size: 23px;
+}
+
+/** FOOTER**/
+.footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  color: white;
+  background-color: rgba(64, 64, 64, 0.8);
+  backdrop-filter: blur(8px); /* Adjust blur intensity as needed */
+  -webkit-backdrop-filter: blur(8px); /* For Safari support */
+}
