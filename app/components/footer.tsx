@@ -1,5 +1,9 @@
 import { Link } from "react-router";
+import { FaGithub, FaDiscord } from "react-icons/fa";
+import { SiFarcaster } from "react-icons/si";
+import { FaSquareXTwitter } from "react-icons/fa6";
 import styles from "~/styles/layout.module.css";
+import { CowSwap, OneInch, UniSwap } from "~/assets/brands";
 
 const Footer: React.FC = () => {
   return (
@@ -10,7 +14,7 @@ const Footer: React.FC = () => {
           <ul className={styles.linksList}>
             <li>
               <Link target="_blank" to="https://discord.gg/afFvdhW4">
-                Discord
+                <FaDiscord className={styles.footerIcon} /> <span>Discord</span>
               </Link>
             </li>
             <li>
@@ -18,12 +22,14 @@ const Footer: React.FC = () => {
                 target="_blank"
                 to="https://warpcast.com/~/channel/m3ter-heads"
               >
-                Farcaster
+                <SiFarcaster className={styles.footerIcon} />
+                <span>Farcaster</span>
               </Link>
             </li>
             <li>
               <Link target="_blank" to="https://x.com/M3tering">
-                X (formerly Twitter)
+                <FaSquareXTwitter className={styles.footerIcon} />{" "}
+                <span>X (formerly Twitter)</span>
               </Link>
             </li>
           </ul>
@@ -88,20 +94,39 @@ const Footer: React.FC = () => {
           <h3 className={styles.groupTitle}>Decentralized exchanges</h3>
           <ul className={styles.linksList}>
             <li>
-              <Link target="_blank" to="https://discord.gg/afFvdhW4">
-                Uniswap
+              <Link target="_blank" to="https://app.uniswap.org/">
+                <img
+                  className={styles.footerIcon}
+                  src={UniSwap}
+                  alt="Uniswap Logo"
+                />
+                <span>Uniswap</span>
               </Link>
             </li>
             <li>
-              <Link target="_blank" to="https://discord.gg/afFvdhW4">
-                Cow swap
+              <Link target="_blank" to="https://swap.cow.fi/">
+                <img
+                  className={styles.footerIcon}
+                  src={CowSwap}
+                  alt="Cowswap Logo"
+                />
+                <span>Cow swap</span>
               </Link>
             </li>
             <li>
-              <Link to="/press">Press</Link>
+              <Link target="_blank" to="https://app.1inch.io">
+                <img
+                  className={styles.footerIcon}
+                  src={OneInch}
+                  alt="1Inch Logo"
+                />
+                <span>1inch</span>
+              </Link>
             </li>
             <li>
-              <Link to="/blog">Blog</Link>
+              <Link target="_blank" to="https://jumper.exchange/">
+                <span>Jumper exchange</span>
+              </Link>
             </li>
           </ul>
         </div>
@@ -110,22 +135,26 @@ const Footer: React.FC = () => {
           <ul className={styles.linksList}>
             <li>
               <Link target="_blank" to="https://github.com/M3tering/Solaxy">
-                SLX contract
+                <FaGithub className={styles.footerIcon} />
+                <span>SLX contract</span>
               </Link>
             </li>
             <li>
               <Link target="_blank" to="/privacy">
-                M3ter contract
+                <FaGithub className={styles.footerIcon} />
+                <span> M3ter contract</span>
               </Link>
             </li>
             <li>
               <Link target="_blank" to="/cookies">
-                USD3 contract
+                <FaGithub className={styles.footerIcon} />
+                <span>USD3 contract</span>
               </Link>
             </li>
             <li>
               <Link target="_blank" to="/compliance">
-                Zap contract
+                <FaGithub className={styles.footerIcon} />
+                <span>Zap contract</span>
               </Link>
             </li>
           </ul>

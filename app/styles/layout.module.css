@@ -1,4 +1,4 @@
-/** FOOTER**/
+/** NAVBAR**/
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -89,12 +89,19 @@
   text-decoration: none;
   font-size: 14px;
   transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .linksList a:hover {
   color: #ffffff;
 }
 
+.footerIcon {
+  width: 17px;
+  height: 17px;
+}
 .bottomBar {
   padding: 20px;
   text-align: center;
