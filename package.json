@@ -20,7 +20,7 @@
     "@tanstack/react-query": "^5.67.2",
     "@types/three": "^0.174.0",
     "@vercel/react-router": "^1.1.0",
-    "babylonjs": "^7.53.3",
+    "and": "^0.0.3",
     "babylonjs-loaders": "^7.53.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

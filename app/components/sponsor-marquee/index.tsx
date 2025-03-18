@@ -63,7 +63,7 @@ const SponsorMarquee: React.FC<SponsorMarqueeProps> = ({ children }) => {
   const marqueeAnimation = {
     x: ["0%", "-100%"],
     transition: {
-      duration: 4,
+      duration: 10,
       ease: "linear",
       repeat: Infinity,
     },

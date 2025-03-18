@@ -77,7 +77,7 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
     gem.receiveShadow = true;
 
     // Position the gem to the right side instead of center
-    gem.position.x = 0.8; // Move to the right
+    gem.position.x = 0.45; // Move to the right
 
     scene.add(gem);
 

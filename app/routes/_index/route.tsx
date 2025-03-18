@@ -46,7 +46,7 @@ export default function Index() {
         <TradeInterface />
       </div>
       <div
-        className={`mt-[100px] w-full relative block py-[40px] px-2 space-y-[80px]`}
+        className={`mt-[100px] w-full relative block py-[40px] px-2 space-y-[80px] bg-white`}
       >
         <p className={`block mx-auto text-center font-bold text-[23px]`}>
           Special thanks to

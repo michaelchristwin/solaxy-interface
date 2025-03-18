@@ -38,13 +38,52 @@ const Footer: React.FC = () => {
             </li>
             <li>
               <Link target="_blank" to="https://x.com/M3tering">
-                <FaSquareXTwitter className={styles.footerIcon} />{" "}
+                <FaSquareXTwitter className={styles.footerIcon} />
                 <span>X (formerly Twitter)</span>
+              </Link>
+            </li>
+            <li>
+              <Link target="_blank" to="https://app.uniswap.org/">
+                <img
+                  className={styles.footerIcon}
+                  src={UniSwap}
+                  alt="Uniswap Logo"
+                />
+                <span>Uniswap</span>
+              </Link>
+            </li>
+            <li>
+              <Link target="_blank" to="https://swap.cow.fi/">
+                <img
+                  className={styles.footerIcon}
+                  src={CowSwap}
+                  alt="Cowswap Logo"
+                />
+                <span>Cow swap</span>
+              </Link>
+            </li>
+            <li>
+              <Link target="_blank" to="https://app.1inch.io">
+                <img
+                  className={styles.footerIcon}
+                  src={OneInch}
+                  alt="1Inch Logo"
+                />
+                <span>1inch</span>
+              </Link>
+            </li>
+            <li>
+              <Link target="_blank" to="https://jumper.exchange/">
+                <img
+                  className={styles.footerIcon}
+                  src={Jumper}
+                  alt="Jumper Exchange Logo"
+                />
+                <span>Jumper exchange</span>
               </Link>
             </li>
           </ul>
         </div>
-
         <div className={styles.linksGroup}>
           <h3 className={styles.groupTitle}>Docs</h3>
           <ul className={styles.linksList}>
@@ -103,56 +142,6 @@ const Footer: React.FC = () => {
                 Zap ABI link
               </Link>
             </li>
-          </ul>
-        </div>
-        <div className={styles.linksGroup}>
-          <h3 className={styles.groupTitle}>Decentralized exchanges</h3>
-          <ul className={styles.linksList}>
-            <li>
-              <Link target="_blank" to="https://app.uniswap.org/">
-                <img
-                  className={styles.footerIcon}
-                  src={UniSwap}
-                  alt="Uniswap Logo"
-                />
-                <span>Uniswap</span>
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="https://swap.cow.fi/">
-                <img
-                  className={styles.footerIcon}
-                  src={CowSwap}
-                  alt="Cowswap Logo"
-                />
-                <span>Cow swap</span>
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="https://app.1inch.io">
-                <img
-                  className={styles.footerIcon}
-                  src={OneInch}
-                  alt="1Inch Logo"
-                />
-                <span>1inch</span>
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="https://jumper.exchange/">
-                <img
-                  className={styles.footerIcon}
-                  src={Jumper}
-                  alt="Jumper Exchange Logo"
-                />
-                <span>Jumper exchange</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div className={styles.linksGroup}>
-          <h3 className={styles.groupTitle}>Contract Adresses</h3>
-          <ul className={styles.linksList}>
             <li>
               <Link target="_blank" to="https://github.com/M3tering/Solaxy">
                 <span>SLX contract</span>
@@ -175,6 +164,7 @@ const Footer: React.FC = () => {
             </li>
           </ul>
         </div>
+
         <div className={styles.linksGroup}>
           <h3 className={styles.groupTitle}>Others</h3>
           <ul className={styles.linksList}>
