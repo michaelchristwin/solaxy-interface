@@ -57,7 +57,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 30px;
-  padding: 40px 40px;
+  padding: 20px 40px;
 }
 
 .linksGroup {
@@ -132,6 +132,7 @@
   height: 17px;
   border-radius: 100%;
 }
+
 .footerSocials {
   width: 50px;
   height: 50px;
@@ -167,13 +168,21 @@
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
   .container {
-    grid-template-columns: repeat(2, 1fr); /* Force 2 columns */
     gap: 20px;
   }
 
   @media (max-width: 480px) {
+    .groupTitle {
+      font-size: 18px;
+    }
     .container {
-      grid-template-columns: 1fr; /* Single column on very small screens */
+      padding: 10px 20px;
+      gap: 5px;
+    }
+    .footerSocials {
+      width: 35px;
+      height: 35px;
+      border-radius: 15%;
     }
   }
   .linksGroup {
