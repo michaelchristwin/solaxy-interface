@@ -21,68 +21,48 @@ const Footer: React.FC = () => {
       <div className={styles.container}>
         <div className={styles.linksGroup}>
           <h3 className={styles.groupTitle}>Socials</h3>
-          <ul className={styles.linksList}>
-            <li>
-              <Link target="_blank" to="https://discord.gg/afFvdhW4">
-                <FaDiscord className={styles.footerIcon} /> <span>Discord</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                target="_blank"
-                to="https://warpcast.com/~/channel/m3ter-heads"
-              >
-                <SiFarcaster className={styles.footerIcon} />
-                <span>Farcaster</span>
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="https://x.com/M3tering">
-                <FaSquareXTwitter className={styles.footerIcon} />
-                <span>X (formerly Twitter)</span>
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="https://app.uniswap.org/">
-                <img
-                  className={styles.footerIcon}
-                  src={UniSwap}
-                  alt="Uniswap Logo"
-                />
-                <span>Uniswap</span>
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="https://swap.cow.fi/">
-                <img
-                  className={styles.footerIcon}
-                  src={CowSwap}
-                  alt="Cowswap Logo"
-                />
-                <span>Cow swap</span>
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="https://app.1inch.io">
-                <img
-                  className={styles.footerIcon}
-                  src={OneInch}
-                  alt="1Inch Logo"
-                />
-                <span>1inch</span>
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="https://jumper.exchange/">
-                <img
-                  className={styles.footerIcon}
-                  src={Jumper}
-                  alt="Jumper Exchange Logo"
-                />
-                <span>Jumper exchange</span>
-              </Link>
-            </li>
-          </ul>
+          <div className={styles.socialsList}>
+            <Link target="_blank" to="https://discord.gg/afFvdhW4">
+              <FaDiscord className={styles.footerSocials} />
+            </Link>
+            <Link
+              target="_blank"
+              to="https://warpcast.com/~/channel/m3ter-heads"
+            >
+              <SiFarcaster className={styles.footerSocials} />
+            </Link>
+            <Link target="_blank" to="https://x.com/M3tering">
+              <FaSquareXTwitter className={styles.footerSocials} />
+            </Link>
+            <Link target="_blank" to="https://app.uniswap.org/">
+              <img
+                className={styles.footerSocials}
+                src={UniSwap}
+                alt="Uniswap Logo"
+              />
+            </Link>
+            <Link target="_blank" to="https://swap.cow.fi/">
+              <img
+                className={styles.footerSocials}
+                src={CowSwap}
+                alt="Cowswap Logo"
+              />
+            </Link>
+            <Link target="_blank" to="https://app.1inch.io">
+              <img
+                className={styles.footerSocials}
+                src={OneInch}
+                alt="1Inch Logo"
+              />
+            </Link>
+            <Link target="_blank" to="https://jumper.exchange/">
+              <img
+                className={styles.footerSocials}
+                src={Jumper}
+                alt="Jumper Exchange Logo"
+              />
+            </Link>
+          </div>
         </div>
         <div className={styles.linksGroup}>
           <h3 className={styles.groupTitle}>Docs</h3>
@@ -142,53 +122,62 @@ const Footer: React.FC = () => {
                 Zap ABI link
               </Link>
             </li>
-            <li>
-              <Link target="_blank" to="https://github.com/M3tering/Solaxy">
-                <span>SLX contract</span>
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="/privacy">
-                <span> M3ter contract</span>
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="/cookies">
-                <span>USD3 contract</span>
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="/compliance">
-                <span>Zap contract</span>
-              </Link>
-            </li>
           </ul>
         </div>
 
         <div className={styles.linksGroup}>
-          <h3 className={styles.groupTitle}>Others</h3>
-          <ul className={styles.linksList}>
+          <h3 className={styles.groupTitle}>Contract addresses</h3>
+          <ul className={styles.contractsList}>
             <li>
+              <span>SLX contract</span>
               <Link target="_blank" to="https://www.coingecko.com/">
                 <img
                   className={styles.footerIcon}
                   src={Coingecko}
                   alt="Coingecko Logo"
                 />
-                <span>Coingecko</span>
               </Link>
-            </li>
-            <li>
               <Link target="_blank" to="https://coinmarketcap.com/">
                 <img
                   className={styles.footerIcon}
                   src={Coinmarketcap}
                   alt="Coinmarketcap Logo"
                 />
-                <span>Coinmarketcap</span>
+              </Link>
+              <Link target="_blank" to="https://etherscan.io/">
+                <img
+                  className={styles.footerIcon}
+                  src={Etherscan}
+                  alt="Etherscan Logo"
+                />
               </Link>
             </li>
             <li>
+              <span> M3ter contract</span>
+              <Link target="_blank" to="https://opensea.io/">
+                <img
+                  className={styles.footerIcon}
+                  src={Opensea}
+                  alt="Opensea Logo"
+                />
+              </Link>
+            </li>
+            <li>
+              <span>USD3 contract</span>
+              <Link target="_blank" to="https://www.coingecko.com/">
+                <img
+                  className={styles.footerIcon}
+                  src={Coingecko}
+                  alt="Coingecko Logo"
+                />
+              </Link>
+              <Link target="_blank" to="https://coinmarketcap.com/">
+                <img
+                  className={styles.footerIcon}
+                  src={Coinmarketcap}
+                  alt="Coinmarketcap Logo"
+                />
+              </Link>
               <Link
                 target="_blank"
                 to="https://app.reserve.org/ethereum/token/0x0d86883faf4ffd7aeb116390af37746f45b6f378/issuance"
@@ -198,27 +187,30 @@ const Footer: React.FC = () => {
                   src={Reserve}
                   alt="Reserve Logo"
                 />
-                <span>Reserve</span>
               </Link>
             </li>
             <li>
-              <Link target="_blank" to="https://opensea.io/">
+              <span>Zap contract</span>
+              <Link target="_blank" to="https://www.coingecko.com/">
                 <img
                   className={styles.footerIcon}
-                  src={Opensea}
-                  alt="Opensea Logo"
+                  src={Coingecko}
+                  alt="Coingecko Logo"
                 />
-                <span>Opensea</span>
               </Link>
-            </li>
-            <li>
+              <Link target="_blank" to="https://coinmarketcap.com/">
+                <img
+                  className={styles.footerIcon}
+                  src={Coinmarketcap}
+                  alt="Coinmarketcap Logo"
+                />
+              </Link>
               <Link target="_blank" to="https://etherscan.io/">
                 <img
                   className={styles.footerIcon}
                   src={Etherscan}
                   alt="Etherscan Logo"
                 />
-                <span>Etherscan</span>
               </Link>
             </li>
           </ul>
