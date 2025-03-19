@@ -1,6 +1,6 @@
 import { type TransactionTab } from "~/providers/app.context-provider";
 import { calculateFontSize } from "~/lib/utils";
-import TokensPopup from "./tokens-popup";
+import TokensPopup from "./TokensPopup";
 import { Skeleton } from "./ui/skeleton";
 
 interface InputPanelProps {

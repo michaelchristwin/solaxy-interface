@@ -1,13 +1,13 @@
 import type { Route } from "./+types/route";
-import TradeInterface from "~/components/swap";
-import HeroText from "~/components/hero-text";
+import TradeInterface from "~/components/TradeInterface";
+import HeroText from "~/components/HeroText";
 import { SLX } from "~/assets/token-logos";
-import GemAnimation from "~/components/gem-animation";
+import GemAnimation from "~/components/GemAnimation";
 import styles from "./_index.module.css";
 import { Sponsors } from "~/assets/sponsors";
 
 import { Link } from "react-router";
-import SponsorMarquee from "~/components/sponsor-marquee";
+import SponsorMarquee from "~/components/SponsorMarquee";
 
 export function meta({}: Route.MetaArgs) {
   return [

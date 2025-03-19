@@ -11,10 +11,10 @@ import {
   useAppContext,
 } from "~/providers/app.context-provider";
 import { SLX } from "~/assets/token-logos";
-import ActionButtonText from "~/components/action-button-text";
+import ActionButtonText from "~/components/ActionButtonText";
 import { ConnectKitButton } from "connectkit";
-import OutputPanel from "~/components/output-panel";
-import InputPanel from "~/components/input-panel";
+import OutputPanel from "~/components/OutputPanel";
+import InputPanel from "~/components/InputPanel";
 import { assetContract, solaxyContract } from "~/contracts";
 import { type Address, formatUnits, parseEther } from "viem";
 import { Input } from "~/components/ui/input";
@@ -349,7 +349,7 @@ const TradeInterface: React.FC = () => {
             }`}
             onClick={() => setActiveTab(tab)}
           >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)} SLX
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
           </button>
         ))}
       </div>

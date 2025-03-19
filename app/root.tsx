@@ -11,8 +11,8 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import { AppContextProvider } from "~/providers/app.context-provider";
 import { Web3Provider } from "~/providers/web3provider";
-import Navbar from "./components/navbar";
-import Footer from "./components/footer";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

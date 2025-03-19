@@ -1,4 +1,4 @@
-import TradeInterface from "~/components/swap";
+import TradeInterface from "~/components/TradeInterface";
 import type { Route } from "./+types/trade";
 
 export function meta({}: Route.MetaArgs) {
