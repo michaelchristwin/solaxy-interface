@@ -1,7 +1,6 @@
 import { Link } from "react-router";
-import { FaGithub, FaDiscord } from "react-icons/fa";
+import { FaDiscord, FaSquareXTwitter } from "react-icons/fa6";
 import { SiFarcaster } from "react-icons/si";
-import { FaSquareXTwitter } from "react-icons/fa6";
 import styles from "~/styles/layout.module.css";
 import {
   Coingecko,
@@ -15,186 +14,186 @@ import {
   UniSwap,
 } from "~/assets/brands";
 
-const Footer: React.FC = () => {
-  return (
-    <footer className={styles.footer}>
-      <div className={styles.container}>
-        <div className={styles.linksGroup}>
-          <h3 className={styles.groupTitle}>Socials</h3>
+const socialLinks = [
+  {
+    href: "https://discord.gg/afFvdhW4",
+    icon: <FaDiscord className={styles.footerSocials} />,
+  },
+  {
+    href: "https://warpcast.com/~/channel/m3ter-heads",
+    icon: <SiFarcaster className={styles.footerSocials} />,
+  },
+  {
+    href: "https://x.com/M3tering",
+    icon: <FaSquareXTwitter className={styles.footerSocials} />,
+  },
+];
+
+const exchanges = [
+  { href: "https://app.uniswap.org/", src: UniSwap, alt: "Uniswap" },
+  { href: "https://swap.cow.fi/", src: CowSwap, alt: "Cowswap" },
+  { href: "https://app.1inch.io", src: OneInch, alt: "1Inch" },
+  { href: "https://jumper.exchange/", src: Jumper, alt: "Jumper Exchange" },
+];
+
+const docs = [
+  {
+    href: "https://m3tering.whynotswitch.com/token-economics/mint-and-distribution",
+    text: "Mint & Distribution",
+  },
+  {
+    href: "https://m3tering.whynotswitch.com/token-economics/burn-and-exit-fee",
+    text: "Burn",
+  },
+  {
+    href: "https://m3tering.whynotswitch.com/smart-contracts/audits/secure3-audit-contest",
+    text: "Audit",
+  },
+];
+
+const contractAddresses = [
+  {
+    label: "Solaxy contract 0x65AC402ea05667EF898CbF63EeBFe58A8BAB9A4e",
+    links: [
+      { href: "https://www.coingecko.com/", src: Coingecko, alt: "Coingecko" },
+      {
+        href: "https://coinmarketcap.com/",
+        src: Coinmarketcap,
+        alt: "Coinmarketcap",
+      },
+      { href: "https://etherscan.io/", src: Etherscan, alt: "Etherscan" },
+    ],
+  },
+  {
+    label: "M3ter contract 0xeabCA3f59d6C7D54Ab2A8d08a674E2EE691eA6C5",
+    links: [{ href: "https://opensea.io/", src: Opensea, alt: "Opensea" }],
+  },
+  {
+    label: "USD3 contract 0x0d86883faf4ffd7aeb116390af37746f45b6f378",
+    links: [
+      {
+        href: "https://app.reserve.org/ethereum/token/0x0d86883faf4ffd7aeb116390af37746f45b6f378/issuance",
+        src: Reserve,
+        alt: "Reserve",
+      },
+    ],
+  },
+  {
+    label: "Zap contract 0x6781a0F84c7E9e846DCb84A9a5bd49333067b104",
+    links: [
+      { href: "https://etherscan.io/", src: Etherscan, alt: "Etherscan" },
+    ],
+  },
+];
+
+const sourceCodes = [
+  { label: "Solaxy contract", href: "https://github.com/m3tering/Solaxy" },
+  { label: "Solaxy ABI", href: "" },
+  { label: "Zap contract", href: "https://github.com/zapproject/zap-monorepo" },
+  {
+    label: "Zap ABI",
+    href: "https://etherscan.io/token/0x6781a0f84c7e9e846dcb84a9a5bd49333067b104#code",
+  },
+];
+
+const Footer = () => (
+  <footer className={styles.footer}>
+    <div className={styles.container}>
+      <div>
+        <FooterSection title="Socials">
           <div className={styles.socialsList}>
-            <Link target="_blank" to="https://discord.gg/afFvdhW4">
-              <FaDiscord className={styles.footerSocials} />
-            </Link>
-            <Link
-              target="_blank"
-              to="https://warpcast.com/~/channel/m3ter-heads"
-            >
-              <SiFarcaster className={styles.footerSocials} />
-            </Link>
-            <Link target="_blank" to="https://x.com/M3tering">
-              <FaSquareXTwitter className={styles.footerSocials} />
-            </Link>
+            {socialLinks.map(({ href, icon }) => (
+              <Link
+                key={href}
+                target="_blank"
+                to={href}
+                className={styles.footerSocials}
+              >
+                {icon}
+              </Link>
+            ))}
           </div>
-          <h2 className={styles.subtitle}>Decentralized exchanges</h2>
+        </FooterSection>
+
+        <FooterSection title="Decentralized exchanges">
           <div className={styles.socialsList}>
-            <Link target="_blank" to="https://app.uniswap.org/">
-              <img
-                className={styles.footerSocials}
-                src={UniSwap}
-                alt="Uniswap Logo"
-              />
-            </Link>
-            <Link target="_blank" to="https://swap.cow.fi/">
-              <img
-                className={styles.footerSocials}
-                src={CowSwap}
-                alt="Cowswap Logo"
-              />
-            </Link>
-            <Link target="_blank" to="https://app.1inch.io">
-              <img
-                className={styles.footerSocials}
-                src={OneInch}
-                alt="1Inch Logo"
-              />
-            </Link>
-            <Link target="_blank" to="https://jumper.exchange/">
-              <img
-                className={styles.footerSocials}
-                src={Jumper}
-                alt="Jumper Exchange Logo"
-              />
-            </Link>
+            {exchanges.map(({ href, src, alt }) => (
+              <Link key={href} target="_blank" to={href}>
+                <img
+                  className={styles.footerSocials}
+                  src={src}
+                  alt={`${alt} Logo`}
+                />
+              </Link>
+            ))}
           </div>
-        </div>
-        <div className={styles.linksGroup}>
-          <h3 className={styles.groupTitle}>Docs</h3>
-          <ul className={styles.linksList}>
-            <li>
-              <Link
-                target="_blank"
-                to="https://m3tering.whynotswitch.com/token-economics/mint-and-distribution"
-              >
-                Mint & Distribution
-              </Link>
-            </li>
-            <li>
-              <Link
-                target="_blank"
-                to="https://m3tering.whynotswitch.com/token-economics/burn-and-exit-fee"
-              >
-                Burn
-              </Link>
-            </li>
-            <li>
-              <Link
-                target="_blank"
-                to="https://m3tering.whynotswitch.com/smart-contracts/audits/secure3-audit-contest"
-              >
-                Audit
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div className={styles.linksGroup}>
-          <h3 className={styles.groupTitle}>Code</h3>
-          <ul className={styles.linksList}>
-            <li>
-              <Link target="_blank" to="https://github.com/M3tering/Solaxy">
-                Solaxy
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="/privacy">
-                Solaxy ABI link
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="/cookies">
-                Zap contract GitHub
-              </Link>
-            </li>
-            <li>
-              <Link target="_blank" to="/compliance">
-                Zap ABI link
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div className={styles.linksGroup}>
-          <h3 className={styles.groupTitle}>Contract addresses</h3>
-          <ul className={styles.contractsList}>
-            <li>
-              <span>Solaxy contract</span>
-              <Link target="_blank" to="https://www.coingecko.com/">
-                <img
-                  className={styles.footerIcon}
-                  src={Coingecko}
-                  alt="Coingecko Logo"
-                />
-              </Link>
-              <Link target="_blank" to="https://coinmarketcap.com/">
-                <img
-                  className={styles.footerIcon}
-                  src={Coinmarketcap}
-                  alt="Coinmarketcap Logo"
-                />
-              </Link>
-              <Link target="_blank" to="https://etherscan.io/">
-                <img
-                  className={styles.footerIcon}
-                  src={Etherscan}
-                  alt="Etherscan Logo"
-                />
-              </Link>
-            </li>
-            <li>
-              <span>M3ter contract</span>
-              <Link target="_blank" to="https://opensea.io/">
-                <img
-                  className={styles.footerIcon}
-                  src={Opensea}
-                  alt="Opensea Logo"
-                />
-              </Link>
-            </li>
-            <li>
-              <span>USD3 contract</span>
-              <Link
-                target="_blank"
-                to="https://app.reserve.org/ethereum/token/0x0d86883faf4ffd7aeb116390af37746f45b6f378/issuance"
-              >
-                <img
-                  className={styles.footerIcon}
-                  src={Reserve}
-                  alt="Reserve Logo"
-                />
-              </Link>
-            </li>
-            <li>
-              <span>Zap contract</span>
-
-              <Link target="_blank" to="https://etherscan.io/">
-                <img
-                  className={styles.footerIcon}
-                  src={Etherscan}
-                  alt="Etherscan Logo"
-                />
-              </Link>
-            </li>
-          </ul>
-        </div>
+        </FooterSection>
       </div>
 
-      <div className={styles.bottomBar}>
-        <p className={styles.copyright}>
-          © {new Date().getFullYear()} M3tering Protocol.
-        </p>
+      <div>
+        <FooterSection title="Docs">
+          <ul className={styles.linksList}>
+            {docs.map(({ href, text }) => (
+              <li key={href}>
+                <Link target="_blank" to={href}>
+                  {text}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </FooterSection>
+
+        <FooterSection title="Code">
+          <ul className={styles.linksList}>
+            {sourceCodes.map(({ label, href }) => (
+              <li key={label}>
+                <Link target="_blank" to={href}>
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </FooterSection>
       </div>
-    </footer>
-  );
-};
+
+      <div className={styles.contractsGroup}>
+        <h3 className={styles.groupTitle}>Contract addresses</h3>
+        {contractAddresses.map(({ label, links }) => (
+          <div key={label} className={styles.contractsList}>
+            <span>{label}</span>
+            <div className={styles.contractsListLogo}>
+              {links.map(({ href, src, alt }) => (
+                <Link key={href} target="_blank" to={href}>
+                  <img
+                    className={styles.footerIcon}
+                    src={src}
+                    alt={`${alt} Logo`}
+                  />
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div className={styles.bottomBar}>
+      <p className={styles.copyright}>
+        © {new Date().getFullYear()} M3tering Protocol.
+      </p>
+    </div>
+  </footer>
+);
+
+interface FooterSectionProps {
+  title: string;
+  children: React.ReactNode;
+}
+const FooterSection: React.FC<FooterSectionProps> = ({ title, children }) => (
+  <div className={styles.linksGroup}>
+    <h3 className={styles.groupTitle}>{title}</h3>
+    {children}
+  </div>
+);
 
 export default Footer;
