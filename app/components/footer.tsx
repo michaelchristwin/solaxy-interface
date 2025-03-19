@@ -34,6 +34,9 @@ const Footer: React.FC = () => {
             <Link target="_blank" to="https://x.com/M3tering">
               <FaSquareXTwitter className={styles.footerSocials} />
             </Link>
+          </div>
+          <h2 className={styles.subtitle}>Decentralized exchanges</h2>
+          <div className={styles.socialsList}>
             <Link target="_blank" to="https://app.uniswap.org/">
               <img
                 className={styles.footerSocials}
@@ -99,17 +102,12 @@ const Footer: React.FC = () => {
           <ul className={styles.linksList}>
             <li>
               <Link target="_blank" to="https://github.com/M3tering/Solaxy">
-                <FaGithub className={styles.footerIcon} /> <span>Solaxy</span>
+                Solaxy
               </Link>
             </li>
             <li>
               <Link target="_blank" to="/privacy">
-                <img
-                  className={styles.footerIcon}
-                  src={Etherscan}
-                  alt="Etherscan Logo"
-                />
-                <span>Solaxy ABI link</span>
+                Solaxy ABI link
               </Link>
             </li>
             <li>
@@ -129,7 +127,7 @@ const Footer: React.FC = () => {
           <h3 className={styles.groupTitle}>Contract addresses</h3>
           <ul className={styles.contractsList}>
             <li>
-              <span>SLX contract</span>
+              <span>Solaxy contract</span>
               <Link target="_blank" to="https://www.coingecko.com/">
                 <img
                   className={styles.footerIcon}
@@ -153,7 +151,7 @@ const Footer: React.FC = () => {
               </Link>
             </li>
             <li>
-              <span> M3ter contract</span>
+              <span>M3ter contract</span>
               <Link target="_blank" to="https://opensea.io/">
                 <img
                   className={styles.footerIcon}
@@ -164,20 +162,6 @@ const Footer: React.FC = () => {
             </li>
             <li>
               <span>USD3 contract</span>
-              <Link target="_blank" to="https://www.coingecko.com/">
-                <img
-                  className={styles.footerIcon}
-                  src={Coingecko}
-                  alt="Coingecko Logo"
-                />
-              </Link>
-              <Link target="_blank" to="https://coinmarketcap.com/">
-                <img
-                  className={styles.footerIcon}
-                  src={Coinmarketcap}
-                  alt="Coinmarketcap Logo"
-                />
-              </Link>
               <Link
                 target="_blank"
                 to="https://app.reserve.org/ethereum/token/0x0d86883faf4ffd7aeb116390af37746f45b6f378/issuance"
@@ -191,20 +175,7 @@ const Footer: React.FC = () => {
             </li>
             <li>
               <span>Zap contract</span>
-              <Link target="_blank" to="https://www.coingecko.com/">
-                <img
-                  className={styles.footerIcon}
-                  src={Coingecko}
-                  alt="Coingecko Logo"
-                />
-              </Link>
-              <Link target="_blank" to="https://coinmarketcap.com/">
-                <img
-                  className={styles.footerIcon}
-                  src={Coinmarketcap}
-                  alt="Coinmarketcap Logo"
-                />
-              </Link>
+
               <Link target="_blank" to="https://etherscan.io/">
                 <img
                   className={styles.footerIcon}

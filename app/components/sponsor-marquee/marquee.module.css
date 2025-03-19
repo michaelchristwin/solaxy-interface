@@ -14,7 +14,7 @@
   flex-basis: auto;
   overflow-x: hidden;
   min-width: min-content;
-  gap: 10px;
+  gap: 350px;
   margin-top: 40px;
   margin-bottom: 40px;
   align-items: center;
@@ -25,5 +25,5 @@
   flex-shrink: 0;
   flex-grow: 0;
   flex-basis: auto;
-  gap: 10px;
+  gap: 350px;
 }
