@@ -8,6 +8,7 @@ import { Sponsors } from "~/assets/sponsors";
 import Marquee from "react-fast-marquee";
 import { Link } from "react-router";
 import BrowserOnly from "~/components/BrowserOnly";
+import FAQMenu from "~/components/FaqMenu";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -45,6 +46,7 @@ export default function Index() {
       >
         <TradeInterface />
       </div>
+      <FAQMenu />
       <div
         className={`mt-[100px] w-full relative block py-[40px] px-2 space-y-[80px] bg-white`}
       >

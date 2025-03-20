@@ -1,4 +1,6 @@
 /** NAVBAR**/
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -18,11 +20,13 @@
 
 .navLinks a {
   color: #eab308;
+  font-weight: 600;
   transition: color 0.3s ease;
 }
 
 .navLinks a:hover {
   color: #c47d00; /* a slightly darker shade */
+  /* text-decoration: underline; */
 }
 
 .navLinks {
@@ -150,6 +154,10 @@
 }
 .contractsList code {
   font-size: 14px;
+  font-family: "Fira Code", monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
 }
 .contractsListLogo {
   display: flex;

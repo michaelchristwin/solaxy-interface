@@ -30,7 +30,7 @@ function Navbar() {
       </div>
       <NavbarSheet>
         <button className={styles.sheetButton} type={`button`}>
-          <MenuIcon size={26} />
+          <MenuIcon size={26} className={`text-yellow-500`} />
         </button>
       </NavbarSheet>
     </nav>
