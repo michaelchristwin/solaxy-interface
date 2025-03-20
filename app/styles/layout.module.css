@@ -10,11 +10,39 @@
   padding-right: 50px;
 }
 
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.navLinks a {
+  color: #eab308;
+  transition: color 0.3s ease;
+}
+
+.navLinks a:hover {
+  color: #c47d00; /* a slightly darker shade */
+}
+
+.navLinks {
+  display: none;
+}
+.sheetButton {
+  display: flex;
+  border-radius: 100%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
 @media (min-width: 768px) {
   /* md breakpoint */
   .navbar {
     padding-left: 100px;
     padding-right: 100px;
+  }
+  .navLinks {
+    display: none;
   }
 }
 
@@ -23,6 +51,14 @@
   .navbar {
     padding-left: 120px;
     padding-right: 120px;
+  }
+  .navLinks {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+  .sheetButton {
+    display: none;
   }
 }
 
@@ -145,12 +181,6 @@
   gap: 16px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-}
-
-.subtitle {
-  font-weight: 600;
-  margin-top: 20px;
-  margin-bottom: 10px;
 }
 
 .bottomBar {

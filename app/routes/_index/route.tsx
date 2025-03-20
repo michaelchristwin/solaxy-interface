@@ -5,9 +5,9 @@ import { SLX } from "~/assets/token-logos";
 import GemAnimation from "~/components/GemAnimation";
 import styles from "./_index.module.css";
 import { Sponsors } from "~/assets/sponsors";
-
+import Marquee from "react-fast-marquee";
 import { Link } from "react-router";
-import SponsorMarquee from "~/components/SponsorMarquee";
+import BrowserOnly from "~/components/BrowserOnly";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -51,11 +51,13 @@ export default function Index() {
         <p className={`block mx-auto text-center font-bold text-[23px]`}>
           Special thanks to
         </p>
-        <SponsorMarquee>
-          {Sponsors.map((sponsor, i) => (
-            <img key={i} src={sponsor} alt="Logo" className={styles.brand} />
-          ))}
-        </SponsorMarquee>
+        <BrowserOnly>
+          <Marquee autoFill speed={80}>
+            {Sponsors.map((sponsor, i) => (
+              <img key={i} src={sponsor} alt="Logo" className={styles.brand} />
+            ))}
+          </Marquee>
+        </BrowserOnly>
       </div>
     </div>
   );

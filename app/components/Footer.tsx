@@ -8,7 +8,6 @@ import {
   CowSwap,
   Etherscan,
   Jumper,
-  OneInch,
   Opensea,
   Reserve,
   UniSwap,
@@ -32,7 +31,7 @@ const socialLinks = [
 const exchanges = [
   { href: "https://app.uniswap.org/", src: UniSwap, alt: "Uniswap" },
   { href: "https://swap.cow.fi/", src: CowSwap, alt: "Cowswap" },
-  { href: "https://app.1inch.io", src: OneInch, alt: "1Inch" },
+
   { href: "https://jumper.exchange/", src: Jumper, alt: "Jumper Exchange" },
 ];
 
@@ -91,9 +90,15 @@ const contractAddresses = [
 ];
 
 const sourceCodes = [
-  { label: "Solaxy contract", href: "https://github.com/m3tering/Solaxy" },
+  {
+    label: "Solaxy code repository",
+    href: "https://github.com/m3tering/Solaxy",
+  },
 
-  { label: "Zap contract", href: "https://github.com/zapproject/zap-monorepo" },
+  {
+    label: "Zap code repository",
+    href: "https://github.com/zapproject/zap-monorepo",
+  },
 ];
 
 const Footer = () => (
@@ -143,7 +148,7 @@ const Footer = () => (
           </ul>
         </FooterSection>
 
-        <FooterSection title="Solaxy / Zap code repository">
+        <FooterSection title="Code">
           <ul className={styles.linksList}>
             {sourceCodes.map(({ label, href }) => (
               <li key={label}>
@@ -160,10 +165,10 @@ const Footer = () => (
         <h3 className={styles.groupTitle}>Smart Contracts</h3>
         {contractAddresses.map(({ label, links, contractAddress }) => (
           <div key={label} className={styles.contractsList}>
-            <span>{label}</span>
-            <code>
-              {contractAddress.slice(0, 10)}...{contractAddress.slice(-10)}
-            </code>
+            <span>
+              {label}-<code className={`font-normal`}>{contractAddress}</code>
+            </span>
+
             <div className={styles.contractsListLogo}>
               {links.map(({ href, src, alt }) => (
                 <Link key={href} target="_blank" to={href}>
