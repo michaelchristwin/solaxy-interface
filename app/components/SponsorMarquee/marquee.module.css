@@ -5,6 +5,7 @@
   flex-basis: auto;
   overflow-x: hidden;
   width: 100%;
+  gap: 350px;
 }
 
 .marquee {

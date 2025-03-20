@@ -106,6 +106,7 @@
   text-wrap: normal; /* Changed from nowrap */
   display: block;
   word-break: break-word;
+  font-weight: 600;
 }
 
 .contractsListLogo {

@@ -53,7 +53,8 @@ const docs = [
 
 const contractAddresses = [
   {
-    label: "Solaxy contract 0x65AC402ea05667EF898CbF63EeBFe58A8BAB9A4e",
+    label: "Solaxy",
+    contractAddress: "0x65AC402ea05667EF898CbF63EeBFe58A8BAB9A4e",
     links: [
       { href: "https://www.coingecko.com/", src: Coingecko, alt: "Coingecko" },
       {
@@ -65,11 +66,16 @@ const contractAddresses = [
     ],
   },
   {
-    label: "M3ter contract 0xeabCA3f59d6C7D54Ab2A8d08a674E2EE691eA6C5",
-    links: [{ href: "https://opensea.io/", src: Opensea, alt: "Opensea" }],
+    label: "M3ter",
+    contractAddress: "0xeabCA3f59d6C7D54Ab2A8d08a674E2EE691eA6C5",
+    links: [
+      { href: "https://opensea.io/", src: Opensea, alt: "Opensea" },
+      { href: "https://etherscan.io/", src: Etherscan, alt: "Etherscan" },
+    ],
   },
   {
-    label: "USD3 contract 0x0d86883faf4ffd7aeb116390af37746f45b6f378",
+    label: "USD3",
+    contractAddress: "0x0d86883faf4ffd7aeb116390af37746f45b6f378",
     links: [
       {
         href: "https://app.reserve.org/ethereum/token/0x0d86883faf4ffd7aeb116390af37746f45b6f378/issuance",
@@ -79,7 +85,8 @@ const contractAddresses = [
     ],
   },
   {
-    label: "Zap contract 0x6781a0F84c7E9e846DCb84A9a5bd49333067b104",
+    label: "Zap",
+    contractAddress: "0x6781a0F84c7E9e846DCb84A9a5bd49333067b104",
     links: [
       { href: "https://etherscan.io/", src: Etherscan, alt: "Etherscan" },
     ],
@@ -115,7 +122,7 @@ const Footer = () => (
           </div>
         </FooterSection>
 
-        <FooterSection title="Decentralized exchanges">
+        <FooterSection title="DEX">
           <div className={styles.socialsList}>
             {exchanges.map(({ href, src, alt }) => (
               <Link key={href} target="_blank" to={href}>
@@ -157,10 +164,13 @@ const Footer = () => (
       </div>
 
       <div className={styles.contractsGroup}>
-        <h3 className={styles.groupTitle}>Contract addresses</h3>
-        {contractAddresses.map(({ label, links }) => (
+        <h3 className={styles.groupTitle}>CA</h3>
+        {contractAddresses.map(({ label, links, contractAddress }) => (
           <div key={label} className={styles.contractsList}>
             <span>{label}</span>
+            <code>
+              {contractAddress.slice(0, 10)}...{contractAddress.slice(-10)}
+            </code>
             <div className={styles.contractsListLogo}>
               {links.map(({ href, src, alt }) => (
                 <Link key={href} target="_blank" to={href}>
