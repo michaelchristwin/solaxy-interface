@@ -165,10 +165,8 @@ const Footer = () => (
         <h3 className={styles.groupTitle}>Smart Contracts</h3>
         {contractAddresses.map(({ label, links, contractAddress }) => (
           <div key={label} className={styles.contractsList}>
-            <span>
-              {label}-<code className={`font-normal`}>{contractAddress}</code>
-            </span>
-
+            <code>{contractAddress}</code>
+            <span>{label}:</span>
             <div className={styles.contractsListLogo}>
               {links.map(({ href, src, alt }) => (
                 <Link key={href} target="_blank" to={href}>

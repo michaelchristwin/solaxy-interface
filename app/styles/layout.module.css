@@ -82,6 +82,7 @@
   width: 100%;
   padding-top: 40px;
   color: white;
+  display: block;
   background-color: rgba(64, 64, 64, 0.8);
   backdrop-filter: blur(8px); /* Adjust blur intensity as needed */
   -webkit-backdrop-filter: blur(8px); /* For Safari support */
@@ -127,12 +128,15 @@
 
 .contractsList {
   display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
   width: 100%;
   gap: 6px;
   font-size: 14px;
   margin-bottom: 10px;
   color: #bdc3c7;
 }
+
 .contractsList:hover {
   color: #ffffff;
   cursor: pointer;
@@ -165,8 +169,8 @@
 }
 
 .footerIcon {
-  width: 17px;
-  height: 17px;
+  width: 20px;
+  height: 20xpx;
   border-radius: 100%;
 }
 
@@ -184,10 +188,8 @@
 }
 
 .bottomBar {
-  padding: 20px;
+  padding: 10px;
   text-align: center;
-  background-color: #1a252f;
-  margin-top: 10px;
 }
 
 .copyright {
@@ -214,6 +216,10 @@
       width: 35px;
       height: 35px;
       border-radius: 15%;
+    }
+    .contractsGroup {
+      grid-column: 1 / -1; /* Span all columns */
+      width: 100%;
     }
   }
   .linksGroup {
