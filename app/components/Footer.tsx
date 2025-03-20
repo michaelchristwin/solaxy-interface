@@ -41,10 +41,7 @@ const docs = [
     href: "https://m3tering.whynotswitch.com/token-economics/mint-and-distribution",
     text: "Mint & Distribution",
   },
-  {
-    href: "https://m3tering.whynotswitch.com/token-economics/burn-and-exit-fee",
-    text: "Burn",
-  },
+
   {
     href: "https://m3tering.whynotswitch.com/smart-contracts/audits/secure3-audit-contest",
     text: "Audit",
@@ -95,12 +92,8 @@ const contractAddresses = [
 
 const sourceCodes = [
   { label: "Solaxy contract", href: "https://github.com/m3tering/Solaxy" },
-  { label: "Solaxy ABI", href: "" },
+
   { label: "Zap contract", href: "https://github.com/zapproject/zap-monorepo" },
-  {
-    label: "Zap ABI",
-    href: "https://etherscan.io/token/0x6781a0f84c7e9e846dcb84a9a5bd49333067b104#code",
-  },
 ];
 
 const Footer = () => (
@@ -122,7 +115,7 @@ const Footer = () => (
           </div>
         </FooterSection>
 
-        <FooterSection title="DEX">
+        <FooterSection title="Exchanges">
           <div className={styles.socialsList}>
             {exchanges.map(({ href, src, alt }) => (
               <Link key={href} target="_blank" to={href}>
@@ -150,7 +143,7 @@ const Footer = () => (
           </ul>
         </FooterSection>
 
-        <FooterSection title="Code">
+        <FooterSection title="Solaxy / Zap code repository">
           <ul className={styles.linksList}>
             {sourceCodes.map(({ label, href }) => (
               <li key={label}>
@@ -164,7 +157,7 @@ const Footer = () => (
       </div>
 
       <div className={styles.contractsGroup}>
-        <h3 className={styles.groupTitle}>CA</h3>
+        <h3 className={styles.groupTitle}>Smart Contracts</h3>
         {contractAddresses.map(({ label, links, contractAddress }) => (
           <div key={label} className={styles.contractsList}>
             <span>{label}</span>
