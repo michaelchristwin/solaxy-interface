@@ -2,7 +2,8 @@ import { USD3 } from "~/assets/token-logos";
 import { createContext, useState, useContext, type ReactNode } from "react";
 
 export type InputMode = "stable" | "slx";
-export type TransactionTab = "mint" | "melt";
+export type TransactionTab = "mint" | "melt" | "bridge";
+export type TransactionMode = "mint" | "melt";
 export type TokenStruct = {
   symbol: string;
   address: string;
@@ -13,9 +14,11 @@ export type TokenStruct = {
 interface AppContextType {
   inputMode: InputMode;
   activeTab: TransactionTab;
-  setInputMode: (mode: InputMode) => void;
-  setActiveTab: (tab: TransactionTab) => void;
+  transactionMode: TransactionMode;
   selectedToken: TokenStruct;
+  setInputMode: (mode: InputMode) => void;
+  setTransactionMode: (mode: TransactionMode) => void;
+  setActiveTab: (tab: TransactionTab) => void;
   setSelectedToken: (token: TokenStruct) => void;
 }
 
@@ -35,6 +38,8 @@ export function useAppContext() {
 export function AppContextProvider({ children }: { children: ReactNode }) {
   const [activeTab, setActiveTab] = useState<TransactionTab>("mint");
   const [inputMode, setInputMode] = useState<InputMode>("stable");
+  const [transactionMode, setTransactionMode] =
+    useState<TransactionMode>("mint");
   const [selectedToken, setSelectedToken] = useState<TokenStruct>({
     symbol: "USD3",
     address: "0x0d86883FAf4FfD7aEb116390af37746F45b6f378",
@@ -48,6 +53,10 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         activeTab,
         inputMode,
         selectedToken,
+        transactionMode,
+        setTransactionMode(mode) {
+          setTransactionMode(mode);
+        },
         setActiveTab(tab) {
           setActiveTab(tab);
         },

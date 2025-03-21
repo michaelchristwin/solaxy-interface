@@ -28,8 +28,15 @@ import {
 } from "~/contracts/functions";
 
 const TradeInterface: React.FC = () => {
-  const { activeTab, inputMode, setActiveTab, setInputMode, selectedToken } =
-    useAppContext();
+  const {
+    activeTab,
+    inputMode,
+    setActiveTab,
+    setInputMode,
+    selectedToken,
+    setTransactionMode,
+    transactionMode,
+  } = useAppContext();
   const { isConnected, address } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
   const [outputAmount, setOutputAmount] = useState("");
@@ -160,7 +167,8 @@ const TradeInterface: React.FC = () => {
 
   const toggleInputMode = () => {
     setInputMode(inputMode === "stable" ? "slx" : "stable");
-
+    setTransactionMode(transactionMode === "mint" ? "melt" : "mint");
+    setActiveTab(isReversed ? "mint" : "melt");
     setInputAmount(outputAmount);
     setOutputAmount(inputAmount);
     setIsReversed((p) => !p);
@@ -197,7 +205,7 @@ const TradeInterface: React.FC = () => {
   }, [outputAmount, slippageTolerance, activeTab, isReversed]);
 
   const conversionRate = useMemo(() => {
-    const rate = exchangeRates[activeTab][inputMode];
+    const rate = exchangeRates[transactionMode][inputMode];
     return inputMode === "stable"
       ? `1 USDC ≈ ${rate} SLX`
       : `1 SLX ≈ ${rate} USDC`;
@@ -339,7 +347,7 @@ const TradeInterface: React.FC = () => {
 
       {/* Tab Navigation */}
       <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1 mb-6">
-        {(["mint", "melt"] as TransactionTab[]).map((tab) => (
+        {([activeTab, "bridge"] as TransactionTab[]).map((tab) => (
           <button
             key={tab}
             className={`flex-1 py-2.5 rounded-md font-medium transition-all ${
@@ -449,7 +457,7 @@ const TradeInterface: React.FC = () => {
       {/* Action Button */}
       {isConnected ? (
         <button
-          className={`w-full mt-6 space-x-1 py-3.5 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${bgColors[activeTab]}`}
+          className={`w-full mt-6 space-x-1 py-3.5 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${bgColors[transactionMode]}`}
           onClick={sendTransaction}
           disabled={!inputAmount || parseFloat(inputAmount) === 0 || isPending}
         >
