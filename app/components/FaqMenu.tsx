@@ -15,8 +15,15 @@ const FAQMenu: React.FC = () => {
     {
       id: 1,
       question: "Wtf is solaxy?",
-      answer:
-        "Solaxy is an ERC4626 vault that functions as a financial and health index asset for all projects on the m3tering protocol and tracks the overall performance of projects within the ecosystem.\n\nIt also functions as a governance tool empowering holders with veto rights over governance decisions made by the m3terDAO.",
+      answer: (
+        <>
+          Solaxy is an <b>ERC4626</b> vault that functions as a financial and
+          health index asset for all projects on the m3tering protocol and
+          tracks the overall performance of projects within the ecosystem.{" "}
+          <br /> It also functions as a governance tool empowering holders with
+          veto rights over governance decisions made by the m3terDAO.
+        </>
+      ),
     },
     {
       id: 2,
@@ -27,16 +34,33 @@ const FAQMenu: React.FC = () => {
     {
       id: 3,
       question: "Why can't I mint or melt solaxy?",
-      answer:
-        'Only "m3ter-heads" (accounts that hold at least one m3ter NFT) are eligible to collect newly minted tokens or any underlying collateral from the vault.\n\nThis restriction ensures that only committed community members who have a vested interest in the ecosystem can influence Solaxy\'s supply.',
+      answer: (
+        <>
+          Only <b>m3ter-heads</b> (accounts that hold at least one m3ter NFT)
+          are eligible to collect newly minted tokens or any underlying
+          collateral from the vault.
+          <br />
+          This restriction ensures that only committed community members who
+          have a vested interest in the ecosystem can influence Solaxy\'s
+          supply.
+        </>
+      ),
     },
     {
       id: 4,
       question: "How do I bridge to a chain not included here?",
-      answer: `Solaxy is deployed as a “superchainerc20” across all Ethereum layer-2 chains within the Optimism superchain.
- If you need to bridge to a chain that isn't currently supported, use alternative bridging solutions.
- While external bridging might be possible, note that these are not officially endorsed by the protocol and could carry extra risks or wait for Protocol Expansion. Future updates might include additional chains.
- It's best to check the latest protocol documentation or community channels for updates on chain support.`,
+      answer: (
+        <>
+          Solaxy is deployed as a <b>superchainERC20</b> across all Ethereum
+          layer-2 chains within the Optimism superchain. If you need to bridge
+          to a chain that isn't currently supported, use alternative bridging
+          solutions. While external bridging might be possible, note that these
+          are not officially endorsed by the protocol and could carry extra
+          risks or wait for Protocol Expansion. Future updates might include
+          additional chains. It's best to check the latest protocol
+          documentation or community channels for updates on chain support.
+        </>
+      ),
     },
     {
       id: 5,

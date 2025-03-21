@@ -53,7 +53,7 @@ const GemAnimation: React.FC<GemAnimationProps> = ({
     scene.add(ambientLight);
 
     // Create gem with improved material
-    const gemRadius = 0.4;
+    const gemRadius = 0.25;
     const gemGeometry = new THREE.IcosahedronGeometry(gemRadius, 0); // Increased detail level
 
     // Create environment map for reflections
