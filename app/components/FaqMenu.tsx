@@ -118,22 +118,25 @@ const FAQMenu: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 py-8 lg:mt-[150px] md:mt-[150px] mt-[120px]">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
-        Frequently Asked Questions
-      </h2>
-      <div className="space-y-5">
+    <div className="w-full max-w-3xl mx-auto px-4 py-8 lg:mt-[150px] md:mt-[150px] mt-[120px] rounded-[16px] shadow-sm bg-white">
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">FAQs</h2>
+      <div className="divide-y divide-gray-200">
         {faqData.map((item) => (
-          <div
-            key={item.id}
-            className="border border-gray-200 rounded-lg overflow-hidden shadow-sm"
-          >
+          <div key={item.id} className="overflow-hidden">
             <button
-              className="flex justify-between items-center w-full p-4 text-left bg-white hover:bg-gray-50 transition-colors duration-200"
+              className="flex justify-between items-center w-full p-4 text-left hover:bg-gray-50 transition-colors duration-200"
               onClick={() => toggleItem(item.id)}
               aria-expanded={openItem === item.id}
             >
-              <span className="font-medium text-gray-900">{item.question}</span>
+              <span
+                className={`text-[17px] ${
+                  openItem === item.id
+                    ? "text-yellow-500 font-bold"
+                    : "font-normal text-gray-900"
+                } `}
+              >
+                {item.question}
+              </span>
               <span className="text-gray-500 ml-2">
                 {openItem === item.id ? (
                   <ChevronUp size={20} />
@@ -143,9 +146,7 @@ const FAQMenu: React.FC = () => {
               </span>
             </button>
             {openItem === item.id && (
-              <div className="p-4 bg-gray-50 border-t border-gray-200">
-                {renderAnswer(item.answer)}
-              </div>
+              <div className="p-4 text-[14px]">{renderAnswer(item.answer)}</div>
             )}
           </div>
         ))}
