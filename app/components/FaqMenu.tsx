@@ -1,115 +1,65 @@
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { Link } from "react-router";
 
 interface FAQItem {
   id: number;
   question: string;
-  answer: string;
+  answer: React.ReactNode;
 }
-
-// Helper function to render answers with bullet points
-const renderAnswer = (answer: string) => {
-  // If the answer doesn't contain bullet points, return it as is
-  if (!answer.includes("•") && !answer.includes("\n-")) {
-    return <p className="text-gray-700">{answer}</p>;
-  }
-
-  // Split the answer by newlines
-  const parts = answer.split("\n");
-  const formattedParts = [];
-  let currentList: string[] = [];
-  let key = 0;
-
-  // Process each line
-  parts.forEach((part, _index) => {
-    const trimmedPart = part.trim();
-
-    // Check if this line is a bullet point
-    if (trimmedPart.startsWith("•") || trimmedPart.startsWith("-")) {
-      // Add the bullet point to the current list
-      currentList.push(trimmedPart.substring(1).trim());
-    } else {
-      // If we have bullet points collected and this is not a bullet point
-      if (currentList.length > 0) {
-        // Add the bullet list to our formatted parts
-        formattedParts.push(
-          <ul key={key++} className="list-disc pl-5 mt-2 mb-2">
-            {currentList.map((item, i) => (
-              <li key={i} className="text-gray-700 mb-1">
-                {item}
-              </li>
-            ))}
-          </ul>
-        );
-        // Reset the current list
-        currentList = [];
-      }
-
-      // Add non-bullet text if it's not empty
-      if (trimmedPart) {
-        formattedParts.push(
-          <p key={key++} className="text-gray-700">
-            {trimmedPart}
-          </p>
-        );
-      }
-    }
-  });
-
-  // Don't forget to add any remaining bullet points
-  if (currentList.length > 0) {
-    formattedParts.push(
-      <ul key={key++} className="list-disc pl-5 mt-2">
-        {currentList.map((item, i) => (
-          <li key={i} className="text-gray-700 mb-1">
-            {item}
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  return <>{formattedParts}</>;
-};
 
 const FAQMenu: React.FC = () => {
   const [openItem, setOpenItem] = useState<number | null>(null);
+
   const faqData: FAQItem[] = [
     {
       id: 1,
       question: "Wtf is solaxy?",
       answer:
-        "Solaxy is the financial and health index asset of the m3tering protocol. It tracks the overall performance of the projects within the ecosystem while also functioning as a governance tool. In essence, solaxy empowers holders—specifically m3ter-heads (those owning at least one m3ter NFT)—with veto rights over key decisions made by the m3terDAO.",
+        "Solaxy is an ERC4626 vault that functions as a financial and health index asset for all projects on the m3tering protocol and tracks the overall performance of projects within the ecosystem.\n\nIt also functions as a governance tool empowering holders with veto rights over governance decisions made by the m3terDAO.",
     },
     {
       id: 2,
       question: "What determines the value of solaxy?",
-      answer: `The value of solaxy is determined by several factors:
-• Index Asset Nature: It reflects the collective performance and health of the underlying m3tering projects.
-• Bonding Curve Dynamics: Solaxy is minted using a linear bonding curve with a fixed slope of 0.000025, which influences its issuance and price.
-• Ecosystem Growth and Governance: Market demand, protocol growth, and governance decisions made by m3ter-heads all play a role in its valuation.`,
+      answer:
+        "The value of Solaxy is determined by its linear bonding curve mechanism with a slope of 0.000025.\n\nThis means that each new token minted increases the price slightly by 0.25 pips, and each token melted decreases it similarly, thus creating a direct relationship between supply and price.",
     },
     {
       id: 3,
       question: "Why can't I mint or melt solaxy?",
-      answer: `Only accounts that hold at least one m3ter NFT (i.e. m3ter-heads) are eligible to receive solaxy tokens through the vault. This restriction is built into the protocol to ensure that only active, engaged participants—those who have a stake in the ecosystem—can influence solaxy’s supply and stability. This design helps maintain the asset’s integrity and prevents arbitrary minting or melting by users who are not part of the core community.`,
+      answer:
+        'Only "m3ter-heads" (accounts that hold at least one m3ter NFT) are eligible to collect newly minted tokens or any underlying collateral from the vault.\n\nThis restriction ensures that only committed community members who have a vested interest in the ecosystem can influence Solaxy\'s supply.',
     },
     {
       id: 4,
       question: "How do I bridge to a chain not included here?",
-      answer: `Solaxy is deployed as a “superchainerc20” across all Ethereum layer‑2 chains within the Optimism superchain. If you need to bridge to a chain that isn’t currently supported, you have a few options:
-    • Wait for Protocol Expansion: Future updates might include additional chains.
-    • Alternative Bridging Solutions: While external bridging might be possible, note that these are not officially endorsed by the protocol and could carry extra risks.
-    • It’s best to check the latest protocol documentation or community channels for updates on chain support.`,
+      answer: `Solaxy is deployed as a “superchainerc20” across all Ethereum layer-2 chains within the Optimism superchain.
+ If you need to bridge to a chain that isn't currently supported, use alternative bridging solutions.
+ While external bridging might be possible, note that these are not officially endorsed by the protocol and could carry extra risks or wait for Protocol Expansion. Future updates might include additional chains.
+ It's best to check the latest protocol documentation or community channels for updates on chain support.`,
     },
     {
       id: 5,
       question: "How do I get more involved with the protocol?",
-      answer: `There are several ways to engage:
-    • Acquire a m3ter NFT: This makes you eligible as a m3ter-head and gives you a voice in governance.
-    • Participate in m3terDAO: Engage in voting and discussions to help steer the protocol’s decisions.
-    • Join Community Channels: Follow the protocol on platforms like Discord, Twitter, or Telegram to stay informed and contribute.
-    • Contribute to Development or Outreach: If you have technical or marketing skills, look for opportunities to help further the protocol’s reach and innovation.`,
+      answer: (
+        <>
+          Visit the{" "}
+          <Link
+            target="_blank"
+            to="https://warpcast.com/~/channel/m3ter-heads"
+            className="text-blue-500 hover:underline"
+          >
+            /m3ter-heads
+          </Link>{" "}
+          channel on Farcaster to start participating in discussions and start
+          learning how you can be a part of the protocol developers, energy
+          providers or governance via the M3terDAO.
+          <br />
+          <br />
+          You can also join the weekly community call on our Discord to engage
+          with other members of the community.
+        </>
+      ),
     },
   ];
 
@@ -133,7 +83,7 @@ const FAQMenu: React.FC = () => {
                   openItem === item.id
                     ? "text-yellow-500 font-bold"
                     : "font-normal text-gray-900"
-                } `}
+                }`}
               >
                 {item.question}
               </span>
@@ -146,7 +96,9 @@ const FAQMenu: React.FC = () => {
               </span>
             </button>
             {openItem === item.id && (
-              <div className="p-4 text-[14px]">{renderAnswer(item.answer)}</div>
+              <div className="p-4 text-[14px] whitespace-pre-line">
+                {item.answer}
+              </div>
             )}
           </div>
         ))}
