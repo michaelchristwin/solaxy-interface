@@ -118,11 +118,11 @@ const FAQMenu: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 py-8">
+    <div className="w-full max-w-3xl mx-auto px-4 py-8 lg:mt-[100px] md:mt-[100px] mt-[70px]">
       <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
         Frequently Asked Questions
       </h2>
-      <div className="space-y-4">
+      <div className="space-y-5">
         {faqData.map((item) => (
           <div
             key={item.id}
