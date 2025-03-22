@@ -1,6 +1,6 @@
 import "~/app.css";
 import React, { useState, useMemo, useEffect } from "react";
-import { RefreshCcw, Settings, Info } from "lucide-react";
+import { RefreshCcw, Settings, Info, ChevronRight } from "lucide-react";
 import { useAccount, useReadContracts } from "wagmi";
 import {
   writeContract as asyncWriteContract,
@@ -10,7 +10,7 @@ import {
   type TransactionTab,
   useAppContext,
 } from "~/providers/app.context-provider";
-import { SLX } from "~/assets/token-logos";
+import { ETH, SLX } from "~/assets/token-logos";
 import ActionButtonText from "~/components/ActionButtonText";
 import { ConnectKitButton } from "connectkit";
 import OutputPanel from "~/components/OutputPanel";
@@ -344,10 +344,9 @@ const TradeInterface: React.FC = () => {
           <Settings className="w-5 h-5" />
         </button>
       </div>
-
       {/* Tab Navigation */}
       <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1 mb-6">
-        {([activeTab, "bridge"] as TransactionTab[]).map((tab) => (
+        {([transactionMode, "bridge"] as TransactionTab[]).map((tab) => (
           <button
             key={tab}
             className={`flex-1 py-2.5 rounded-md font-medium transition-all ${
@@ -361,47 +360,87 @@ const TradeInterface: React.FC = () => {
           </button>
         ))}
       </div>
+      {(activeTab === "melt" || activeTab === "mint") && (
+        <div
+          className={`gap-y-3 relative flex ${
+            isReversed ? "flex-col-reverse" : "flex-col"
+          }`}
+        >
+          {/* Input Panel */}
+          <InputPanel
+            handleInputChange={handleInputChange}
+            inputAmount={inputAmount}
+            outputAmount={outputAmount}
+            isReversed={isReversed}
+            getInputLabel={getInputLabel}
+            activeTab={activeTab}
+            balance={formatTokenAmount(sDAIBalance as bigint)}
+            isLoading={isLoading}
+          />
+          {/* Mode Toggle Button */}
+          <div className="flex justify-center -my-1 z-10 absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
+            <button
+              onClick={toggleInputMode}
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-2 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
+            >
+              <RefreshCcw className="w-4 h-4 text-yellow-600 dark:text-yellow-400 active:animate-spin" />
+            </button>
+          </div>
 
-      {/* Transaction Interface */}
-      <div
-        className={`gap-y-3 relative flex ${
-          isReversed ? "flex-col-reverse" : "flex-col"
-        }`}
-      >
-        {/* Input Panel */}
-        <InputPanel
-          handleInputChange={handleInputChange}
-          inputAmount={inputAmount}
-          outputAmount={outputAmount}
-          isReversed={isReversed}
-          getInputLabel={getInputLabel}
-          activeTab={activeTab}
-          balance={formatTokenAmount(sDAIBalance as bigint)}
-          isLoading={isLoading}
-        />
-        {/* Mode Toggle Button */}
-        <div className="flex justify-center -my-1 z-10 absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
-          <button
-            onClick={toggleInputMode}
-            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-2 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
-          >
-            <RefreshCcw className="w-4 h-4 text-yellow-600 dark:text-yellow-400 active:animate-spin" />
-          </button>
+          {/* Output Panel */}
+          <OutputPanel
+            handleInputChange={handleInputChange}
+            outputAmount={outputAmount}
+            inputAmount={inputAmount}
+            isReversed={isReversed}
+            getOutputLabel={getOutputLabel}
+            activeTab={activeTab}
+            balance={formatTokenAmount(solaxyBalance as bigint)}
+            isLoading={isLoading}
+          />
         </div>
-
-        {/* Output Panel */}
-        <OutputPanel
-          handleInputChange={handleInputChange}
-          outputAmount={outputAmount}
-          inputAmount={inputAmount}
-          isReversed={isReversed}
-          getOutputLabel={getOutputLabel}
-          activeTab={activeTab}
-          balance={formatTokenAmount(solaxyBalance as bigint)}
-          isLoading={isLoading}
-        />
-      </div>
-
+      )}
+      {activeTab === "bridge" && (
+        <div className={`w-full space-y-1.5`}>
+          <div className={`flex w-full justify-between relative`}>
+            <div
+              className={`flex p-2 items-center bg-gray-50 rounded-[15px] space-x-3 w-[49%]`}
+            >
+              <img
+                src={ETH}
+                alt={`Ethereum Icon`}
+                className={`w-[25px] h-[25px]`}
+              />
+              <div>
+                <p className={`text-[13px] text-neutral-500`}>From</p>
+                <p className={`font-medium`}>Ethereum</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              className={`w-[30px] h-[30px] absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] bg-gray-50 border-2 rounded-lg`}
+            >
+              <ChevronRight size={20} className={`mx-auto`} />
+            </button>
+            <div
+              className={`flex p-2 items-center bg-gray-50 rounded-[15px] justify-end space-x-3 w-[49%]`}
+            >
+              <div>
+                <p className={`text-[13px] text-end text-neutral-500`}>To</p>
+                <p className={`font-medium text-end`}>Ethereum</p>
+              </div>
+              <img
+                src={ETH}
+                alt={`Ethereum Icon`}
+                className={`w-[25px] h-[25px]`}
+              />
+            </div>
+          </div>
+          <div
+            className={`w-full rounded-[15px] bg-gray-50 flex items-center h-[70px]`}
+          ></div>
+        </div>
+      )}
       {/* Rate information */}
       <div className="mt-3 flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 px-1">
         <div className="flex items-center">
@@ -409,7 +448,6 @@ const TradeInterface: React.FC = () => {
           <Info className="w-3 h-3 ml-1 text-gray-400" />
         </div>
       </div>
-
       {/* Transaction Settings - Toggleable */}
       {showSettings && (
         <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl space-y-3">
@@ -453,7 +491,6 @@ const TradeInterface: React.FC = () => {
           </div>
         </div>
       )}
-
       {/* Action Button */}
       {isConnected ? (
         <button
@@ -477,7 +514,6 @@ const TradeInterface: React.FC = () => {
           }}
         </ConnectKitButton.Custom>
       )}
-
       {/* Footer */}
     </div>
   );
