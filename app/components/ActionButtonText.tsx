@@ -25,7 +25,7 @@ const ActionButtonText = ({
         </div>
       </div>
     );
-  } else {
+  } else if (activeTab === "melt") {
     return (
       <div className={`w-full flex items-center justify-center space-x-1.5`}>
         <p>Collect {selectedToken.symbol}</p>
@@ -33,6 +33,19 @@ const ActionButtonText = ({
           <img
             src={selectedToken.logo}
             alt={`${selectedToken.symbol} logo`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className={`w-full flex items-center justify-center space-x-1.5`}>
+        <p>Bridge SLX</p>
+        <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
+          <img
+            src={SLX}
+            alt={`SLX logo`}
             className="w-full h-full object-cover"
           />
         </div>

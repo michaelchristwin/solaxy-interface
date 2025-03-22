@@ -319,6 +319,7 @@ const TradeInterface: React.FC = () => {
   const bgColors = {
     melt: "bg-gradient-to-br from-red-500 to-yellow-500 hover:from-red-600 hover:to-yellow-600 dark:from-red-600 dark:to-yellow-500 dark:hover:from-red-700 dark:hover:to-yellow-600",
     mint: "bg-gradient-to-br from-green-500 to-yellow-500 hover:from-green-600 hover:to-yellow-600 dark:from-green-600 dark:to-yellow-500 dark:hover:from-green-700 dark:hover:to-yellow-600",
+    bridge: "bg-black hover:bg-black/80",
   };
 
   return (
@@ -437,8 +438,24 @@ const TradeInterface: React.FC = () => {
             </div>
           </div>
           <div
-            className={`w-full rounded-[15px] bg-gray-50 flex items-center h-[70px]`}
-          ></div>
+            className={`w-full rounded-[15px] bg-gray-50 flex justify-between items-center h-[70px]`}
+          >
+            <input
+              type="text"
+              inputMode={`decimal`}
+              className={`w-[49%] h-full outline-none ps-4`}
+            />
+            <div className="lg:w-40 md:w-40 w-[120px] h-9 py-2 bg-white border dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 rounded-[30px]">
+              <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
+                <img
+                  src={SLX}
+                  alt={`SLX logo`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span>SLX</span>
+            </div>
+          </div>
         </div>
       )}
       {/* Rate information */}
@@ -449,7 +466,7 @@ const TradeInterface: React.FC = () => {
         </div>
       </div>
       {/* Transaction Settings - Toggleable */}
-      {showSettings && (
+      {showSettings && (activeTab === "mint" || activeTab === "melt") && (
         <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl space-y-3">
           <Input
             className=""
@@ -491,10 +508,20 @@ const TradeInterface: React.FC = () => {
           </div>
         </div>
       )}
+      {showSettings && activeTab === "bridge" && (
+        <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl space-y-3">
+          <Input
+            className=""
+            type="text"
+            placeholder="receipient address"
+            onChange={(e) => setReciepientAdress(e.target.value)}
+          />
+        </div>
+      )}
       {/* Action Button */}
       {isConnected ? (
         <button
-          className={`w-full mt-6 space-x-1 py-3.5 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${bgColors[transactionMode]}`}
+          className={`w-full mt-6 space-x-1 py-3.5 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${bgColors[activeTab]}`}
           onClick={sendTransaction}
           disabled={!inputAmount || parseFloat(inputAmount) === 0 || isPending}
         >
