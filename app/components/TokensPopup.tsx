@@ -67,7 +67,7 @@ const tokenGroups = [
 //const allTokens = tokenGroups.flatMap((group) => group.tokens);
 
 function TokensPopup() {
-  const [_open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const { selectedToken, setSelectedToken } = useAppContext();
 
   const handleTokenSelect = (token: TokenStruct) => {
@@ -76,7 +76,7 @@ function TokensPopup() {
   };
 
   return (
-    <Dialog open={false} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"

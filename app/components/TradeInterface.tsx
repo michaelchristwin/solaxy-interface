@@ -26,6 +26,7 @@ import {
   safeRedeem,
   safeWithdraw,
 } from "~/contracts/functions";
+import OpstackPopup from "./OpstackPopup";
 
 const TradeInterface: React.FC = () => {
   const {
@@ -404,38 +405,42 @@ const TradeInterface: React.FC = () => {
       {activeTab === "bridge" && (
         <div className={`w-full space-y-1.5`}>
           <div className={`flex w-full justify-between relative`}>
-            <div
-              className={`flex p-2 items-center bg-gray-50 rounded-[15px] space-x-3 w-[49%]`}
-            >
-              <img
-                src={ETH}
-                alt={`Ethereum Icon`}
-                className={`w-[25px] h-[25px]`}
-              />
-              <div>
-                <p className={`text-[13px] text-neutral-500`}>From</p>
-                <p className={`font-medium`}>Ethereum</p>
+            <OpstackPopup>
+              <div
+                className={`flex p-2 items-center bg-gray-50 rounded-[15px] space-x-3 w-[49%] cursor-pointer`}
+              >
+                <img
+                  src={ETH}
+                  alt={`Ethereum Icon`}
+                  className={`w-[25px] h-[25px]`}
+                />
+                <div>
+                  <p className={`text-[13px] text-neutral-500`}>From</p>
+                  <p className={`font-medium`}>Ethereum</p>
+                </div>
               </div>
-            </div>
+            </OpstackPopup>
             <button
               type="button"
               className={`w-[30px] h-[30px] absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] bg-gray-50 border-2 rounded-lg`}
             >
               <ChevronRight size={20} className={`mx-auto`} />
             </button>
-            <div
-              className={`flex p-2 items-center bg-gray-50 rounded-[15px] justify-end space-x-3 w-[49%]`}
-            >
-              <div>
-                <p className={`text-[13px] text-end text-neutral-500`}>To</p>
-                <p className={`font-medium text-end`}>Ethereum</p>
+            <OpstackPopup>
+              <div
+                className={`flex p-2 items-center bg-gray-50 rounded-[15px] justify-end space-x-3 w-[49%] cursor-pointer`}
+              >
+                <div>
+                  <p className={`text-[13px] text-end text-neutral-500`}>To</p>
+                  <p className={`font-medium text-end`}>Ethereum</p>
+                </div>
+                <img
+                  src={ETH}
+                  alt={`Ethereum Icon`}
+                  className={`w-[25px] h-[25px]`}
+                />
               </div>
-              <img
-                src={ETH}
-                alt={`Ethereum Icon`}
-                className={`w-[25px] h-[25px]`}
-              />
-            </div>
+            </OpstackPopup>
           </div>
           <div
             className={`w-full rounded-[15px] bg-gray-50 flex justify-between items-center h-[70px]`}
