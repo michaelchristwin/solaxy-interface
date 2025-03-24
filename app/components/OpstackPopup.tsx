@@ -10,7 +10,15 @@ import {
   Unichain,
   World_Chain,
 } from "~/assets/chains";
-import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "~/components/ui/dialog";
+import { type ChainStruct } from "~/providers/app.context-provider";
 
 // Define token groups
 const OpChains = [
@@ -19,12 +27,16 @@ const OpChains = [
     image: Ethereum,
   },
   {
-    name: "Optimism Mainnet",
+    name: "Op Mainnet",
     image: Optimism,
   },
   {
     name: "Base",
     image: Base,
+  },
+  {
+    name: "Celo",
+    image: Celo,
   },
   {
     name: "Unichain",
@@ -46,40 +58,43 @@ const OpChains = [
     name: "Lisk",
     image: Lisk,
   },
-  {
-    name: "Celo",
-    image: Celo,
-  },
 ];
 
 interface OpstackPopupProps {
   children: React.ReactNode;
+  setSelectedChain: (chain: ChainStruct) => void;
 }
 
-// Flatten tokens for convenience
-//const allTokens = tokenGroups.flatMap((group) => group.tokens);
-
-const OpstackPopup: React.FC<OpstackPopupProps> = ({ children }) => {
+const OpstackPopup: React.FC<OpstackPopupProps> = ({
+  children,
+  setSelectedChain,
+}) => {
   const [open, setOpen] = useState(false);
+
+  const handleClick = (chain: ChainStruct) => {
+    setSelectedChain(chain);
+    setOpen(false);
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="lg:w-96 md:w-96 w-80 h-[500px] overflow-y-auto p-5 gap-y-0 poppins">
-        <p className="text-2xl font-bold block mb-3">Select Chain</p>
+        <DialogHeader>
+          <DialogTitle className={`text-2xl font-bold block mb-5`}>
+            Select Chain
+          </DialogTitle>
+          <DialogDescription className={`hidden`}></DialogDescription>
+        </DialogHeader>
+
         <div className="space-y-4">
           {OpChains.map((chain) => (
             <div
               key={chain.name}
-              className="space-y-1 flex items-center justify-between"
+              className={`space-y-1 flex items-center space-x-3 hover:bg-gray-100 cursor-pointer`}
+              onClick={() => handleClick(chain)}
             >
-              <h3 className="text-sm font-medium text-gray-500 mb-2">
-                {chain.name}
-              </h3>
-              <div
-                className="flex items-center justify-between p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
-                onClick={() => {}}
-              >
+              <div className="flex items-center justify-between p-2  rounded-lg cursor-pointer">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                     <img
@@ -90,6 +105,9 @@ const OpstackPopup: React.FC<OpstackPopupProps> = ({ children }) => {
                   </div>
                 </div>
               </div>
+              <h3 className="text-sm font-medium text-gray-500 mb-2">
+                {chain.name}
+              </h3>
             </div>
           ))}
         </div>

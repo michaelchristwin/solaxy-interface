@@ -10,7 +10,7 @@ import {
   type TransactionTab,
   useAppContext,
 } from "~/providers/app.context-provider";
-import { ETH, SLX } from "~/assets/token-logos";
+import { SLX } from "~/assets/token-logos";
 import ActionButtonText from "~/components/ActionButtonText";
 import { ConnectKitButton } from "connectkit";
 import OutputPanel from "~/components/OutputPanel";
@@ -19,6 +19,7 @@ import { assetContract, solaxyContract } from "~/contracts";
 import { type Address, formatUnits, parseEther } from "viem";
 import { Input } from "~/components/ui/input";
 import { config } from "~/config";
+import { motion } from "framer-motion";
 import {
   checkAllowance,
   safeDeposit,
@@ -37,6 +38,10 @@ const TradeInterface: React.FC = () => {
     selectedToken,
     setTransactionMode,
     transactionMode,
+    selectedChain1,
+    selectedChain2,
+    setSelectedChain1,
+    setSelectedChain2,
   } = useAppContext();
   const { isConnected, address } = useAccount();
   const [inputAmount, setInputAmount] = useState("");
@@ -244,13 +249,6 @@ const TradeInterface: React.FC = () => {
     }
   };
 
-  // console.log("inputAmount: ", inputAmount);
-  // console.log("outputAmount: ", outputAmount);
-  // console.log("depositable_assets: ", depositable_assets);
-  // console.log("mintable_shares: ", mintable_shares);
-  // console.log("withdrawable_assets: ", withdrawable_assets);
-  // console.log("redeemable_shares: ", redeemable_shares);
-  // console.log("Slippage: ", slippage);
   const sendTransaction = async () => {
     try {
       setIsPending(true);
@@ -315,6 +313,11 @@ const TradeInterface: React.FC = () => {
       console.error("Transaction failed:", error);
       setIsPending(false);
     }
+  };
+
+  const toggleChains = () => {
+    setSelectedChain1(selectedChain2);
+    setSelectedChain2(selectedChain1);
   };
 
   const bgColors = {
@@ -405,41 +408,48 @@ const TradeInterface: React.FC = () => {
       {activeTab === "bridge" && (
         <div className={`w-full space-y-1.5`}>
           <div className={`flex w-full justify-between relative`}>
-            <OpstackPopup>
-              <div
-                className={`flex p-2 items-center bg-gray-50 rounded-[15px] space-x-3 w-[49%] cursor-pointer`}
+            <OpstackPopup setSelectedChain={setSelectedChain1}>
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className={`flex p-2 items-center bg-gray-50 hover:bg-gray-100 rounded-[15px] space-x-3 w-[49%] cursor-pointer`}
               >
                 <img
-                  src={ETH}
-                  alt={`Ethereum Icon`}
-                  className={`w-[25px] h-[25px]`}
+                  src={selectedChain1.image}
+                  alt={`${selectedChain1.name} Icon`}
+                  className={`w-[25px] h-[25px] rounded-full`}
                 />
                 <div>
                   <p className={`text-[13px] text-neutral-500`}>From</p>
-                  <p className={`font-medium`}>Ethereum</p>
+                  <p className={`font-medium`}>{selectedChain1.name}</p>
                 </div>
-              </div>
+              </motion.div>
             </OpstackPopup>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               type="button"
+              onClick={toggleChains}
               className={`w-[30px] h-[30px] absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] bg-gray-50 border-2 rounded-lg`}
             >
-              <ChevronRight size={20} className={`mx-auto`} />
-            </button>
-            <OpstackPopup>
-              <div
-                className={`flex p-2 items-center bg-gray-50 rounded-[15px] justify-end space-x-3 w-[49%] cursor-pointer`}
+              <ChevronRight size={20} className={`mx-auto cursor-pointer`} />
+            </motion.button>
+            <OpstackPopup setSelectedChain={setSelectedChain2}>
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className={`flex p-2 items-center bg-gray-50 hover:bg-gray-100 rounded-[15px] justify-end space-x-3 w-[49%] cursor-pointer`}
               >
                 <div>
                   <p className={`text-[13px] text-end text-neutral-500`}>To</p>
-                  <p className={`font-medium text-end`}>Ethereum</p>
+                  <p className={`font-medium text-end`}>
+                    {selectedChain2.name}
+                  </p>
                 </div>
                 <img
-                  src={ETH}
-                  alt={`Ethereum Icon`}
-                  className={`w-[25px] h-[25px]`}
+                  src={selectedChain2.image}
+                  alt={`${selectedChain2.name} Icon`}
+                  className={`w-[25px] h-[25px] rounded-full`}
                 />
-              </div>
+              </motion.div>
             </OpstackPopup>
           </div>
           <div
@@ -450,7 +460,7 @@ const TradeInterface: React.FC = () => {
               inputMode={`decimal`}
               className={`w-[49%] h-full outline-none ps-4`}
             />
-            <div className="lg:w-40 md:w-40 w-[120px] h-9 py-2 bg-white border dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 rounded-[30px]">
+            <div className="lg:w-40 md:w-40 w-[120px] h-[40px] py-2 bg-white border border-gray-200 dark:bg-gray-700 font-medium flex items-center justify-center space-x-2 rounded-[30px]">
               <div className="w-[22px] h-[22px] rounded-full overflow-hidden flex-shrink-0">
                 <img
                   src={SLX}

@@ -1,5 +1,6 @@
 import { USD3 } from "~/assets/token-logos";
 import { createContext, useState, useContext, type ReactNode } from "react";
+import { Ethereum, Optimism } from "~/assets/chains";
 
 export type InputMode = "stable" | "slx";
 export type TransactionTab = "mint" | "melt" | "bridge";
@@ -11,15 +12,24 @@ export type TokenStruct = {
   balance: string;
 };
 
+export type ChainStruct = {
+  name: string;
+  image: string;
+};
+
 interface AppContextType {
   inputMode: InputMode;
   activeTab: TransactionTab;
   transactionMode: TransactionMode;
   selectedToken: TokenStruct;
+  selectedChain1: ChainStruct;
+  selectedChain2: ChainStruct;
   setInputMode: (mode: InputMode) => void;
   setTransactionMode: (mode: TransactionMode) => void;
   setActiveTab: (tab: TransactionTab) => void;
   setSelectedToken: (token: TokenStruct) => void;
+  setSelectedChain1: (chain: ChainStruct) => void;
+  setSelectedChain2: (chain: ChainStruct) => void;
 }
 
 // Create context with a meaningful default or null + type assertion
@@ -46,6 +56,14 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     logo: USD3,
     balance: "0.00",
   });
+  const [selectedChain1, setSelectedChain1] = useState({
+    name: "Ethereum",
+    image: Ethereum,
+  });
+  const [selectedChain2, setSelectedChain2] = useState({
+    name: "Op Mainnet",
+    image: Optimism,
+  });
 
   return (
     <AppContext.Provider
@@ -54,6 +72,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         inputMode,
         selectedToken,
         transactionMode,
+        selectedChain1,
+        selectedChain2,
         setTransactionMode(mode) {
           setTransactionMode(mode);
         },
@@ -65,6 +85,12 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         },
         setSelectedToken(token) {
           setSelectedToken(token);
+        },
+        setSelectedChain1(chain) {
+          setSelectedChain1(chain);
+        },
+        setSelectedChain2(chain) {
+          setSelectedChain2(chain);
         },
       }}
     >
