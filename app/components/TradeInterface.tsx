@@ -400,7 +400,7 @@ const TradeInterface: React.FC = () => {
 						<button
 							type="button"
 							onClick={toggleInputMode}
-							className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-2 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
+							className="bg-white dark:bg-gray-800 border cursor-pointer border-gray-200 dark:border-gray-700 p-2 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
 						>
 							<RefreshCcw className="w-4 h-4 text-yellow-600 dark:text-yellow-400 active:animate-spin" />
 						</button>
