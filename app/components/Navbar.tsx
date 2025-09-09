@@ -1,39 +1,55 @@
 import { MenuIcon } from "lucide-react";
-import { NavLink } from "react-router";
+import { NavLink, Link } from "react-router";
 import { SLX } from "~/assets/token-logos";
-import styles from "~/styles/layout.module.css";
 import NavbarSheet from "./NavbarSheet";
 
 function Navbar() {
   return (
-    <nav className={styles.navbar}>
-      <NavLink to={`/`} className={styles.brandLink}>
-        <img src={SLX} alt="Solaxy Logo" className={styles.brandImage} />
-        <span className={styles.brandName}>Solaxy</span>
-      </NavLink>
-      <div className={styles.navLinks}>
-        <NavLink target="_blank" to={`https://m3tering.whynotswitch.com`}>
+    <header className="flex justify-between items-center h-[60px] px-[50px] md:px-[100px] lg:px-[120px] bg-transparent pt-[20px]">
+      <Link to={`/`} className="flex justify-center items-center">
+        <img src={SLX} alt="Solaxy Logo" className="h-[26px] w-[26px]" />
+        <span className="font-semibold text-[#eab308] text-[23px]">Solaxy</span>
+      </Link>
+      <nav className="lg:flex hidden items-center gap-[30px]">
+        <NavLink
+          target="_blank"
+          to={`https://m3tering.whynotswitch.com`}
+          className="text-[#eab308] font-semibold ease-in duration-300 transition hover:text-[#c47d00]"
+        >
           Docs
         </NavLink>
         <NavLink
           target="_blank"
           to={`https://warpcast.com/~/channel/m3ter-heads`}
+          className="text-[#eab308] font-semibold ease-in duration-300 transition hover:text-[#c47d00]"
         >
           Forum
         </NavLink>
-        <NavLink target="_blank" to={`https://github.com/m3tering/Solaxy`}>
+        <NavLink
+          target="_blank"
+          to={`https://github.com/m3tering/Solaxy`}
+          className="text-[#eab308] font-semibold ease-in duration-300 transition hover:text-[#c47d00]"
+        >
           Github
         </NavLink>
-        <NavLink target="_blank" to={`https://etherscan.io/`}>
+        <NavLink
+          target="_blank"
+          to={`https://etherscan.io/`}
+          className="text-[#eab308] font-semibold ease-in duration-300 transition hover:text-[#c47d00]"
+        >
           Etherscan
         </NavLink>
-      </div>
-      <NavbarSheet>
-        <button className={styles.sheetButton} type={`button`}>
-          <MenuIcon size={26} className={`text-yellow-500`} />
-        </button>
-      </NavbarSheet>
-    </nav>
+
+        <NavbarSheet>
+          <button
+            className="rounded-full flex lg:hidden w-[26px] h-[26px]"
+            type={`button`}
+          >
+            <MenuIcon size={26} className={`text-yellow-500`} />
+          </button>
+        </NavbarSheet>
+      </nav>
+    </header>
   );
 }
 

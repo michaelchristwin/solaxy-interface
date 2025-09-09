@@ -9,10 +9,20 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  darkTheme,
+  lightTheme,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
+import { WagmiProvider } from "wagmi";
 import { AppContextProvider } from "~/providers/app.context-provider";
-import { Web3Provider } from "~/providers/web3provider";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import "@rainbow-me/rainbowkit/styles.css";
+import { config } from "./config";
+
+const queryClient = new QueryClient();
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -31,32 +41,37 @@ export const links: Route.LinksFunction = () => [
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <Web3Provider>
-        <AppContextProvider>
-          <head>
-            <meta charSet="utf-8" />
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1"
-            />
-            <Meta />
-            <Links />
-          </head>
-          <body className={`w-full min-h-[100vh] z-10`}>
-            <Navbar />
-            {children}
-            <ScrollRestoration />
-            <Scripts />
-            <Footer />
-          </body>
-        </AppContextProvider>
-      </Web3Provider>
+      <AppContextProvider>
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <Meta />
+          <Links />
+        </head>
+        <body className={`w-full min-h-[100vh] z-10`}>
+          <Navbar />
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+          <Footer />
+        </body>
+      </AppContextProvider>
     </html>
   );
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider
+          theme={{ lightMode: lightTheme(), darkMode: darkTheme() }}
+        >
+          <Outlet />;
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import { FaDiscord, FaSquareXTwitter } from "react-icons/fa6";
 import { SiFarcaster } from "react-icons/si";
-import styles from "~/styles/layout.module.css";
 import {
   Coingecko,
   Coinmarketcap,
@@ -16,15 +15,15 @@ import {
 const socialLinks = [
   {
     href: "https://discord.gg/afFvdhW4",
-    icon: <FaDiscord className={styles.footerSocials} />,
+    icon: <FaDiscord className="h-[50px] rounded-[15%] w-[50px]" />,
   },
   {
     href: "https://warpcast.com/~/channel/m3ter-heads",
-    icon: <SiFarcaster className={styles.footerSocials} />,
+    icon: <SiFarcaster className="h-[50px] rounded-[15%] w-[50px]" />,
   },
   {
     href: "https://x.com/M3tering",
-    icon: <FaSquareXTwitter className={styles.footerSocials} />,
+    icon: <FaSquareXTwitter className="h-[50px] rounded-[15%] w-[50px]" />,
   },
 ];
 
@@ -102,17 +101,17 @@ const sourceCodes = [
 ];
 
 const Footer = () => (
-  <footer className={styles.footer}>
-    <div className={styles.container}>
+  <footer className="w-full pt-[40px] text-white block bg-[rgba(64,64,64,0.8)] backdrop-blur-[8px]">
+    <div className="max-w-full mx-auto grid [grid-template-columns:repeat(auto-fit,minmax(200px,1fr))] md:gap-[30px] px-10 py-5 gap-[20px]">
       <div>
         <FooterSection title="Socials">
-          <div className={styles.socialsList}>
+          <div className="w-fit gap-[16px] grid [grid-template-columns:repeat(3,1fr)]">
             {socialLinks.map(({ href, icon }) => (
               <Link
                 key={href}
                 target="_blank"
                 to={href}
-                className={styles.footerSocials}
+                className="h-[50px] rounded-[15%] w-[50px]"
               >
                 {icon}
               </Link>
@@ -121,11 +120,11 @@ const Footer = () => (
         </FooterSection>
 
         <FooterSection title="Exchanges">
-          <div className={styles.socialsList}>
+          <div className="w-fit gap-[16px] grid [grid-template-columns:repeat(3,1fr)]">
             {exchanges.map(({ href, src, alt }) => (
               <Link key={href} target="_blank" to={href}>
                 <img
-                  className={styles.footerSocials}
+                  className="h-[50px] rounded-[15%] w-[50px]"
                   src={src}
                   alt={`${alt} Logo`}
                 />
@@ -137,10 +136,14 @@ const Footer = () => (
 
       <div>
         <FooterSection title="Docs">
-          <ul className={styles.linksList}>
+          <ul className="list-none p-0 m-0">
             {docs.map(({ href, text }) => (
-              <li key={href}>
-                <Link target="_blank" to={href}>
+              <li key={href} className="mb-2.5">
+                <Link
+                  target="_blank"
+                  to={href}
+                  className="text-[#bdc3c7] no-underline text-sm transition-colors duration-300 ease-in-out flex items-center gap-2 hover:text-white"
+                >
                   {text}
                 </Link>
               </li>
@@ -149,10 +152,14 @@ const Footer = () => (
         </FooterSection>
 
         <FooterSection title="Code">
-          <ul className={styles.linksList}>
+          <ul className="list-none p-0 m-0">
             {sourceCodes.map(({ label, href }) => (
-              <li key={label}>
-                <Link target="_blank" to={href}>
+              <li key={label} className="mb-2.5">
+                <Link
+                  target="_blank"
+                  to={href}
+                  className="text-[#bdc3c7] no-underline text-sm transition-colors duration-300 ease-in-out flex items-center gap-2 hover:text-white"
+                >
                   {label}
                 </Link>
               </li>
@@ -161,17 +168,26 @@ const Footer = () => (
         </FooterSection>
       </div>
 
-      <div className={styles.contractsGroup}>
-        <h3 className={styles.groupTitle}>Smart Contracts</h3>
+      <div className="col-span-2 w-fit">
+        <h3 className="text-[20px] font-semibold text-[#ecf0f1] mb-5">
+          Smart Contracts
+        </h3>
         {contractAddresses.map(({ label, links, contractAddress }) => (
-          <div key={label} className={styles.contractsList}>
-            <code>{contractAddress}</code>
-            <span>{label}</span>
-            <div className={styles.contractsListLogo}>
+          <div
+            key={label}
+            className="inline-flex flex-wrap w-full gap-1.5 mb-2.5 items-center text-[#bdc3c7] hover:text-white cursor-pointer"
+          >
+            <pre>
+              <code className="text-[14px] font-light">{contractAddress}</code>
+            </pre>
+            <span className="text-wrap block font-semibold text-[14px]">
+              {label}
+            </span>
+            <div className="gap-[7px] flex">
               {links.map(({ href, src, alt }) => (
                 <Link key={href} target="_blank" to={href}>
                   <img
-                    className={styles.footerIcon}
+                    className="h-[20px] rounded-full w-[20px]"
                     src={src}
                     alt={`${alt} Logo`}
                   />
@@ -183,8 +199,8 @@ const Footer = () => (
       </div>
     </div>
 
-    <div className={styles.bottomBar}>
-      <p className={styles.copyright}>
+    <div className="p-[10px] text-center">
+      <p className="text-[14px] text-[#95a5a6] m-0">
         © {new Date().getFullYear()} M3tering Protocol.
       </p>
     </div>
@@ -196,8 +212,10 @@ interface FooterSectionProps {
   children: React.ReactNode;
 }
 const FooterSection: React.FC<FooterSectionProps> = ({ title, children }) => (
-  <div className={styles.linksGroup}>
-    <h3 className={styles.groupTitle}>{title}</h3>
+  <div className="flex-1 min-w-[150px] mb-[30px] pr-[20px]">
+    <h3 className="text-[20px] font-semibold mb-[20px] text-[#ecf0f1]">
+      {title}
+    </h3>
     {children}
   </div>
 );
