@@ -1,12 +1,12 @@
-import { Link } from "react-router";
-import { SLX } from "~/assets/token-logos";
-import FAQMenu from "~/components/FaqMenu";
-import GemAnimation from "~/components/GemAnimation";
-import HeroText from "~/components/HeroText";
-import TradeInterface from "~/components/TradeInterface";
-import { Sponsors } from "~/assets/sponsors";
-import BrowserOnly from "~/components/BrowserOnly";
-import Marquee from "react-fast-marquee";
+// import { Link } from "react-router";
+// import { SLX } from "~/assets/token-logos";
+// import FAQMenu from "~/components/FaqMenu";
+// import GemAnimation from "~/components/GemAnimation";
+// import HeroText from "~/components/HeroText";
+// import TradeInterface from "~/components/TradeInterface";
+// import { Sponsors } from "~/assets/sponsors";
+// import BrowserOnly from "~/components/BrowserOnly";
+// import Marquee from "react-fast-marquee";
 
 export function meta() {
   return [
@@ -21,10 +21,11 @@ export function meta() {
 export default function Index() {
   return (
     <div className="w-full relative">
-      <GemAnimation />
+      <p className="text-center">It works!</p>
+      {/* <GemAnimation /> */}
       {/* Hero Section */}
 
-      <div className="w-full min-h-[400px] flex justify-center items-center lg:mt-32 md:mt-28 mt-20">
+      {/* <div className="w-full min-h-[400px] flex justify-center items-center lg:mt-32 md:mt-28 mt-20">
         <div className="block space-y-10 w-[90%] sm:w-[85%] md:w-[80%] mx-auto">
           <div className="block lg:text-start md:text-start text-center">
             <p className="font-extrabold text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-neutral-800">
@@ -41,7 +42,7 @@ export default function Index() {
           </Link>
         </div>
       </div>
-      {/** biome-ignore lint/nursery/useUniqueElementIds: <Id is used for naviagtion> */}
+     
       <div
         id="trade"
         className="w-full lg:mt-[300px] md:mt-[200px] mt-[150px] p-4"
@@ -67,7 +68,7 @@ export default function Index() {
             ))}
           </Marquee>
         </BrowserOnly>
-      </div>
+      </div> */}
     </div>
   );
 }
