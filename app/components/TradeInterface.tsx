@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAccount, useReadContracts } from "wagmi";
 import "~/app.css";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { type Address, formatUnits, parseEther } from "viem";
 import { SLX } from "~/assets/token-logos";
 import ActionButtonText from "~/components/ActionButtonText";
