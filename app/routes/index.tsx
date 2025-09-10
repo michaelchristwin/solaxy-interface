@@ -4,10 +4,9 @@ import FAQMenu from "~/components/FaqMenu";
 import GemAnimation from "~/components/GemAnimation";
 import HeroText from "~/components/HeroText";
 import TradeInterface from "~/components/TradeInterface";
-// import { Sponsors } from "~/assets/sponsors";
-// import BrowserOnly from "~/components/BrowserOnly";
-// import Marquee from "react-fast-marquee";
-// import styles from "./index.module.css";
+import { Sponsors } from "~/assets/sponsors";
+import BrowserOnly from "~/components/BrowserOnly";
+import Marquee from "react-fast-marquee";
 
 export function meta() {
   return [
@@ -56,18 +55,18 @@ export default function Index() {
         <p className={`block mx-auto text-center font-bold text-[23px]`}>
           Special thanks to
         </p>
-        {/* <BrowserOnly>
+        <BrowserOnly>
           <Marquee autoFill speed={80}>
             {Sponsors.map((sponsor) => (
               <img
                 key={sponsor}
                 src={sponsor}
                 alt="Logo"
-                className={styles.brand}
+                className="h-[80px] px-[16px] mx-[150px]"
               />
             ))}
           </Marquee>
-        </BrowserOnly> */}
+        </BrowserOnly>
       </div>
     </div>
   );
