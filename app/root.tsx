@@ -18,7 +18,7 @@ import {
 import { WagmiProvider } from "wagmi";
 import { AppContextProvider } from "~/providers/app.context-provider";
 import Navbar from "./components/Navbar";
-//import Footer from "./components/Footer";
+import Footer from "./components/Footer";
 import "@rainbow-me/rainbowkit/styles.css";
 import { config } from "./config";
 
@@ -53,7 +53,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {children}
           <ScrollRestoration />
           <Scripts />
-          {/* <Footer /> */}
+          <Footer />
         </body>
       </AppContextProvider>
     </html>

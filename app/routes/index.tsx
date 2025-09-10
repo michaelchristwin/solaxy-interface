@@ -1,13 +1,13 @@
-import Marquee from "react-fast-marquee";
 import { Link } from "react-router";
-import { Sponsors } from "~/assets/sponsors";
 import { SLX } from "~/assets/token-logos";
-import BrowserOnly from "~/components/BrowserOnly";
 import FAQMenu from "~/components/FaqMenu";
 import GemAnimation from "~/components/GemAnimation";
 import HeroText from "~/components/HeroText";
 import TradeInterface from "~/components/TradeInterface";
-import styles from "./index.module.css";
+// import { Sponsors } from "~/assets/sponsors";
+// import BrowserOnly from "~/components/BrowserOnly";
+// import Marquee from "react-fast-marquee";
+// import styles from "./index.module.css";
 
 export function meta() {
   return [
@@ -56,7 +56,7 @@ export default function Index() {
         <p className={`block mx-auto text-center font-bold text-[23px]`}>
           Special thanks to
         </p>
-        <BrowserOnly>
+        {/* <BrowserOnly>
           <Marquee autoFill speed={80}>
             {Sponsors.map((sponsor) => (
               <img
@@ -67,7 +67,7 @@ export default function Index() {
               />
             ))}
           </Marquee>
-        </BrowserOnly>
+        </BrowserOnly> */}
       </div>
     </div>
   );
